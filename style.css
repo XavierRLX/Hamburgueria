@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+#texto-titulo{
+    font-family: 'Pacifico', cursive;
+    font-size: 2em;
+    color: #ebdfdf;
+    font-weight: bolder;
+}
+.navbar{
+    background-color: #940707;
+}
+.texto-nav{
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-size: 1.3em;
+}
+.navbar-light, .navbar-nav, .nav-link {
+    color: #ffffff !important;
+}
+.texto-foto{
+    margin-bottom: 250px;
+    font-family: 'Pacifico', cursive;
+    font-size: 4em;
+}
+.imagem-carrosel {
+    object-fit: cover;
+    height: 60vh;
+}
+#imagem-carrosel-2{
+    object-position: center center;
+}
+.texto-principal > h1 {
+    font-family: 'Pacifico', cursive;
+    color: #940707;
+    margin-top: 50px;
+}
+.texto-principal > p {
+    font-size: 1.2em;
+    margin-bottom: 50px;
+}
+.img-card{
+    height: 350px;
+    object-fit: cover;
+}
+.card-width{
+    width: 350px !important;
+}
+.card {
+    border: 1px solid #940707 !important;
+}
+.card-body > a {
+    background-color: #940707;
+    color: #ffffff;
+
+}
+.m-w-3 {
+    max-width: 1500px;
+    margin: auto !important;
+}
+.texto-video > h1{
+    font-family: 'Pacifico', cursive;
+    color: #940707;
+}
+#caixa-video{
+    margin-bottom: 100px;
+}
+.card-body > h5 {
+    font-family: 'Pacifico', cursive; 
+    color: #940707;
+}
+.cor-fundo-btn{
+    background-color: #940707 !important;
+    color: #ffffff !important;
+}
+#tamanho-video{
+    max-width: 1500px;
+    margin: auto;
+}
+.card-final{
+    display: flex;
+    align-items: center;
+}
+#cor-1{
+    background-color: #c7d409;
+}
+#cor-2{
+    background-color: #940707;
+    color: #ffffff;
+}
+#cor-1 > p {
+    margin-top: 80px;
+    font-size: 1.5em;
+}
+.tamanho-card-final{
+    width: 100vh;
+    height: 50vh;
+    padding: 20px;
+}
+@media (max-width: 1380px) {
+    .texto-foto{
+        font-size: 3em;
+    }
+    .imagem-carrosel{
+        height: 45vh;
+    }
+    .img-card{
+        height: 200px;
+    }
+    .card-width{
+        width: 300px !important;
+    }
+    #cor-1 > p {
+        font-size: 1.2em;
+    }
+}
+@media (max-width:991px) {
+    .imagem-carrosel{
+        height: 45vh;
+    }
+    .texto-foto{
+        font-size: 2.3em;
+    }
+    .img-card{
+        height: 150px;
+    }
+    .card-width{
+        width: 250px !important;
+    }
+    .card-final{
+        flex-wrap: wrap;
+    }
+    .tamanho-card-final{
+        height: 50vh;
+        padding: 20px;
+    } 
+    #cor-1 > p {
+        margin-top:0;
+        font-size:1em;
+    }
+}
