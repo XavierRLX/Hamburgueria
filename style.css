@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
-
+.font-site{
+    font-family: 'Pacifico', cursive; 
+}
 #texto-titulo{
     font-family: 'Pacifico', cursive;
     font-size: 2em;
@@ -78,26 +80,35 @@
     margin: auto;
 }
 .card-final{
-    display: flex;
+    margin: auto;
     align-items: center;
 }
 #cor-1{
     background-color: #c7d409;
+    max-width: 1500px;
+    margin: auto;
+    border-radius: 10px 10px 0 0;
 }
 #cor-2{
     background-color: #940707;
     color: #ffffff;
+    max-width: 1500px;
+    margin: auto;
+    margin-bottom: 100px;
+    border-radius: 0 0 10px 10px;
 }
 #cor-1 > p {
-    margin-top: 80px;
+    margin-top: 20px;
     font-size: 1.5em;
 }
 .tamanho-card-final{
-    width: 100vh;
-    height: 50vh;
-    padding: 20px;
+    padding: 50px;
 }
-@media (max-width: 1380px) {
+.form-franqueado{
+    max-width: 90%;
+    margin: auto;
+}
+@media (max-width: 1500px) {
     .texto-foto{
         font-size: 3em;
     }
@@ -112,6 +123,20 @@
     }
     #cor-1 > p {
         font-size: 1.2em;
+    }
+    #cor-1{
+        border-radius: 0px;
+    }
+    #cor-2{
+        border-radius: 0 0 ;
+        margin-bottom: 0px;
+    }
+    #caixa-video{
+        margin-bottom: 0px;
+    }
+    #texto-video-fundo{
+        background-color: black !important;
+        color: #ffffff;
     }
 }
 @media (max-width:991px) {
@@ -130,10 +155,6 @@
     .card-final{
         flex-wrap: wrap;
     }
-    .tamanho-card-final{
-        height: 50vh;
-        padding: 20px;
-    } 
     #cor-1 > p {
         margin-top:0;
         font-size:1em;
