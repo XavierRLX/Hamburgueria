@@ -9,141 +9,142 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <title>rlx&burguer</title>
 </head>
-<header>
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container-fluid">
-          <a class="navbar-brand" id="texto-titulo" href="#">rlx&burguer</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link texto-nav text-reset" href="#">início</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link texto-nav" href="#cardapio">cardápio</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link texto-nav">vídeo</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link texto-nav">contato</a>
-              </li>
-            </ul>
-          </div>
+            <a class="navbar-brand" id="texto-titulo" href="#">rlx&burguer</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link texto-nav text-reset" href="#">início</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link texto-nav" href="#cardapio">cardápio</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link texto-nav">vídeo</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link texto-nav">contato</a>
+                  </li>
+                </ul>
+              </div>
         </div>
       </nav>
-</header>
+    </header>
 
-<main>
-  <section id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    </div>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="projeto-base/src/img/959025.jpg" class="d-block w-100 imagem-carrosel" alt="...">
-            <div class="carousel-caption d-md-block h-50">
-              <h2 class="texto-foto">Aproveite os melhores alimentos!</h2>
-            </div>
+  <main>
+      <section id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-indicators">
+                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
           </div>
-          <div id="imagem-carrosel-2" class="carousel-item">
-            <img src="projeto-base/src/img/ftham-fundo.jpg" class="d-block w-100 imagem-carrosel" alt="...">
-            <div class="carousel-caption d-md-block h-50">
-              <h2 class="texto-foto">Economize e ganhe em sabor</h2>
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="projeto-base/src/img/959025.jpg" class="d-block w-100 imagem-carrosel" alt="...">
+                  <div class="carousel-caption d-md-block h-50">
+                    <h2 class="texto-foto">Aproveite os melhores alimentos!</h2>
+                  </div>
+                </div>
+                <div id="imagem-carrosel-2" class="carousel-item">
+                  <img src="projeto-base/src/img/ftham-fundo.jpg" class="d-block w-100 imagem-carrosel" alt="...">
+                  <div class="carousel-caption d-md-block h-50">
+                    <h2 class="texto-foto">Economize e ganhe em sabor</h2>
+                  </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
             </div>
+
+
+        <section id="cardapio" class="texto-principal container">
+            <h1 class="text-center">Nossos hambuguers feitos com bastante especialidade  </h1>
+            <p class="text-center text-secondary" >Indredientes sempre com as melhores qualidades do mercado para a sua máxima experiência.</p>
+        </section>
+
+        <div class="container-fluid">
+          <div class="row justify-content-center m-w-3 shadow-lg p-3 mb-5 bg-body rounded">
+            <article class="card card-width p-0 m-5 ">
+              <img src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/93b7ffd6-fdaf-4c18-8d9e-7b06e12178cd/202103010403_jbFL_.jpeg" class="card-img-top img-card" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Cheedar</h5>
+                <p class="card-text">Receita refrescante e cheia de vitaminas para o seu café da manhã!</p>
+                <p>R$: 10,00</p>
+                <a data-bs-toggle="modal" href="#exampleModalToggle" href="#" class="btn">Comprar</a>
+              </div>
+            </article>
+            
+            <article class="card card-width p-0 m-5">
+              <img src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/2b178a3b-f3e7-436d-886a-c2156b1d791f/202003180051_eDsV_.jpeg" class="card-img-top img-card" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Costela</h5>
+                <p class="card-text">Receita refrescante e cheia de vitaminas para o seu café da manhã!</p>
+                <p>R$: 10,00</p>
+                <a data-bs-toggle="modal" href="#exampleModalToggle" href="#" class="btn">Comprar</a>
+              </div>
+            </article>
+            
+            <article class="card card-width p-0 m-5">
+              <img src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/93b7ffd6-fdaf-4c18-8d9e-7b06e12178cd/202103010359_ZYa9_.jpeg" class="card-img-top img-card" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Mix de vegetais</h5>
+                <p class="card-text">Receita refrescante e cheia de vitaminas para o seu café da manhã!</p>
+                <p>R$: 10,00</p>
+                <a data-bs-toggle="modal" href="#exampleModalToggle" href="#" class="btn">Comprar</a>
+              </div>
+            </article>
+            <article class="card card-width p-0 m-5">
+              <img src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/93b7ffd6-fdaf-4c18-8d9e-7b06e12178cd/202103010401_nfVi_.jpeg" class="card-img-top img-card" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Chicken Crispy</h5>
+                <p class="card-text">Receita refrescante e cheia de vitaminas para o seu café da manhã!</p>
+                <p>R$: 10,00</p>
+                <a data-bs-toggle="modal" href="#exampleModalToggle" href="#" class="btn">Comprar</a>
+              </div>
+            </article>
+
+            <article class="card card-width p-0 m-5">
+              <img src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/93b7ffd6-fdaf-4c18-8d9e-7b06e12178cd/202103010402_y8w9_.jpeg" class="card-img-top img-card" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Provoleta</h5>
+                <p class="card-text">Receita refrescante e cheia de vitaminas para o seu café da manhã!</p>
+                <p>R$: 10,00</p>
+                <a data-bs-toggle="modal" href="#exampleModalToggle" href="#" class="btn">Comprar</a>
+              </div>
+            </article>
+            <article class="card card-width p-0 m-5">
+              <img src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/93b7ffd6-fdaf-4c18-8d9e-7b06e12178cd/202103010410_EA3c_.jpeg" class="card-img-top img-card" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Monstruoso</h5>
+                <p class="card-text">Receita refrescante e cheia de vitaminas para o seu café da manhã!</p>
+                <p>R$: 10,00</p>
+                <a data-bs-toggle="modal" href="#exampleModalToggle"  href="#" class="btn">Comprar</a>
+              </div>
+            </article>
+          </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
+      </section>
+  </main>
+
+  <section id="caixa-video">
+    <div id="texto-video-fundo" class="text-center texto-video p-3">
+          <h1>Veja como são feitos os nossos hambuguers</h1>
+          <p>Cozinheiros com anos de experiência na área gastronômica</p>
+        </div>
+
+        <div id="tamanho-video" class="ratio ratio-16x9">
+          <iframe  max-width="300" height="315" src="https://www.youtube.com/embed/qPsEQN7yEic" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
-
-
-  <section id="cardapio" class="texto-principal container">
-      <h1 class="text-center">Nossos hambuguers feitos com bastante especialidade  </h1>
-      <p class="text-center text-secondary" >Indredientes sempre com as melhores qualidades do mercado para a sua máxima experiência.</p>
   </section>
-
-  <div class="container-fluid">
-    <div class="row justify-content-center m-w-3 shadow-lg p-3 mb-5 bg-body rounded">
-      <article class="card card-width p-0 m-5 ">
-        <img src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/93b7ffd6-fdaf-4c18-8d9e-7b06e12178cd/202103010403_jbFL_.jpeg" class="card-img-top img-card" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Cheedar</h5>
-          <p class="card-text">Receita refrescante e cheia de vitaminas para o seu café da manhã!</p>
-          <p>R$: 10,00</p>
-          <a data-bs-toggle="modal" href="#exampleModalToggle" href="#" class="btn">Comprar</a>
-        </div>
-      </article>
-      
-      <article class="card card-width p-0 m-5">
-        <img src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/2b178a3b-f3e7-436d-886a-c2156b1d791f/202003180051_eDsV_.jpeg" class="card-img-top img-card" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Costela</h5>
-          <p class="card-text">Receita refrescante e cheia de vitaminas para o seu café da manhã!</p>
-          <p>R$: 10,00</p>
-          <a data-bs-toggle="modal" href="#exampleModalToggle" href="#" class="btn">Comprar</a>
-        </div>
-      </article>
-      
-      <article class="card card-width p-0 m-5">
-        <img src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/93b7ffd6-fdaf-4c18-8d9e-7b06e12178cd/202103010359_ZYa9_.jpeg" class="card-img-top img-card" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Mix de vegetais</h5>
-          <p class="card-text">Receita refrescante e cheia de vitaminas para o seu café da manhã!</p>
-          <p>R$: 10,00</p>
-          <a data-bs-toggle="modal" href="#exampleModalToggle" href="#" class="btn">Comprar</a>
-        </div>
-      </article>
-      <article class="card card-width p-0 m-5">
-        <img src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/93b7ffd6-fdaf-4c18-8d9e-7b06e12178cd/202103010401_nfVi_.jpeg" class="card-img-top img-card" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Chicken Crispy</h5>
-          <p class="card-text">Receita refrescante e cheia de vitaminas para o seu café da manhã!</p>
-          <p>R$: 10,00</p>
-          <a data-bs-toggle="modal" href="#exampleModalToggle" href="#" class="btn">Comprar</a>
-        </div>
-      </article>
-
-      <article class="card card-width p-0 m-5">
-        <img src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/93b7ffd6-fdaf-4c18-8d9e-7b06e12178cd/202103010402_y8w9_.jpeg" class="card-img-top img-card" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Provoleta</h5>
-          <p class="card-text">Receita refrescante e cheia de vitaminas para o seu café da manhã!</p>
-          <p>R$: 10,00</p>
-          <a data-bs-toggle="modal" href="#exampleModalToggle" href="#" class="btn">Comprar</a>
-        </div>
-      </article>
-      <article class="card card-width p-0 m-5">
-        <img src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/93b7ffd6-fdaf-4c18-8d9e-7b06e12178cd/202103010410_EA3c_.jpeg" class="card-img-top img-card" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Monstruoso</h5>
-          <p class="card-text">Receita refrescante e cheia de vitaminas para o seu café da manhã!</p>
-          <p>R$: 10,00</p>
-          <a data-bs-toggle="modal" href="#exampleModalToggle"  href="#" class="btn">Comprar</a>
-        </div>
-      </article>
-    </div>
-  </div>
- </section>
-
-    <section id="caixa-video">
-      <div id="texto-video-fundo" class="text-center texto-video p-3">
-        <h1>Veja como são feitos os nossos hambuguers</h1>
-        <p>Cozinheiros com anos de experiência na área gastronômica</p>
-      </div>
-
-      <div id="tamanho-video" class="ratio ratio-16x9">
-        <iframe  max-width="300" height="315" src="https://www.youtube.com/embed/qPsEQN7yEic" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-    </section>
 
     <div class="card-final">
       <div id="cor-1" class="jumbotron tamanho-card-final">
@@ -153,8 +154,8 @@
       </div>
       
       <div id="cor-2" class="jumbotron tamanho-card-final">
-        <h1 class="font-site">Seja um franqueado!</h1>
         <form class="form-franqueado">
+          <h1 class="font-site">Seja um franqueado!</h1>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Nome</label>
             <input type="email" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -169,6 +170,15 @@
           </div>
           <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
+        <div class="end">
+          <div class="flex-end">
+            <h1>Venha nos conhecer</h1>
+            <p>Rua Waldermar Coelho dos Santos</p>
+            <p>CEP:21675-690</p>
+            <p>Guadalupe, Rio de Janeiro</p>
+          </div>
+          <div><img class="img-end" src="projeto-base/src/img/Captura de tela 2022-02-25 213014.png" alt=""></div>
+        </div>
         </div>
       </div>
     </div>
@@ -211,8 +221,6 @@
     </div>
   </div>
 </div>
-
-
 <body>
     
 </body>
