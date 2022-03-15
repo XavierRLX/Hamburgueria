@@ -41,6 +41,25 @@
     font-size: 1.2em;
     margin-bottom: 50px;
 }
+.opc-card{
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.5em;
+}
+.opc-card > p {
+    background-color: #940707;
+    padding: 5px;
+    width: 100%;
+    text-align: center;
+    color: #ebdfdf;
+    cursor: pointer;
+}
+.opc-card  :hover {
+    background-color: #5c4420;
+}
+#opc-card-g{
+    display: none;
+}
 .img-card{
     height: 350px;
     object-fit: cover;
@@ -85,14 +104,12 @@
 }
 #cor-1{
     background-color: #eedf0d;
-    max-width: 1500px;
     margin: auto;
     border-radius: 10px 10px 0 0;
-    padding: 20px;
+    padding: 50px;
 }
 #cor-2{
     color: #ffffff;
-    max-width: 1500px;
     margin: auto;
     margin-bottom: 100px;
     border-radius: 0 0 10px 10px;
@@ -106,18 +123,29 @@
 .end{
     background-color: #5c4420;
     width: 50%;
-    padding: 20px
+    text-align: center;
+
 }
-.end > h1 {
+.flex-end> h1 {
+    padding-top: 20px;
     font-family: 'Pacifico', cursive; 
 }
 .form-franqueado{
     background-color: #940707;
     width: 50%;
-    padding: 20px;
+    padding: 50px;
 }
 .img-end{
     width: 400px;
+}
+.carrinho-compras{
+ background-color: #5c4420;
+ border-radius: 50%;
+ padding: 10px;
+  position: fixed;
+  right: 10px;
+  top: 95%;
+  margin-top: -2.5em;
 }
 @media (max-width: 1500px) {
     .texto-foto{
@@ -149,13 +177,19 @@
         background-color: black !important;
         color: #ffffff;
     }
+    #opc-card-g{
+        display: none;
+    }
 }
 @media (max-width:991px) {
+    #texto-titulo{
+        font-size: 1.5em;
+    }
     .imagem-carrosel{
         height: 45vh;
     }
     .texto-foto{
-        font-size: 2.3em;
+        font-size: 1.3em;
     }
     .img-card{
         height: 150px;
@@ -181,6 +215,7 @@
         height: 350px;
         padding-top: 50px;
         display: flex;
+        padding: 20px;
     }
     .flex-end > p {
         font-size: .8em;
@@ -193,5 +228,11 @@
         width: 150px;
         margin: 50px 0px 0px 50px;
         
+    }
+    .opc-card{
+        font-size: .8em;
+    }
+    #opc-card-g{
+        display: flex;
     }
 }
