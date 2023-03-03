@@ -147,6 +147,9 @@
   top: 95%;
   margin-top: -2.5em;
 }
+.flex {
+    display: flex;
+}
 @media (max-width: 1500px) {
     .texto-foto{
         font-size: 3em;
