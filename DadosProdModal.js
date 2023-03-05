@@ -6,9 +6,11 @@ const botoesCompra = document.querySelectorAll('[id^="comprarProduto"]');
 botoesCompra.forEach((botao, index) => {
   botao.addEventListener("click", function() {
     var nome = document.querySelectorAll(".nomeProduto")[index].textContent;
+    var desc = document.querySelectorAll(".descProduto")[index].textContent;
     var preco = document.querySelectorAll(".preçoProduto")[index].value;
 
     document.querySelector(".nomeProdutoModal").textContent = nome;
+    document.querySelector(".descProdutoModal").textContent = desc;
     document.querySelector(".precoProdutoModal").value = preco;
     document.querySelector(".totalProdutoModal").value = preco;
     document.querySelector(".quantidade").value = 1;
@@ -56,6 +58,8 @@ const totalCarrinho = document.querySelector("#total-carrinho");
 
 let carrinho = [];
 
+let produtos = [];
+
 btnAdicionar.addEventListener("click", function() {
   const nomeProduto = document.querySelector(".nomeProdutoModal").textContent;
   const precoProduto = parseFloat(document.querySelector(".totalProdutoModal").value);
@@ -65,7 +69,7 @@ btnAdicionar.addEventListener("click", function() {
     preco: precoProduto
   };
 
-  carrinho.push(produto);
+  produtos.push(produto);
   exibirCarrinho();
 });
 
@@ -73,22 +77,29 @@ function exibirCarrinho() {
   listaProdutos.innerHTML = "";
   let total = 0;
 
-  carrinho.forEach(function(produto) {
+  produtos.forEach(function(produto, index) {
     const itemLista = document.createElement("li");
     const nomeProdutoSpan = document.createElement("span");
     nomeProdutoSpan.textContent = produto.nome;
     const precoProdutoSpan = document.createElement("span");
     precoProdutoSpan.textContent = "R$ " + produto.preco.toFixed(2);
+    const botaoExcluir = document.createElement("button");
+    botaoExcluir.textContent = "X";
+    botaoExcluir.addEventListener("click", function() {
+      produtos.splice(index, 1);
+      exibirCarrinho();
+    });
     itemLista.appendChild(nomeProdutoSpan);
     itemLista.appendChild(precoProdutoSpan);
+    itemLista.appendChild(botaoExcluir);
     listaProdutos.appendChild(itemLista);
-
-
 
     total += produto.preco;
   });
 
   totalCarrinho.textContent = total.toFixed(2);
+
+
 
   document.querySelector("#modal-carrinho").style.display = "block";
 }
@@ -103,3 +114,5 @@ AbrirCarrinhoFlut.addEventListener("click", function () {
     titloCarVazio.style.display = "none";
   }
 });
+
+

@@ -75,6 +75,30 @@
     color: #ffffff;
 
 }
+input{
+    border: none;
+    width: 55px;
+    height: 32px;
+    padding-left: 5px;
+}
+.buttonQuant{
+    background-color: #ffffff;
+    border: none;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+
+}
+.quantidade{
+    width: 25px;
+}
+#exampleModalToggleLabel{
+    font-family: 'Pacifico', cursive;
+}
+.preçoProduto{
+    margin: 0 auto;
+    padding-left: 5px;
+}
 .m-w-3 {
     max-width: 1500px;
     margin: auto !important;
@@ -99,6 +123,7 @@
     margin: auto;
 }
 .card-final{
+    max-width: 1510px;
     margin: auto;
     align-items: center;
 }
