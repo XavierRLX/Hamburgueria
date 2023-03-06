@@ -127,6 +127,27 @@ function exibirCarrinho() {
   localStorage.setItem("produtos", JSON.stringify(produtos));  // Atualiza o localStorage com a nova lista de produtos
 
   document.querySelector("#modal-carrinho").style.display = "block";  // Exibe o modal do carrinho na tela
+
+  const btnFinalizar = document.querySelector("#finalizar"); // Seleciona o botão "Finalizar"
+
+btnFinalizar.addEventListener("click", function() {
+  let mensagem = "Produtos adicionados:\n";
+
+  produtos.forEach(function(produto) {
+    mensagem += `- ${produto.nome} (${produto.quantidade}x) - R$ ${produto.preco.toFixed(2)}\n`;
+  });
+
+  mensagem += `\nTotal da compra: R$ ${total.toFixed(2)}`;
+
+  // Substitua o número abaixo pelo seu número de WhatsApp, incluindo o código do país e da área
+  const numero = "+5521964734161";
+
+  // Substitua a mensagem abaixo pela mensagem que você deseja enviar para o WhatsApp
+  const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(mensagem)}`;
+
+  // Abre a URL do WhatsApp em uma nova aba
+  window.open(url, "_blank");
+});
 }
 
  // Faz a verifição se o carrinho está vázio.
@@ -142,4 +163,48 @@ AbrirCarrinhoFlut.addEventListener("click", function () {
 
 });
 
+// const btnFinalizar = document.querySelector("#finalizar");
+// btnFinalizar.addEventListener("click", enviarRelatorio);
 
+
+// function enviarRelatorio() {
+//   // Cria um array com os nomes dos produtos adicionados
+//   const nomesProdutos = produtos.map((produto) => produto.nome);
+//   const precosProdutos = produtos.map((produto)=> produto.preco);
+
+//   // Cria uma string com o relatório dos produtos adicionados
+//   const relatorioProdutos = "Produtos adicionados:\n" + nomesProdutos.join("\n") + "Preço total: \n" + precosProdutos;
+
+//   // Define o número de telefone do WhatsApp para o qual o relatório será enviado
+//   const numeroWhatsApp = "+55021964734161"; // Substitua "SEUNUMEROAQUI" pelo seu número de telefone com DDD
+
+//   // Define a mensagem a ser enviada para o WhatsApp, incluindo o relatório dos produtos adicionados
+//   const mensagemWhatsApp = encodeURIComponent(relatorioProdutos);
+
+//   // Cria o link para enviar a mensagem para o WhatsApp
+//   const linkWhatsApp = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${mensagemWhatsApp}`;
+
+//   // Abre o link no navegador para iniciar o envio da mensagem para o WhatsApp
+//   window.open(linkWhatsApp);
+//}
+
+// const btnFinalizar = document.querySelector("#finalizar"); // Seleciona o botão "Finalizar"
+
+// btnFinalizar.addEventListener("click", function() {
+//   let mensagem = "Produtos adicionados:\n";
+
+//   produtos.forEach(function(produto) {
+//     mensagem += `- ${produto.nome} (${produto.quantidade}x) - R$ ${produto.preco.toFixed(2)}\n`;
+//   });
+
+//   mensagem += `\nTotal da compra: R$ ${total.toFixed(2)}`;
+
+//   // Substitua o número abaixo pelo seu número de WhatsApp, incluindo o código do país e da área
+//   const numero = "+5521964734161";
+
+//   // Substitua a mensagem abaixo pela mensagem que você deseja enviar para o WhatsApp
+//   const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(mensagem)}`;
+
+//   // Abre a URL do WhatsApp em uma nova aba
+//   window.open(url, "_blank");
+// });
