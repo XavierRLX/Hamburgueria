@@ -88,7 +88,7 @@
                 <p class="descProduto card-text">Pão brioche, blend bovino 180g, queijo cheddar, geléia de bacon, creme de cheddar do dan, farofa de bacon e maionese temperada.</p>
                 <div class="flex">
                   <p>R$:</p>
-                  <div><input value="25.99" class="preçoProduto"></div>
+                  <div><input value="24.99" class="preçoProduto"readonly></div>
                 </div>
                 <a data-bs-toggle="modal" id="comprarProduto1" href="#exampleModalToggle" href="#" class="botaoComprar btn">Comprar</a>
               </div>
@@ -101,7 +101,7 @@
                 <p class="descProduto card-text">Pão australiano, blend bovino 180g, queijo cheddar, cebola caremelizada, costela suína desfiada, geléia de bacon, molho barbecue artesanal e maionese temperada.</p>
                 <div class="flex">
                   <p>R$:</p>
-                  <div><input value="25.99" class="preçoProduto"></div>
+                  <div><input value="28.99" class="preçoProduto"readonly></div>
                 </div>
                 <a data-bs-toggle="modal"  id="comprarProduto2" href="#exampleModalToggle" href="#" class="botaoComprar btn">Comprar</a>
               </div>
@@ -114,7 +114,7 @@
                 <p class="descProduto card-text">Pão brioche, smash 90g, queijo cheddar, geléia de bacon e maionese temperada.</p> <br><br>
                 <div class="flex">
                   <p>R$:</p>
-                  <div><input value="25.99" class="preçoProduto"></div>
+                  <div><input value="25.99" class="preçoProduto"readonly></div>
                 </div>
                 <a data-bs-toggle="modal" id="comprarProduto3" href="#exampleModalToggle" href="#"  class="botaoComprar btn">Comprar</a>
               </div>
@@ -126,7 +126,7 @@
                 <p class="descProduto card-text">Pão brioche, smash 100g, queijo muçarela, alface americana, tomate, cebola roxa, picles e maionese temperada.</p>
                 <div class="flex">
                   <p>R$:</p>
-                  <div><input value="25.99" class="preçoProduto"></div>
+                  <div><input value="22.99" class="preçoProduto"readonly></div>
                 </div>
                 <a data-bs-toggle="modal" id="comprarProduto4" href="#exampleModalToggle" href="#"  class="botaoComprar btn">Comprar</a>
               </div>
@@ -139,7 +139,7 @@
                 <p class="descProduto card-text">Pão brioche, blend 180g, queijo provolone, tomate cereja confitado, farofa de bacon e maionese temperada.</p>
                 <div class="flex">
                   <p>R$:</p>
-                  <div><input value="25.99" class="preçoProduto"></div>
+                  <div><input value="28.99" class="preçoProduto"readonly></div>
                 </div>
                 <a data-bs-toggle="modal" id="comprarProduto5" href="#exampleModalToggle" href="#"  class="botaoComprar btn">Comprar</a>
               </div>
@@ -151,7 +151,7 @@
                 <p class="descProduto card-text">Pão brioche, três blend's bovinos 180g, queijo cheddar, creme de cheddar do dan, farofa de bacon e maionese temperada.</p>
                 <div class="flex">
                   <p>R$:</p>
-                  <div><input value="25.99" class="preçoProduto"></div>
+                  <div><input value="32.99" class="preçoProduto"readonly></div>
                 </div>
                 <a data-bs-toggle="modal" id="comprarProduto6" href="#exampleModalToggle"  href="#" class="botaoComprar btn">Comprar</a>
               </div>
@@ -216,6 +216,7 @@
 
     <div class="carrinho-compras" data-bs-toggle="modal" data-bs-target="#exampleModal">
       <img src="projeto-base/src/img/carrinho-de-compras.png" alt="">
+      <span id="carrinho-count"></span>
     </div>
 
 <footer class="bg-secondary p-3 text-center ">
@@ -223,7 +224,7 @@
 </footer>
 
 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-fullscreen-md-down">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header cor-fundo-btn">
         <h5 class="modal-title nomeProdutoModal" id="exampleModalToggleLabel">Carregando...</h5>
@@ -236,17 +237,17 @@
         </div>
           <div class="flex">
             <p class="fs-5 fw-bolder">Preço: </p>
-            <input value="00.00" class="precoProdutoModal fs-5" ></p>
+            <input value="00.00" class="precoProdutoModal fs-5" readonly ></p>
           </div>
         <div class="d-flex justify-content-between">
           <div class="d-flex">
             <div class="flex">
               <button class="menos buttonQuant"> - </button>
-              <input value="1" class="quantidade"></p>
+              <input value="1" class="quantidade" readonly></p>
               <button class="mais buttonQuant"> + </button>
             </div>
             <p class="fs-5 fw-bolder">Total:
-              <input value="00.00" class="totalProdutoModal fs-5">
+              <input value="00.00" class="totalProdutoModal fs-5"readonly>
             </p>
           </div>
           <div><button class="btn-adc-carrinho btn cor-fundo-btn" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Adicionar ao carrinho</button></div>
@@ -258,12 +259,12 @@
 <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalToggleLabel2">Arrasou na escolha</h5>
+      <div class="modal-header cor-fundo-btn">
+        <h5 class="modal-title" id="exampleModalToggleLabel2">Arrasou na escolha!</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        Adicionado ao carrinho
+        Adicionado ao carrinho.
       </div>
       <div class="modal-footer">
       </div>
@@ -272,26 +273,31 @@
 </div>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header cor-fundo-btn">
         <h1 class="modal-title fs-5" id="exampleModalLabel">
-          <h2 id="tituloCarrinho">Meu Carrinho:</h2>
+          <h2 id="tituloCarrinho">Carrinho:</h2>
         </h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <h3 id="tituloCarrinhoVazio">Carrinho Vazio</h3>
+        <h3 id="tituloCarrinhoVazio">Vazio</h3>
         <div>
           <div class="meu-carrinho">
             <div id="modal-carrinho" style="display:none;">
               <ul id="lista-produtos"></ul>
-              <p>Total: R$ <span id="total-carrinho"></span></p>
             </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+          <div class="">
+            <div class="d-flex  justify-content-between">
+              <div>
+                <p class="fs-5 fw-bolder">Total: R$ <span id="total-carrinho"></span></p>
+              </div>
+              <button type="button" class="btn cor-fundo-btn"> Finalizar </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
