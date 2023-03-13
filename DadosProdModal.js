@@ -1,5 +1,5 @@
 // Atualiza o LocalStorage assim que a pag é carregada.
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
   exibirCarrinho();
 });
 
@@ -9,7 +9,7 @@ const botoesCompra = document.querySelectorAll('[id^="comprarProduto"]');
 
 // Itera sobre os botões e adiciona um manipulador de eventos a cada um
 botoesCompra.forEach((botao, index) => {
-  botao.addEventListener("click", function() {
+  botao.addEventListener("click", function () {
     // Obtém os valores dos campos do produto correspondente ao botão de compra clicado
     var nome = document.querySelectorAll(".nomeProduto")[index].textContent;
     var desc = document.querySelectorAll(".descProduto")[index].textContent;
@@ -33,7 +33,7 @@ const inputPreco = document.querySelector('.precoProdutoModal');
 const inputTotal = document.querySelector('.totalProdutoModal');
 
 // adiciona evento de clique no botão "mais"
-btnMais.addEventListener('click', function() {
+btnMais.addEventListener('click', function () {
   // incrementa o valor da quantidade
   inputQuantidade.value++;
 
@@ -43,11 +43,11 @@ btnMais.addEventListener('click', function() {
 });
 
 // adiciona evento de clique no botão "menos"
-btnMenos.addEventListener('click', function() {
+btnMenos.addEventListener('click', function () {
   // decrementa o valor da quantidade, mas não permite que seja menor que 1
   if (inputQuantidade.value > 1) {
     inputQuantidade.value--;
-    
+
     // calcula o valor total e atualiza o campo
     const valorTotal = inputQuantidade.value * inputPreco.value;
     inputTotal.value = valorTotal.toFixed(2);
@@ -67,7 +67,7 @@ const totalCarrinho = document.querySelector("#total-carrinho");
 let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
 
 // adiciona evento de clique no botão "Adicionar ao carrinho"
-btnAdicionar.addEventListener("click", function() {
+btnAdicionar.addEventListener("click", function () {
   // Cria um objeto produto com o nome, preço e quantidade selecionados no modal
   const nomeProduto = document.querySelector(".nomeProdutoModal").textContent;
   const precoProduto = parseFloat(document.querySelector(".totalProdutoModal").value);
@@ -97,7 +97,7 @@ function exibirCarrinho() {
     quantidadeProdutoSpan.textContent = " " + produto.quantidade + "x";
 
     const precoProdutoSpan = document.createElement("span");
-    precoProdutoSpan.textContent = "  R$ " + produto.preco;
+    precoProdutoSpan.textContent = "  R$: " + produto.preco;
 
     const botaoExcluir = document.createElement("button");  // Cria um botão para excluir o produto da lista
     botaoExcluir.textContent = "";  // Define o texto do botão como vazio
@@ -115,42 +115,52 @@ function exibirCarrinho() {
     listaProdutos.appendChild(itemLista);  // Adiciona o item da lista à lista de produtos exibidos na tela
 
     total += produto.preco;  // Soma o preço do produto ao total da compra
+
+
+    const entregaCheckbox = document.querySelector("#entrega");
+    entregaCheckbox.addEventListener("change", function () {
+      if (entregaCheckbox.checked) {
+        total += 5;
+      } else {
+        total -= 5;
+      }
+      totalCarrinho.textContent = total.toFixed(2);
+    });
   });
 
   totalCarrinho.textContent = total.toFixed(2);  // Exibe o total da compra na tela com duas casas decimais
-  
+
   // Contador de produtos do icone.
   const carrinhoCount = document.querySelector("#carrinho-count");  // Seleciona o elemento HTML que exibe o número de produtos no carrinho
   carrinhoCount.textContent = produtos.reduce((total, produto) => total + parseInt(produto.quantidade), 0);  // Soma a quantidade de cada produto no carrinho e exibe o resultado no elemento selecionado acima
 
-  //Salva os produtos do localStorage
   localStorage.setItem("produtos", JSON.stringify(produtos));  // Atualiza o localStorage com a nova lista de produtos
 
   document.querySelector("#modal-carrinho").style.display = "block";  // Exibe o modal do carrinho na tela
 
   const btnFinalizar = document.querySelector("#finalizar"); // Seleciona o botão "Finalizar"
 
-btnFinalizar.addEventListener("click", function() {
-  let mensagem = "Produtos adicionados:\n";
+  btnFinalizar.addEventListener("click", function () {
+    let mensagem = "Produtos adicionados:\n";
 
-  produtos.forEach(function(produto) {
-    mensagem += `- ${produto.nome} (${produto.quantidade}x) - R$ ${produto.preco.toFixed(2)}\n`;
+    produtos.forEach(function (produto) {
+      mensagem += `- ${produto.nome} (${produto.quantidade}x) - R$: ${produto.preco.toFixed(2)}\n`;
+    });
+
+    mensagem += `\nTotal da compra: R$ ${total.toFixed(2)}`;
+
+    // Substitua o número abaixo pelo seu número de WhatsApp, incluindo o código do país e da área
+    const numero = "+5521964734161";
+
+    // Substitua a mensagem abaixo pela mensagem que você deseja enviar para o WhatsApp
+    const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(mensagem)}`;
+
+    // Abre a URL do WhatsApp em uma nova aba
+    window.open(url, "_blank");
   });
-
-  mensagem += `\nTotal da compra: R$ ${total.toFixed(2)}`;
-
-  // Substitua o número abaixo pelo seu número de WhatsApp, incluindo o código do país e da área
-  const numero = "+5521964734161";
-
-  // Substitua a mensagem abaixo pela mensagem que você deseja enviar para o WhatsApp
-  const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(mensagem)}`;
-
-  // Abre a URL do WhatsApp em uma nova aba
-  window.open(url, "_blank");
-});
 }
 
- // Faz a verifição se o carrinho está vázio.
+// Faz a verifição se o carrinho está vázio.
 const AbrirCarrinhoFlut = document.querySelector(".carrinho-compras");
 AbrirCarrinhoFlut.addEventListener("click", function () {
   const tituloCar = document.querySelector("#lista-produtos");
@@ -162,6 +172,7 @@ AbrirCarrinhoFlut.addEventListener("click", function () {
   }
 
 });
+
 
 // const btnFinalizar = document.querySelector("#finalizar");
 // btnFinalizar.addEventListener("click", enviarRelatorio);

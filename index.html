@@ -289,6 +289,46 @@
               <ul id="lista-produtos"></ul>
             </div>
           </div>
+          <div id="dados-usuario">
+            <form id="formulario-usuario">
+              <div class="mb-3">
+                <label for="nome" class="form-label">Nome:</label>
+                <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome e Sobrenome" required>
+              </div>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="entrega" name="entrega" value="true">
+                  <label class="form-check-label" for="entrega">
+                    Quero receber em casa (+ R$5)
+                  </label>
+                </div>
+              </div>
+              <div id="endereco" class="mb-3">
+                <label for="endereco" class="form-label">Endereço:</label>
+                <input type="text" class="form-control mb-3" name="endereco" placeholder="Rua, Número, Bairro.">
+                <input type="text" class="form-control" name="referencia" placeholder="Ponto de Referência.">
+              </div>
+              
+              <div class="mb-3">
+                <label for="pagamento" class="form-label">Forma de Pagamento:</label>
+                <select class="form-select" id="pagamento" name="pagamento" required>
+                  <option value="pix">PIX</option>
+                  <option value="dinheiro">Dinheiro</option>
+                  <option value="cartao_credito">Cartão de Crédito</option>
+                  <option value="cartao_debito">Cartão de Débito</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="troco" name="troco" value="true">
+                  <label class="form-check-label" for="troco">
+                    Preciso de troco
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+          
           <div class="">
             <div class="d-flex  justify-content-between">
               <div>
