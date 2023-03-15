@@ -305,7 +305,7 @@
               </div>
               <div id="endereco" class="mb-3">
                 <label for="endereco" class="form-label">Endereço:</label>
-                <input type="text" class="form-control mb-3" name="endereco" placeholder="Rua, Número, Bairro.">
+                <input id="enderecoRua" type="text" class="form-control mb-3" name="endereco" placeholder="Rua, Número, Bairro.">
                 <input type="text" class="form-control" name="referencia" placeholder="Ponto de Referência.">
               </div>
               
@@ -317,25 +317,22 @@
                   <option value="cartao_credito">Cartão de Crédito</option>
                   <option value="cartao_debito">Cartão de Débito</option>
                 </select>
-              </div>
-              <div class="mb-3">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="troco" name="troco" value="true">
-                  <label class="form-check-label" for="troco">
-                    Preciso de troco
-                  </label>
+                <div id="PagamentoDinheiro" class="mb-3">
+                  <label for="endereco" class="form-label">Valor a pagar: (Nos ajudar no troco, se possível) </label>
+                  <input type="text" class="form-control mb-3" name="pagarDinheiro" placeholder="R$ 00.00">
                 </div>
               </div>
-            </form>
-          </div>
-          
-          <div class="">
+              <div class="">
             <div class="d-flex  justify-content-between">
               <div>
-                <p class="fs-5 fw-bolder">Total: R$ <span id="total-carrinho"></span></p>
+                <p class="fs-5">Taxas: R$ <input value="0.00" id="taxas-carrinho"></input></p>
+                <p class="fs-5">Pedido: R$ <input value="0.00" id="total-carrinho"></input></p>
               </div>
-              <button type="button" id="finalizar" class="btn cor-fundo-btn"> Finalizar </button>
-            </div>
+            </div> 
+            <p class="fs-5">Total: R$ <input type="" value="0.00" id="total-pedido"></input></p>
+            <button type="button" id="finalizar" class="btn cor-fundo-btn"> Finalizar </button>
+          </div>
+            </form>
           </div>
         </div>
       </div>
