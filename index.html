@@ -285,8 +285,10 @@
         <h3 id="tituloCarrinhoVazio">Vazio</h3>
         <div>
           <div class="meu-carrinho">
-            <div id="modal-carrinho" style="display:none;">
-              <ul id="lista-produtos"></ul>
+            <div id="modal-produtos">
+              <input type="number" value="1" id="quantidadeCarrinho"> x
+              <input type="text" value="cheddar" id="nomeProdutoCarrinho"> 
+              <input type="number" value="10.99" id="precoTotalQuantidade">
             </div>
           </div>
           <div id="dados-usuario">
@@ -317,7 +319,7 @@
                   <option value="cartao_credito">Cartão de Crédito</option>
                   <option value="cartao_debito">Cartão de Débito</option>
                 </select>
-                <div id="PagamentoDinheiro" class="mb-3">
+                <div id="PagamentoDinheiro" style="display: none;" class="mb-3">
                   <label for="endereco" class="form-label">Valor a pagar: (Nos ajudar no troco, se possível) </label>
                   <input type="text" class="form-control mb-3" name="pagarDinheiro" placeholder="R$ 00.00">
                 </div>

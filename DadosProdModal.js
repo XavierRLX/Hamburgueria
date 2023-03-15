@@ -1,13 +1,3 @@
-// colocar o input da seleceção pagamendo como nenhum selecionado
-// atualizar o totalPedido quando colocar o total
-
-
-
-// Atualiza o LocalStorage assim que a pag é carregada.
-window.addEventListener("load", function () {
-  exibirCarrinho();
-});
-
 
 
 // Passa os dados do card(produto) para o modal.
@@ -88,72 +78,9 @@ btnAdicionar.addEventListener("click", function () {
   };
 
   produtos.push(produto);
-  exibirCarrinho();
+  console.log(nomeProduto, precoProduto, quantidadeProduto)
 
 });
-
-function exibirCarrinho() {
-  listaProdutos.innerHTML = "";  // Limpa a lista de produtos
-  let total = 0;
-  let taxas = 0; 
-  let totalPedido = document.getElementById("total-pedido");
-
-  produtos.forEach(function (produto, index) { // Itera pelos produtos e cria elementos HTML para cada um deles
-    const itemLista = document.createElement("li");
-
-    const nomeProdutoSpan = document.createElement("span");
-    nomeProdutoSpan.textContent = produto.nome;
-
-    const quantidadeProdutoSpan = document.createElement("span");
-    quantidadeProdutoSpan.textContent = " " + produto.quantidade + "x";
-
-    const precoProdutoSpan = document.createElement("span");
-    precoProdutoSpan.textContent = "  R$: " + produto.preco;
-
-    const botaoExcluir = document.createElement("button");  // Cria um botão para excluir o produto da lista
-    botaoExcluir.textContent = "";  // Define o texto do botão como vazio
-    botaoExcluir.classList.add("botao-excluir");  // Adiciona uma classe CSS ao botão
-    document.body.appendChild(botaoExcluir);    // Adiciona o botão ao DOM
-    botaoExcluir.addEventListener("click", function () {  // Adiciona um event listener ao botão que remove o produto da lista quando clicado
-      totalPedido = taxas + total;
-      document.getElementById("total-pedido").value = totalPedido.toFixed(2); produtos.splice(index, 1);  // Remove o produto da lista de produtos
-      localStorage.setItem("produtos", JSON.stringify(produtos)); // Atualiza o localStorage com a nova lista de produtos
-      exibirCarrinho();  // Chama a função exibirCarrinho() novamente para atualizar a lista de produtos exibidos
-    });
-    itemLista.appendChild(nomeProdutoSpan);  // Adiciona o nome do produto ao item da lista
-    itemLista.appendChild(quantidadeProdutoSpan);  // Adiciona a quantidade do produto ao item da lista
-    itemLista.appendChild(precoProdutoSpan);  // Adiciona o preço do produto ao item da lista
-    itemLista.appendChild(botaoExcluir);  // Adiciona o botão de excluir ao item da lista
-    listaProdutos.appendChild(itemLista);  // Adiciona o item da lista à lista de produtos exibidos na tela
-
-    total += produto.preco;  // Soma o preço do produto ao total da compra
-    totalPedido = taxas + total;
-    document.getElementById("total-pedido").value = totalPedido.toFixed(2);
-
-  });
-
-  const entregaInput = document.getElementById('entrega');
-  const taxasCarrinho = document.getElementById('taxas-carrinho');
-  // Adiciona um listener para detectar mudanças no estado do input "entrega"
-  entregaInput.addEventListener('change', () => {
-    if (entregaInput.checked) {
-      // Adiciona R$ 5 ao valor total da compra
-      taxas += 5;
-    } else {
-      // Remove R$ 5 do valor total da compra
-      taxas -= 5;
-    }
-    taxasCarrinho.value = taxas.toFixed(2);
-    totalPedido = taxas + total;
-    document.getElementById("total-pedido").value = totalPedido.toFixed(2);
-  });
-
-
-  // Contador de produtos do icone.
-  const carrinhoCount = document.querySelector("#carrinho-count");  // Seleciona o elemento HTML que exibe o número de produtos no carrinho
-  carrinhoCount.textContent = produtos.reduce((total, produto) => total + parseInt(produto.quantidade), 0); // Soma a quantidade de cada produto no carrinho e exibe o resultado no elemento selecionado acima
-
-
 
 // Validação do checkbox da entrega
   const checkboxEntrega = document.querySelector('#entrega');
@@ -167,11 +94,10 @@ function exibirCarrinho() {
     }
   });
 
+
 // Validação pagamento em dinheiro
 const pagamentoSelect = document.getElementById('pagamento');
 const pagamentoDinheiroDiv = document.getElementById('PagamentoDinheiro');
-let taxaCartaoCredito = 1;
-let adicionouTaxa = false;
 
 pagamentoSelect.addEventListener('change', function() {
   if (this.value === 'dinheiro') {
@@ -179,64 +105,4 @@ pagamentoSelect.addEventListener('change', function() {
   } else {
     pagamentoDinheiroDiv.style.display = 'none';
   }
-  
-  if (this.value === 'cartao_credito' && !adicionouTaxa) {
-    taxas += taxaCartaoCredito;
-    adicionouTaxa = true;
-  } else if (this.value !== 'cartao_credito' && adicionouTaxa) {
-    taxas -= taxaCartaoCredito;
-    adicionouTaxa = false;
-  }
-  taxasCarrinho.value = taxas.toFixed(2);
-  totalPedido = taxas + total;
-  document.getElementById("total-pedido").value = totalPedido.toFixed(2);
 });
-
-totalCarrinho.value = total.toFixed(2);  // Exibe o total da compra na tela com duas casas decimais
-
-// Faz a verifição se o carrinho está vázio.
-const AbrirCarrinhoFlut = document.querySelector(".carrinho-compras");
-AbrirCarrinhoFlut.addEventListener("click", function () {
-  const tituloCar = document.querySelector("#lista-produtos");
-  const titloCarVazio = document.getElementById("tituloCarrinhoVazio");
-  if (tituloCar.textContent.trim() === "") {
-    console.log("O parágrafo está vazio");
-  } else {
-    titloCarVazio.style.display = "none";
-  }
-
-});
-
-console.log(totalPedido);
-
-//
-  localStorage.setItem("produtos", JSON.stringify(produtos));  // Atualiza o localStorage com a nova lista de produtos
-
-  document.querySelector("#modal-carrinho").style.display = "block";  // Exibe o modal do carrinho na tela
-
-  const btnFinalizar = document.querySelector("#finalizar"); // Seleciona o botão "Finalizar"
-
-  btnFinalizar.addEventListener("click", function () {
-
-    totalPedido = taxas + total;
-    document.getElementById("total-pedido").value = totalPedido.toFixed(2);
-
-    let mensagem = "Produtos adicionados:\n";
-
-    produtos.forEach(function (produto) {
-      mensagem += `- ${produto.nome} (${produto.quantidade}x) - R$: ${produto.preco.toFixed(2)}\n`;
-    });
-
-    mensagem += `\nTotal da compra: R$ ${total.toFixed(2)}`;
-
-    // Substitua o número abaixo pelo seu número de WhatsApp, incluindo o código do país e da área
-    const numero = "+5521964734161";
-
-    // Substitua a mensagem abaixo pela mensagem que você deseja enviar para o WhatsApp
-    const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(mensagem)}`;
-
-    // Abre a URL do WhatsApp em uma nova aba
-    window.open(url, "_blank");
-  });
-
-}
