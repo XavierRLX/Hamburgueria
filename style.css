@@ -225,6 +225,45 @@ margin-left: 5px;
     margin-right: 5px;
     font-weight: 800
   }
+
+  /* Card carrinho */
+
+  .produtos, #meucarrinho .produtos > input {
+    border-radius: 3px;
+    box-shadow: 0px 0px 5px 0 #c0b2b2;display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+    
+  }
+  #nomeProdutoCarrinho{
+    width: 110px;
+  }
+  #quantidadeCarrinho {
+    width: 40px;
+    margin-right: -10px;
+  }
+  #precoTotalQuantidade {
+    width: 70px;
+    margin-left: -60px;
+  }
+  #imgLix{
+    height: 20px;
+    width: 20px;
+    margin-top: 5px;
+  }
+  .totais{
+    margin-top: 20px;
+  }
+.modal-final{
+    margin-top: 5px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+.modal-final > p{
+    margin-top: 12px;
+}
   
 @media (max-width: 1500px) {
     .texto-foto{

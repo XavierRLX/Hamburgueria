@@ -51,37 +51,6 @@ btnMenos.addEventListener('click', function () {
   }
 });
 
-// seleciona o botão "Adicionar ao carrinho"
-const btnAdicionar = document.querySelector(".btn-adc-carrinho");
-
-// Seleciona os botões de abrir e fechar carrinho, a lista de produtos e o campo de total do carrinho
-const btnAbrirCarrinho = document.querySelector("#btn-abrir-carrinho");
-const btnFecharCarrinho = document.querySelector("#btn-fechar-carrinho");
-const listaProdutos = document.querySelector("#lista-produtos");
-const totalCarrinho = document.querySelector("#total-carrinho");
-
-// Obtém os produtos do LocalStorage ou cria uma lista vazia
-let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
-
-// adiciona evento de clique no botão "Adicionar ao carrinho"
-btnAdicionar.addEventListener("click", function () {
-  // Cria um objeto produto com o nome, preço e quantidade selecionados no modal
-  const nomeProduto = document.querySelector(".nomeProdutoModal").textContent;
-  const precoProduto = parseFloat(document.querySelector(".totalProdutoModal").value);
-  const quantidadeProduto = document.querySelector(".quantidade").value;
- 
-
-  const produto = {
-    nome: nomeProduto,
-    preco: precoProduto,
-    quantidade: quantidadeProduto
-  };
-
-  produtos.push(produto);
-  console.log(nomeProduto, precoProduto, quantidadeProduto)
-
-});
-
 // Validação do checkbox da entrega
   const checkboxEntrega = document.querySelector('#entrega');
   const campoEndereco = document.querySelector('#endereco');
@@ -106,3 +75,162 @@ pagamentoSelect.addEventListener('change', function() {
     pagamentoDinheiroDiv.style.display = 'none';
   }
 });
+
+
+
+// Criando a lista de produtos do carrinho
+
+// Criando a lista de produtos do carrinho
+let precoTotalProdutos = 0;
+let SomaItens = 0;
+
+const meuCarrinho = document.querySelector('.meu-carrinho');
+const btnAdicionar = document.querySelector('.btn-adc-carrinho');
+
+const precoTotalElement = document.querySelector('#total-carrinho');
+const ResultadoItens = document.querySelector('#carrinho-count')
+
+function atualizaPrecoTotalProdutos() {
+  precoTotalProdutos = 0;
+  const produtos = document.querySelectorAll('.produtos');
+  produtos.forEach((produto) => {
+    const totalProduto = parseFloat(produto.querySelector('#precoTotalQuantidade').value);
+    if(!isNaN(totalProduto)) {
+    precoTotalProdutos += totalProduto;
+    }
+  });
+  precoTotalElement.value = precoTotalProdutos.toFixed(2);
+}
+
+ function somaritens(){
+   SomaItens = 0 
+   const produtos = document.querySelectorAll('.produtos');
+   produtos.forEach((produto) => {
+     const TotalItens = parseFloat(produto.querySelector('#quantidadeCarrinho').value);
+     if(!isNaN(TotalItens)) {
+       SomaItens += TotalItens;
+     }
+   });
+   ResultadoItens.value = SomaItens;
+  }
+
+btnAdicionar.addEventListener('click', function() {
+  const nomeProduto = document.querySelector('.nomeProdutoModal').textContent;
+  const quantidade = document.querySelector('.quantidade').value;
+  const total = document.querySelector('.totalProdutoModal').value;
+
+  const divProduto = document.createElement('div');
+  divProduto.classList.add('produtos');
+
+  const inputNomeProduto = document.createElement('input');
+  inputNomeProduto.type = 'text';
+  inputNomeProduto.value = nomeProduto;
+  inputNomeProduto.readOnly = true;
+  inputNomeProduto.id = 'nomeProdutoCarrinho';
+
+  const divQuantidade = document.createElement('div');
+  divQuantidade.classList.add('flex');
+  
+  const inputQuantidade = document.createElement('input');
+  inputQuantidade.type = 'number';
+  inputQuantidade.value = quantidade;
+  inputQuantidade.readOnly = true;
+  inputQuantidade.id = 'quantidadeCarrinho';
+
+  const textX = document.createElement('input');
+  textX.type = 'text';
+  textX.value = 'X';
+
+  const divTotal = document.createElement('div');
+  const inputTotalLabel = document.createElement('input');
+  inputTotalLabel.type = 'text';
+  inputTotalLabel.value = 'R$:';
+  const inputTotal = document.createElement('input');
+  inputTotal.type = 'number';
+  inputTotal.value = total;
+  inputTotal.readOnly = true;
+  inputTotal.id = 'precoTotalQuantidade';
+
+  const imgLixeira = document.createElement('img');
+  imgLixeira.src = 'projeto-base/src/img/lixeira.png';
+  imgLixeira.alt = '';
+  imgLixeira.id = 'imgLix';
+
+  divProduto.appendChild(inputNomeProduto);
+  divQuantidade.appendChild(inputQuantidade);
+  divQuantidade.appendChild(textX);
+  divTotal.appendChild(inputTotalLabel);
+  divTotal.appendChild(inputTotal);
+  divProduto.appendChild(divQuantidade);
+  divProduto.appendChild(divTotal);
+  divProduto.appendChild(imgLixeira);
+  meuCarrinho.appendChild(divProduto);
+
+  // contador++; // incrementa o valor do contador
+  // document.querySelector('#carrinho-count').textContent = contador; // atualiza o valor do elemento com o ID "carrinho-count"
+
+  atualizaPrecoTotalProdutos();
+  atualizarTotalGeral();
+  somaritens();
+
+  console.log(precoTotalProdutos, SomaItens);
+
+});
+
+meuCarrinho.addEventListener('click', function(event) {
+  if (event.target.id === 'imgLix') {
+    event.target.parentElement.remove();
+    atualizaPrecoTotalProdutos();
+    somaritens();
+    atualizarTotalGeral();
+  }
+
+});
+
+// Elemento checkbox e o elemento que exibe o total da compra
+var checkbox = document.getElementById("entrega");
+let taxa = 0;
+var taxaCarrinho = document.getElementById("taxas-carrinho");
+
+// Adicione um manipulador de eventos para o checkbox
+checkbox.addEventListener("change", function() {
+  // Verifique se o checkbox está marcado
+  if (checkbox.checked) {
+    // Se estiver marcado, adicione a taxa de R$5 ao total da compra
+    taxa += 5;
+  } else {
+    // Se não estiver marcado, remova a taxa de R$5 do total da compra
+    taxa -= 5;
+  }
+  atualizarTotalTaxas();
+  atualizarTotalGeral();
+});
+
+// Elemento select e o elemento que exibe o total da compra
+// Adicione um manipulador de eventos para o select
+let taxa2 = 0;
+pagamentoSelect.addEventListener("change", function() {
+  // Verifique se a opção "cartao_credito" está selecionada
+  if (pagamentoSelect.value === "cartao_credito") {
+    // Se estiver selecionada, adicione a taxa de R$2 ao total da compra
+    taxa2 = 2;
+  } else {
+    // Se outra opção for selecionada, remova a taxa de R$2 do total da compra
+    taxa2 = 0;
+  }
+  atualizarTotalTaxas();
+  atualizarTotalGeral();
+});
+
+let totalTaxas = 0
+function atualizarTotalTaxas() {
+  totalTaxas = taxa + taxa2;
+  taxaCarrinho.value = totalTaxas.toFixed(2).toString();
+  console.log(totalTaxas);
+}
+
+var totalPedido =  document.querySelector('#total-pedido') 
+function atualizarTotalGeral() {
+  let totalGeral = precoTotalProdutos + totalTaxas;
+  totalPedido.value = totalGeral.toFixed(2);
+}
