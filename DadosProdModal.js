@@ -246,10 +246,8 @@ function atualizarTotalGeral() {
 }
 
 
-const btnFinalizar = document.querySelector('#finalizar');
-
-btnFinalizar.addEventListener('click', function() {
-  const nomeCliente = document.querySelector('#nome').value;
+// Adiciona um evento de clique ao botão "Finalizar"
+document.getElementById("finalizar").addEventListener("click", function() {
 
   const produtosCarrinho = [];
   const produtos = document.querySelectorAll('.produtos');
@@ -260,12 +258,45 @@ btnFinalizar.addEventListener('click', function() {
     produtosCarrinho.push({ nome: nomeProduto, quantidade: quantidadeProduto, preco: precoProduto });
   });
 
-  const relatorio = {
-    cliente: { nome: nomeCliente },
-    produtos: produtosCarrinho,
-    total: precoTotalProdutos.toFixed(2),
-  };
 
-  const relatorioJSON = JSON.stringify(relatorio);
-  console.log(relatorioJSON);
+  // Coleta as informações do formulário
+  var nome = document.getElementById("nome").value;
+  var entrega = document.getElementById("entrega").checked;
+  var enderecoRua = document.getElementById("enderecoRua").value;
+  var referencia = document.getElementsByName("referencia")[0].value;
+  var pagamento = document.getElementById("pagamento").value;
+  var pagarDinheiro = document.getElementsByName("pagarDinheiro")[0].value;
+  var totalCarrinho = document.getElementById("total-carrinho").value;
+  var taxasCarrinho = document.getElementById("taxas-carrinho").value;
+  var totalPedido = document.getElementById("total-pedido").value;
+
+  // Cria o relatório com as informações coletadas
+  var relatorio = "Relatório do Pedido:\n\n";
+  relatorio += "Produtos:\n";
+produtosCarrinho.forEach((produto) => {
+  relatorio += "- " + produto.nome + " x " + produto.quantidade + " = R$ " + produto.preco + "\n";
+});
+  relatorio += "Nome: " + nome + "\n";
+  if (entrega) {
+    relatorio += "Endereço: " + enderecoRua + " - " + referencia + " (+ R$5)\n";
+  }
+  relatorio += "Forma de Pagamento: " + pagamento + "\n";
+  if (pagamento == "dinheiro") {
+    relatorio += "Valor a Pagar: " + pagarDinheiro + "\n";
+  }
+  relatorio += "Pedido: R$ " + totalCarrinho + "\n";
+  relatorio += "Taxa: R$ " + taxasCarrinho + "\n";
+  relatorio += "Total: R$ " + totalPedido + "\n";
+
+
+    const numero = "+5521964734161";
+
+    // Substitua a mensagem abaixo pela mensagem que você deseja enviar para o WhatsApp
+    const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(relatorio)}`;
+  
+    // Abre a URL do WhatsApp em uma nova aba
+    window.open(url, "_blank");
+
+  // Exibe o relatório em um alert
+  alert(relatorio);
 });
