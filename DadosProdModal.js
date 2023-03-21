@@ -100,6 +100,7 @@ function atualizaPrecoTotalProdutos() {
     }
   });
   precoTotalElement.value = precoTotalProdutos.toFixed(2);
+  carrinhoVazio();
 }
 
  function somaritens(){
@@ -166,12 +167,11 @@ btnAdicionar.addEventListener('click', function() {
   divProduto.appendChild(imgLixeira);
   meuCarrinho.appendChild(divProduto);
 
-  // contador++; // incrementa o valor do contador
-  // document.querySelector('#carrinho-count').textContent = contador; // atualiza o valor do elemento com o ID "carrinho-count"
 
   atualizaPrecoTotalProdutos();
   atualizarTotalGeral();
   somaritens();
+  carrinhoVazio();
 
   console.log(precoTotalProdutos, SomaItens);
 
@@ -186,6 +186,16 @@ meuCarrinho.addEventListener('click', function(event) {
   }
 
 });
+
+//Verifica se o carrinho esta vazio
+function carrinhoVazio(){
+  const tituloCarrinho = document.getElementById("tituloCarrinhoVazio");
+  if (precoTotalProdutos >= 1) {
+    tituloCarrinho.style.display = 'none';
+  } else {
+    tituloCarrinho.style.display = 'inline'
+  }
+}
 
 // Elemento checkbox e o elemento que exibe o total da compra
 var checkbox = document.getElementById("entrega");
@@ -234,3 +244,28 @@ function atualizarTotalGeral() {
   let totalGeral = precoTotalProdutos + totalTaxas;
   totalPedido.value = totalGeral.toFixed(2);
 }
+
+
+const btnFinalizar = document.querySelector('#finalizar');
+
+btnFinalizar.addEventListener('click', function() {
+  const nomeCliente = document.querySelector('#nome').value;
+
+  const produtosCarrinho = [];
+  const produtos = document.querySelectorAll('.produtos');
+  produtos.forEach((produto) => {
+    const nomeProduto = produto.querySelector('#nomeProdutoCarrinho').value;
+    const quantidadeProduto = produto.querySelector('#quantidadeCarrinho').value;
+    const precoProduto = produto.querySelector('#precoTotalQuantidade').value;
+    produtosCarrinho.push({ nome: nomeProduto, quantidade: quantidadeProduto, preco: precoProduto });
+  });
+
+  const relatorio = {
+    cliente: { nome: nomeCliente },
+    produtos: produtosCarrinho,
+    total: precoTotalProdutos.toFixed(2),
+  };
+
+  const relatorioJSON = JSON.stringify(relatorio);
+  console.log(relatorioJSON);
+});

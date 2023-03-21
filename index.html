@@ -320,12 +320,12 @@
     <div class="modal-content">
       <div class="modal-header cor-fundo-btn">
         <h1 class="modal-title fs-5" id="exampleModalLabel">
-          <h2 id="tituloCarrinho">Carrinho:</h2>
+          <h2 id="tituloCarrinho">Meu carrinho</h2>
         </h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <h3 id="tituloCarrinhoVazio">Vazio</h3>
+        <h3 id="tituloCarrinhoVazio">Vazio...</h3>
         <div>
           <div class="meu-carrinho">
             <!-- card adc pelo js -->
@@ -354,9 +354,10 @@
               <div class="mb-3">
                 <label for="pagamento" class="form-label">Forma de Pagamento:</label>
                 <select class="form-select" id="pagamento" name="pagamento" required>
+                  <option value="" selected>Selecione</option>
                   <option value="pix">PIX</option>
                   <option value="dinheiro">Dinheiro</option>
-                  <option value="cartao_credito">Cartão de Crédito</option>
+                  <option value="cartao_credito">Cartão de Crédito (+ R$2)</option>
                   <option value="cartao_debito">Cartão de Débito</option>
                 </select>
                 <div id="PagamentoDinheiro" style="display: none;" class="mb-3">
