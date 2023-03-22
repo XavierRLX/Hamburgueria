@@ -54,12 +54,15 @@ btnMenos.addEventListener('click', function () {
 // Validação do checkbox da entrega
   const checkboxEntrega = document.querySelector('#entrega');
   const campoEndereco = document.querySelector('#endereco');
+  const CampoMesa = document.querySelector("#Nmesa");
 
   checkboxEntrega.addEventListener('change', function () {
     if (this.checked) {
       campoEndereco.style.display = 'block';
+      CampoMesa.style.display = 'none'
     } else {
       campoEndereco.style.display = 'none';
+      CampoMesa.style.display = 'inline';
     }
   });
 
@@ -271,22 +274,22 @@ document.getElementById("finalizar").addEventListener("click", function() {
   var totalPedido = document.getElementById("total-pedido").value;
 
   // Cria o relatório com as informações coletadas
-  var relatorio = "Relatório do Pedido:\n\n";
+  var relatorio = "Pedido:\n\n";
   relatorio += "Produtos:\n";
 produtosCarrinho.forEach((produto) => {
-  relatorio += "- " + produto.nome + " x " + produto.quantidade + " = R$ " + produto.preco + "\n";
+  relatorio += "- " + produto.nome + " x " + produto.quantidade + " = R$ " + produto.preco + "\n\n";
 });
-  relatorio += "Nome: " + nome + "\n";
+  relatorio += "Nome: " + nome + "\n\n";
   if (entrega) {
-    relatorio += "Endereço: " + enderecoRua + " - " + referencia + " (+ R$5)\n";
+    relatorio += "Endereço: " + enderecoRua + " - " + referencia + "\n\n";
   }
-  relatorio += "Forma de Pagamento: " + pagamento + "\n";
+  relatorio += "Forma de Pagamento: " + pagamento + "\n\n";
   if (pagamento == "dinheiro") {
-    relatorio += "Valor a Pagar: " + pagarDinheiro + "\n";
+    relatorio += "Valor a Pagar: " + pagarDinheiro + "\n\n";
   }
-  relatorio += "Pedido: R$ " + totalCarrinho + "\n";
-  relatorio += "Taxa: R$ " + taxasCarrinho + "\n";
-  relatorio += "Total: R$ " + totalPedido + "\n";
+  relatorio += "Pedido: R$ " + totalCarrinho + "\n\n";
+  relatorio += "Taxa: R$ " + taxasCarrinho + "\n\n";
+  relatorio += "Total: R$ " + totalPedido + "\n\n";
 
 
     const numero = "+5521964734161";
@@ -298,5 +301,5 @@ produtosCarrinho.forEach((produto) => {
     window.open(url, "_blank");
 
   // Exibe o relatório em um alert
-  alert(relatorio);
+ // alert(relatorio);
 });
