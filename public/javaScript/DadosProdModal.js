@@ -80,9 +80,6 @@ pagamentoSelect.addEventListener('change', function() {
 });
 
 
-
-// Criando a lista de produtos do carrinho
-
 // Criando a lista de produtos do carrinho
 let precoTotalProdutos = 0;
 let SomaItens = 0;
