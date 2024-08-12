@@ -24,6 +24,8 @@ async function listCategoria() {
         // Limpa as opções anteriores (se houver)
         listaCategoria.innerHTML = '<option selected>Escolha uma categoria</option>';
 
+        carregaCategoria();
+
         // Adiciona as novas opções
         categorias.forEach(categoria => {
             const option = document.createElement('option');
