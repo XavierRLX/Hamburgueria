@@ -1,5 +1,7 @@
 async function carregaProdutos() {
-    
+    const buscaNome = document.getElementById('buscaNome').value.toLowerCase(); // Obtém o valor do campo de busca e converte para minúsculo
+
+    // Busca todos os produtos
     const url = `${supabaseUrl}/rest/v1/produtos?select=*`;
     const response = await fetch(url, {
         method: 'GET',
@@ -15,7 +17,12 @@ async function carregaProdutos() {
         const produtoList = document.querySelector('.row'); // Seleciona a div com classe 'row'
         produtoList.innerHTML = ''; // Limpa a lista de produtos
 
-        data.forEach(produto => {
+        // Filtra os produtos pelo nome
+        const produtosFiltrados = data.filter(produto => 
+            produto.nome.toLowerCase().includes(buscaNome)
+        );
+
+        produtosFiltrados.forEach(produto => {
             const produtoItem = document.createElement('div');
             produtoItem.className = 'col-md-4 mb-3';
             produtoItem.innerHTML = `
@@ -40,6 +47,9 @@ async function carregaProdutos() {
         alert('Erro ao carregar a lista de produtos');
     }
 }
+
+document.getElementById('buscaNome').addEventListener('input', carregaProdutos);
+
 async function excluirProduto(id) {
     const url = `${supabaseUrl}/rest/v1/produtos?id=eq.${id}`;
     const response = await fetch(url, {
