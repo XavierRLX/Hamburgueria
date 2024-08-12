@@ -1,4 +1,5 @@
 async function carregaProdutos() {
+    
     const url = `${supabaseUrl}/rest/v1/produtos?select=*`;
     const response = await fetch(url, {
         method: 'GET',
