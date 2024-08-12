@@ -41,9 +41,9 @@
     <section class="container">
       <div id="mainAdmProdutos" class="card">
         <h2 class="card-header">Cadastro de Produto</h2>
-        <form class="p-2">
+        <form id="produtoForm" class="p-2">
           <div class="mb-3">
-            <label for="nome" class="form-label">Nome</label>
+            <label for="nome"  class="form-label">Nome</label>
             <input type="text" class="form-control" id="nome" placeholder="Digite o nome do produto">
           </div>
           <div class="mb-3">
@@ -55,7 +55,7 @@
             <input type="number" class="form-control" id="preco" placeholder="Digite o preço do produto">
           </div>
           <div class="mb-3">
-            <label for="categoria" class="form-label">Categoria</label>
+            <label for="categoria" id="categoria" class="form-label">Categoria</label>
             <select class="form-select" id="categoria">
               <option selected>Escolha uma categoria</option>
               <option value="hamburguer">Hambúrguer</option>
@@ -63,7 +63,7 @@
               <option value="batata">Batata</option>
             </select>
           </div>
-          <button type="submit" class="btn btn-primary">Cadastrar Produto</button>
+          <button type="submit" class="btn btn-primary" id="cadastrarProduto" >Cadastrar Produto</button>
         </form>
       </div>
     </section>
@@ -96,6 +96,7 @@
   </main>
 </body>
 
-<script src="/javaScript/DadosProdModal.js"></script>
+<script src="/javaScript/cadastrarProduto.js"></script>
+<script src="/javaScript/carregaProdutoAdm.js"></script>
 
 </html>
