@@ -1,6 +1,45 @@
 const supabaseUrl = 'https://xuanbixiwzjcyaynaatx.supabase.co';
 const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh1YW5iaXhpd3pqY3lheW5hYXR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMxMzk1NzUsImV4cCI6MjAzODcxNTU3NX0.pKTm6WXH6waNUeSd5W6vvxlDVCxwQqrgkUCmmaeptWU';
 
+
+async function listCategoria() {
+    const url = `${supabaseUrl}/rest/v1/categoria?select=id,descricao`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': apiKey,
+                'Authorization': `Bearer ${apiKey}` // Se o seu Supabase exige autenticação
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao carregar a lista de categorias');
+        }
+
+        const categorias = await response.json();
+        const listaCategoria = document.getElementById('categoria');
+
+        // Limpa as opções anteriores (se houver)
+        listaCategoria.innerHTML = '<option selected>Escolha uma categoria</option>';
+
+        // Adiciona as novas opções
+        categorias.forEach(categoria => {
+            const option = document.createElement('option');
+            option.value = categoria.descricao;
+            option.textContent = categoria.descricao;
+            listaCategoria.appendChild(option);
+        });
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+// Chama a função para carregar as categorias quando a página carrega
+document.addEventListener('DOMContentLoaded', listCategoria);
+
+
 document.getElementById('cadastrarProduto').addEventListener('click', async (event) => {
     event.preventDefault();
 
