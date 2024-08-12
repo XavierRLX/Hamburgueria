@@ -50,6 +50,8 @@ async function carregaProdutos() {
 
 document.getElementById('buscaNome').addEventListener('input', carregaProdutos);
 
+
+//apagar produto
 async function excluirProduto(id) {
     const url = `${supabaseUrl}/rest/v1/produtos?id=eq.${id}`;
     const response = await fetch(url, {
@@ -69,6 +71,7 @@ async function excluirProduto(id) {
     }
 }
 
+//ativar e inativar produto
 async function toggleAtivo(id, ativo) {
     const url = `${supabaseUrl}/rest/v1/produtos?id=eq.${id}`;
     const response = await fetch(url, {

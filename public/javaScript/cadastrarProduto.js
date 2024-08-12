@@ -4,12 +4,28 @@ const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 document.getElementById('cadastrarProduto').addEventListener('click', async (event) => {
     event.preventDefault();
 
-     // Captura os dados do formulário
-     const nome = document.getElementById('nome').value;
-     const descricao = document.getElementById('descricao').value;
-     const preco = parseFloat(document.getElementById('preco').value);
-     const categoria = document.getElementById('categoria').value;
- 
+    // Captura o valor do campo de código de cadastro
+    const senhaCadastro = document.getElementById('senhaCadastro').value;
+
+    // Captura os dados do formulário
+    const nome = document.getElementById('nome').value;
+    const descricao = document.getElementById('descricao').value;
+    const preco = parseFloat(document.getElementById('preco').value);
+    const categoria = document.getElementById('categoria').value;
+
+    // Verifica se o código está correto
+    if (senhaCadastro !== '2000') {  // Comparação de string, senhaCadastro precisa ser igual a "2020"
+        alert('Código incorreto. Tente novamente.');
+        return;  // Se o código estiver errado, a função para por aqui
+    }
+
+    // Verifica se todos os campos foram preenchidos corretamente
+    if (!nome || !descricao || isNaN(preco) || !categoria) {
+        alert('Por favor, preencha todos os campos corretamente.');
+        return;
+    }
+
+    // Envia os dados ao Supabase
     const url = `${supabaseUrl}/rest/v1/produtos`;
     const response = await fetch(url, {
         method: 'POST',
@@ -23,15 +39,15 @@ document.getElementById('cadastrarProduto').addEventListener('click', async (eve
 
     if (response.ok) {
         alert('Produto cadastrado com sucesso!');
-       carregaProdutos(); 
-
-      limparFormulario();
-
+        carregaProdutos();  // Recarrega a lista de produtos
+        limparFormulario(); // Limpa o formulário
     } else {
         const data = await response.json();
         alert('Erro: ' + data.error);
     }
 });
+
+// Função para limpar o formulário
 
 function limparFormulario() {
     document.getElementById("produtoForm").reset();
