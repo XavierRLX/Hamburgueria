@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -86,12 +85,15 @@
 
       <div class="container-fluid">
         <div class="row justify-content-center m-w-3 shadow-lg p-3 mb-5 bg-body rounded">
-          <h2 class="text-center m-3">Cardápio</h2>
-          <div class="opc-card ">
-            <p>hambúrguer</p>
-            <p>sobremesas</p>
-            <p>bebidas</p>
-          </div>
+            <h2 class="text-center m-3">Cardápio</h2>
+            <div class="opc-card-scroll d-flex align-items-center rounded">
+                <p class="opc-item ">Hambúrguer </p>
+                <p class="opc-item ">Batata</p>
+                <p class="opc-item ">Açaí</p>
+                <p class="opc-item ">Combos</p>
+                <p class="opc-item ">Salgados</p>
+                <p class="opc-item ">Sorvete</p>
+            </div>
           <article class="card card-width p-0 m-5 ">
             <img
               src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/93b7ffd6-fdaf-4c18-8d9e-7b06e12178cd/202103010403_jbFL_.jpeg"
@@ -191,11 +193,6 @@
                 class="botaoComprar btn">Comprar</a>
             </div>
           </article>
-          <div id="opc-card-g" class="opc-card ">
-            <p>hambúrguer</p>
-            <p>sobremesas</p>
-            <p>bebidas</p>
-          </div>
         </div>
       </div>
     </section>
@@ -392,8 +389,6 @@
     <input value="0" id="carrinho-count"></span>
   </div>
 
-  <script src="DadosProdModal.js"></script>
-  <script src="DadosProdCar.js"></script>
 </body>
-
+<script src="/DadosProdModal.js"></script>
 </html>
