@@ -35,6 +35,24 @@ async function carregaProdutosCardapio() {
         </article>`
         produtoList.appendChild(produtoItem);
       });
+
+    // Passa os dados do card(produto) para o modal.
+    const botoesCompra = document.querySelectorAll('[id^="comprarProduto"]');
+    botoesCompra.forEach((botao, index) => {
+        botao.addEventListener("click", function () {
+            const nome = document.querySelectorAll(".nomeProduto")[index].textContent;
+            const desc = document.querySelectorAll(".descProduto")[index].textContent;
+            const preco = document.querySelectorAll(".preçoProduto")[index].value;
+
+            document.querySelector(".nomeProdutoModal").textContent = nome;
+            document.querySelector(".descProdutoModal").textContent = desc;
+            document.querySelector(".precoProdutoModal").value = preco;
+            document.querySelector(".totalProdutoModal").value = preco;
+            document.querySelector(".quantidade").value = 1;
+        });
+    });
+
+      
   } else {
       alert('Erro ao carregar a lista de categoria');
   }

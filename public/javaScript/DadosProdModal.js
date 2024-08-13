@@ -1,28 +1,7 @@
 
 
-// Passa os dados do card(produto) para o modal.
-// Seleciona todos os botões de compra
-const botoesCompra = document.querySelectorAll('[id^="comprarProduto"]');
-
-// Itera sobre os botões e adiciona um manipulador de eventos a cada um
-botoesCompra.forEach((botao, index) => {
-  botao.addEventListener("click", function () {
-    // Obtém os valores dos campos do produto correspondente ao botão de compra clicado
-    var nome = document.querySelectorAll(".nomeProduto")[index].textContent;
-    var desc = document.querySelectorAll(".descProduto")[index].textContent;
-    var preco = document.querySelectorAll(".preçoProduto")[index].value;
-
-    // Define os valores dos campos do modal com os valores do produto correspondente
-    document.querySelector(".nomeProdutoModal").textContent = nome;
-    document.querySelector(".descProdutoModal").textContent = desc;
-    document.querySelector(".precoProdutoModal").value = preco;
-    document.querySelector(".totalProdutoModal").value = preco;
-    document.querySelector(".quantidade").value = 1;
-  });
-});
-
 // Pega o valor do produto e faz multiplicação.
-// seleciona os elementos HTML
+
 const btnMais = document.querySelector('.mais');
 const btnMenos = document.querySelector('.menos');
 const inputQuantidade = document.querySelector('.quantidade');
