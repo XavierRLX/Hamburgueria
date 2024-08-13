@@ -17,6 +17,7 @@ async function carregaProdutosCardapio() {
 
       data.forEach(produto => {
           const produtoItem = document.createElement('div');
+          produtoItem.classList.add('col-md-4', 'col-lg-3');
           produtoItem.innerHTML = `
           <article class="card card-width p-0 m-5 ">
           <img

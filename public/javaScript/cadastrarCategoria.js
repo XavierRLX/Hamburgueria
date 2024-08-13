@@ -8,7 +8,7 @@ document.getElementById('cadastrarCat').addEventListener('click', async (event) 
     const senhaCadastro = document.getElementById('senhaCadastroCat').value;
 
     // Captura os dados do formulário
-    const descricao = document.getElementById('descricao').value;
+    const descricao = document.getElementById('descricaoCat').value;
 
     // Verifica se o código está correto
     if (senhaCadastro !== '2000') {  // Comparação de string, senhaCadastro precisa ser igual a "2020"
