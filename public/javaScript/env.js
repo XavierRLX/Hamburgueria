@@ -1,0 +1,2 @@
+const supabaseUrl = 'https://xuanbixiwzjcyaynaatx.supabase.co';
+const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh1YW5iaXhpd3pqY3lheW5hYXR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMxMzk1NzUsImV4cCI6MjAzODcxNTU3NX0.pKTm6WXH6waNUeSd5W6vvxlDVCxwQqrgkUCmmaeptWU';

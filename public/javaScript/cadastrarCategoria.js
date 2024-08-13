@@ -45,8 +45,6 @@ document.getElementById('cadastrarCat').addEventListener('click', async (event) 
     }
 });
 
-document.addEventListener('DOMContentLoaded', carregaCategoria);
-
 // Função para limpar o formulário
 
 function limparFormulario() {

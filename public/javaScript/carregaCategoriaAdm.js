@@ -18,11 +18,11 @@ async function carregaCategoria() {
 
         data.forEach(categoria => {
             const categoriaItem = document.createElement('div');
-            categoriaItem.className = 'col-12 col-sm-6 col-md-4 col-lg-3 mb-2';
+            categoriaItem.className = 'mb-3';
             categoriaItem.innerHTML = `
-                <div class="card">
+                <div class="card ">
                     <div class="card-body p-0">
-                        <div class="p-2">
+                        <div class="p-2 d-flex justify-content-between">
                           <p class="card-text">${categoria.descricao}</p>
                           <button class="btn btn-danger me-2" onclick="excluirCategoria('${categoria.id}')">Excluir</button>
                         </div>
