@@ -18,7 +18,7 @@ async function carregaCategoriaCardapio() {
         data.forEach(categoria => {
             const categoriaItem = document.createElement('div');
             categoriaItem.innerHTML = `
-                          <p class="opc-item border">${categoria.descricao} </p>`;
+                          <p class="opc-item">${categoria.descricao} </p>`;
             categoriaList.appendChild(categoriaItem);
         });
     } else {

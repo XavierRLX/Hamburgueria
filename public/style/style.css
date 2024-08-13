@@ -69,19 +69,21 @@
 .opc-card-scroll::-webkit-scrollbar-thumb:hover {
     background-color: #555; /* Cor da barra ao passar o mouse */
 }
-.catItensCard{
+
+.catItensCard {
     display: flex;
-    justify-items: center;
-    justify-content: center;
+    justify-content: space-between; /* Distribui igualmente os itens com espaço entre eles */
     align-items: center;
-    width: 100%;
 }
+
 .opc-card-scroll .opc-item {
-    display: inline-block; /* Mostra os itens em linha */
+    flex: 1; /* Faz com que cada item ocupe igualmente o espaço disponível */
+    margin: 0 5px; /* Espaçamento entre os itens */
     background-color: #940707;
-    padding: 10px;
+    padding: 5px 30px;
     text-align: center;
     color: #ebdfdf;
+    border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
