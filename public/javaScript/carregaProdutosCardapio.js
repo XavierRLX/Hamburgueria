@@ -17,9 +17,9 @@ async function carregaProdutosCardapio() {
 
       data.forEach(produto => {
           const produtoItem = document.createElement('div');
-          produtoItem.classList.add('col-md-4', 'col-lg-3');
+          produtoItem.className = ' col-md-4 col-md-2  col-lg-4 mb-4';
           produtoItem.innerHTML = `
-          <article class="card card-width p-0 m-5 ">
+          <article class="container card p-0 w-75">
           <img
             src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/93b7ffd6-fdaf-4c18-8d9e-7b06e12178cd/202103010403_jbFL_.jpeg"
             class="card-img-top img-card" alt="...">
