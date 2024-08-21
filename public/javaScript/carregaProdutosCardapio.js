@@ -1,6 +1,10 @@
-async function carregaProdutosCardapio() {
+async function carregaProdutosCardapio(categoria = '') {
+  let url = `${supabaseUrl}/rest/v1/produtos?select=*`;
+  
+  if (categoria) {
+      url += `&categoria=eq.${encodeURIComponent(categoria)}`;
+  }
 
-  const url = `${supabaseUrl}/rest/v1/produtos?select=*`;
   const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -12,7 +16,7 @@ async function carregaProdutosCardapio() {
 
   if (response.ok) {
       const data = await response.json();
-      const produtoList = document.querySelector('.produtosCaradapio'); // Seleciona a div com classe 'row'
+      const produtoList = document.querySelector('.produtosCaradapio');
       produtoList.innerHTML = ''; // Limpa a lista de produtos
 
       data.forEach(produto => {
@@ -30,33 +34,32 @@ async function carregaProdutosCardapio() {
               <p>R$:</p>
               <div><input value="${produto.preco}" class="preçoProduto" readonly></div>
             </div>
-            <a data-bs-toggle="modal" id="comprarProduto1" href="#exampleModalToggle" href="#"
+            <a data-bs-toggle="modal" id="comprarProduto${produto.id}" href="#exampleModalToggle"
               class="botaoComprar btn">Comprar</a>
           </div>
-        </article>`
-        produtoList.appendChild(produtoItem);
+        </article>`;
+          produtoList.appendChild(produtoItem);
       });
 
-    // Passa os dados do card(produto) para o modal.
-    const botoesCompra = document.querySelectorAll('[id^="comprarProduto"]');
-    botoesCompra.forEach((botao, index) => {
-        botao.addEventListener("click", function () {
-            const nome = document.querySelectorAll(".nomeProduto")[index].textContent;
-            const desc = document.querySelectorAll(".descProduto")[index].textContent;
-            const preco = document.querySelectorAll(".preçoProduto")[index].value;
+      // Adiciona os eventos de clique para os botões "Comprar"
+      const botoesCompra = document.querySelectorAll('[id^="comprarProduto"]');
+      botoesCompra.forEach((botao, index) => {
+          botao.addEventListener("click", function () {
+              const nome = document.querySelectorAll(".nomeProduto")[index].textContent;
+              const desc = document.querySelectorAll(".descProduto")[index].textContent;
+              const preco = document.querySelectorAll(".preçoProduto")[index].value;
 
-            document.querySelector(".nomeProdutoModal").textContent = nome;
-            document.querySelector(".descProdutoModal").textContent = desc;
-            document.querySelector(".precoProdutoModal").value = preco;
-            document.querySelector(".totalProdutoModal").value = preco;
-            document.querySelector(".quantidade").value = 1;
-        });
-    });
+              document.querySelector(".nomeProdutoModal").textContent = nome;
+              document.querySelector(".descProdutoModal").textContent = desc;
+              document.querySelector(".precoProdutoModal").value = preco;
+              document.querySelector(".totalProdutoModal").value = preco;
+              document.querySelector(".quantidade").value = 1;
+          });
+      });
 
-      
   } else {
-      alert('Erro ao carregar a lista de categoria');
+      alert('Erro ao carregar a lista de produtos');
   }
 }
 
-document.addEventListener('DOMContentLoaded', carregaProdutosCardapio);
+document.addEventListener('DOMContentLoaded', () => carregaProdutosCardapio());

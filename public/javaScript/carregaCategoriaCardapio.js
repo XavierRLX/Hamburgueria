@@ -1,5 +1,4 @@
 async function carregaCategoriaCardapio() {
-    // Busca todos os produtos
     const url = `${supabaseUrl}/rest/v1/categoria?select=*`;
     const response = await fetch(url, {
         method: 'GET',
@@ -12,17 +11,19 @@ async function carregaCategoriaCardapio() {
 
     if (response.ok) {
         const data = await response.json();
-        const categoriaList = document.querySelector('.catItensCard'); // Seleciona a div com classe 'row'
-        categoriaList.innerHTML = ''; // Limpa a lista de produtos
+        const categoriaList = document.querySelector('.catItensCard');
+        categoriaList.innerHTML = ''; // Limpa a lista de categorias
 
         data.forEach(categoria => {
             const categoriaItem = document.createElement('div');
-            categoriaItem.innerHTML = `
-                          <p class="opc-item">${categoria.descricao} </p>`;
+            categoriaItem.innerHTML = `<p class="opc-item">${categoria.descricao}</p>`;
+            categoriaItem.addEventListener('click', () => {
+                carregaProdutosCardapio(categoria.descricao);
+            });
             categoriaList.appendChild(categoriaItem);
         });
     } else {
-        alert('Erro ao carregar a lista de categoria');
+        alert('Erro ao carregar a lista de categorias');
     }
 }
 
