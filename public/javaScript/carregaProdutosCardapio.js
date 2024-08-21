@@ -1,5 +1,5 @@
 async function carregaProdutosCardapio(categoria = '') {
-  let url = `${supabaseUrl}/rest/v1/produtos?select=*`;
+  let url = `${supabaseUrl}/rest/v1/produtos?select=*&ativo=eq.true`;
   
   if (categoria) {
       url += `&categoria=eq.${encodeURIComponent(categoria)}`;
