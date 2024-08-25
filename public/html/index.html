@@ -120,7 +120,7 @@
   </section> -->
 
   <div class="card-final">
-    <div id="cor-1" class="jumbotron tamanho-card-final">
+    <!-- <div id="cor-1" class="jumbotron tamanho-card-final">
       <h1 class="font-site">Quem Somos ?!</h1>
       <p>
         Vamos contar o segredo do melhor hambúrguer do mundo para você! Escolhemos somente carnes nobres de sabor
@@ -129,10 +129,10 @@
         perfeitamente harmonizadas. Utilizamos equipamentos de última geração para deixar a carne no ponto certo. Além
         disso, pensamos, também, em quem não deseja comer hambúrguer. Por isso, nosso cardápio oferece diversas opções
         de comida, todas extremamente saborosas.</p>
-    </div>
+    </div> -->
 
     <div id="cor-2" class="jumbotron tamanho-card-final">
-      <form class="form-franqueado">
+      <!-- <form class="form-franqueado">
         <h1 class="font-site">Seja um franqueado!</h1>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Nome</label>
@@ -147,15 +147,15 @@
           <input type="email" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp">
         </div>
         <button type="submit" class="btn btn-primary">Enviar</button>
-      </form>
+      </form> -->
       <div class="end">
         <div class="flex-end">
           <h1>Venha nos conhecer</h1>
-          <p>Rua Waldermar Coelho dos Santos</p>
-          <p>CEP:21675-690</p>
+          <p>Avenida Brasil</p>
+          <p>CEP:21670-000</p>
           <p>Guadalupe, Rio de Janeiro</p>
         </div>
-        <div><img class="img-end" src="projeto-base/src/img/Captura de tela 2022-02-25 213014.png" alt=""></div>
+        <div id="map"></div>
       </div>
     </div>
   </div>
@@ -298,9 +298,15 @@
   </div>
 
 </body>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?bnaeauszgluontqb&callback=initMap">
+    </script>
+
 <script src="/javaScript/DadosProdModal.js"></script>
 <script src="/javaScript/carregaCategoriaCardapio.js" ></script>
 <script src="/javaScript/carregaProdutosCardapio.js"></script>
+<script src="/javaScript/apiGoogle.js"></script>
 <script src="/javaScript/env.js"></script>
 
 </html>
