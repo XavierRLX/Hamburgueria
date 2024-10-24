@@ -19,12 +19,13 @@ async function carregaCategoriaCardapio() {
             const categoriaItem = document.createElement('div');
             categoriaItem.innerHTML = `<p class="opc-item">${categoria.nome}</p>`;
             categoriaItem.addEventListener('click', () => {
-                carregaProdutosCardapio(categoria.descricao);
+                carregaProdutosCardapio(categoria.pkCategoria); // Ajustado para usar pkCategoria
             });
             categoriaList.appendChild(categoriaItem);
         });
     } else {
-        alert('Erro ao carregar a lista de categorias');
+        const errorData = await response.json(); // Para exibir informações detalhadas do erro
+        alert('Erro ao carregar a lista de categorias: ' + errorData.message);
     }
 }
 

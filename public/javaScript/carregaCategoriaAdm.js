@@ -14,7 +14,7 @@ async function carregaCategoria() {
     if (response.ok) {
         const data = await response.json();
         const categoriaList = document.querySelector('.rowCat'); // Seleciona a div com classe 'row'
-        categoriaList.innerHTML = ''; // Limpa a lista de produtos
+        categoriaList.innerHTML = ""; // Limpa a lista de produtos
 
 
         data.forEach(categoria => {
