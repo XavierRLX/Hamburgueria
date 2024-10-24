@@ -1,9 +1,6 @@
-const supabaseUrl = 'https://xuanbixiwzjcyaynaatx.supabase.co';
-const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh1YW5iaXhpd3pqY3lheW5hYXR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMxMzk1NzUsImV4cCI6MjAzODcxNTU3NX0.pKTm6WXH6waNUeSd5W6vvxlDVCxwQqrgkUCmmaeptWU';
-
 
 async function listCategoria() {
-    const url = `${supabaseUrl}/rest/v1/categoria?select=id,descricao`;
+    const url = `${supabaseUrl}/rest/v1/categoria?select=pkCategoria,nome`;
     try {
         const response = await fetch(url, {
             method: 'GET',
@@ -29,8 +26,8 @@ async function listCategoria() {
         // Adiciona as novas opções
         categorias.forEach(categoria => {
             const option = document.createElement('option');
-            option.value = categoria.descricao;
-            option.textContent = categoria.descricao;
+            option.value = categoria.nome;
+            option.textContent = categoria.nome;
             listaCategoria.appendChild(option);
         });
     } catch (error) {
@@ -52,7 +49,7 @@ document.getElementById('cadastrarProduto').addEventListener('click', async (eve
     const nome = document.getElementById('nome').value;
     const descricao = document.getElementById('descricao').value;
     const preco = parseFloat(document.getElementById('preco').value);
-    const categoria = document.getElementById('categoria').value;
+    const fkCategoria = document.getElementById('categoria').value;
 
     // Verifica se o código está correto
     if (senhaCadastro !== '2000') {  // Comparação de string, senhaCadastro precisa ser igual a "2020"
@@ -61,7 +58,7 @@ document.getElementById('cadastrarProduto').addEventListener('click', async (eve
     }
 
     // Verifica se todos os campos foram preenchidos corretamente
-    if (!nome || !descricao || isNaN(preco) || !categoria) {
+    if (!nome || !descricao || isNaN(preco) || !fkCategoria) {
         alert('Por favor, preencha todos os campos corretamente.');
         return;
     }
@@ -75,7 +72,7 @@ document.getElementById('cadastrarProduto').addEventListener('click', async (eve
             'apikey': apiKey,
             'Authorization': `Bearer ${apiKey}`
         },
-        body: JSON.stringify({ nome, descricao, preco, categoria }),
+        body: JSON.stringify({ nome, descricao, preco, fkCategoria }),
     });
 
     if (response.ok) {

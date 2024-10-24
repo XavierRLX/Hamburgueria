@@ -1,3 +1,4 @@
+
 async function carregaCategoria() {
     // Busca todos os produtos
     const url = `${supabaseUrl}/rest/v1/categoria?select=*`;
@@ -23,8 +24,8 @@ async function carregaCategoria() {
                 <div class="card ">
                     <div class="card-body p-0">
                         <div class="p-2 d-flex justify-content-between">
-                          <p class="card-text">${categoria.descricao}</p>
-                          <button class="btn btn-danger me-2" onclick="excluirCategoria('${categoria.id}')">Excluir</button>
+                          <p class="card-text">${categoria.nome}</p>
+                          <button class="btn btn-danger me-2" onclick="excluirCategoria('${categoria.pkCategoria}')">Excluir</button>
                         </div>
                     </div>
                 </div>
@@ -38,8 +39,8 @@ async function carregaCategoria() {
 
 
 //apagar produto
-async function excluirCategoria(id) {
-    const url = `${supabaseUrl}/rest/v1/categoria?id=eq.${id}`;
+async function excluirCategoria(pkCategoria) {
+    const url = `${supabaseUrl}/rest/v1/categoria?pkCategoria=eq.${pkCategoria}`;
     const response = await fetch(url, {
         method: 'DELETE',
         headers: {

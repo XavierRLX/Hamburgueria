@@ -1,3 +1,4 @@
+
 async function carregaCategoriaCardapio() {
     const url = `${supabaseUrl}/rest/v1/categoria?select=*`;
     const response = await fetch(url, {
@@ -16,7 +17,7 @@ async function carregaCategoriaCardapio() {
 
         data.forEach(categoria => {
             const categoriaItem = document.createElement('div');
-            categoriaItem.innerHTML = `<p class="opc-item">${categoria.descricao}</p>`;
+            categoriaItem.innerHTML = `<p class="opc-item">${categoria.nome}</p>`;
             categoriaItem.addEventListener('click', () => {
                 carregaProdutosCardapio(categoria.descricao);
             });

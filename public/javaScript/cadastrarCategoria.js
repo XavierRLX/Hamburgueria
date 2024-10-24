@@ -1,4 +1,7 @@
 
+const supabaseUrl = 'https://uweicybzciidmyumejzm.supabase.co';
+const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3ZWljeWJ6Y2lpZG15dW1lanptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk3MjYzOTgsImV4cCI6MjA0NTMwMjM5OH0.xxcr3nzb0_bHISQvlBwiV0kDSNOieQa6eem7hbLc8Zk';
+
 //Carrega a lista de categorias da pagina Adm
 
 document.getElementById('cadastrarCat').addEventListener('click', async (event) => {
@@ -8,7 +11,7 @@ document.getElementById('cadastrarCat').addEventListener('click', async (event) 
     const senhaCadastro = document.getElementById('senhaCadastroCat').value;
 
     // Captura os dados do formulário
-    const descricao = document.getElementById('descricaoCat').value;
+    const pkCategoria = document.getElementById('descricaoCat').value;
 
     // Verifica se o código está correto
     if (senhaCadastro !== '2000') {  // Comparação de string, senhaCadastro precisa ser igual a "2020"
@@ -17,7 +20,7 @@ document.getElementById('cadastrarCat').addEventListener('click', async (event) 
     }
 
     // Verifica se todos os campos foram preenchidos corretamente
-    if (!descricao) {
+    if (!pkCategoria) {
         alert('Por favor, preencha todos os campos corretamente.');
         return;
     }
@@ -31,7 +34,7 @@ document.getElementById('cadastrarCat').addEventListener('click', async (event) 
             'apikey': apiKey,
             'Authorization': `Bearer ${apiKey}`
         },
-        body: JSON.stringify({ descricao }),
+        body: JSON.stringify({ pkCategoria }),
     });
 
     if (response.ok) {

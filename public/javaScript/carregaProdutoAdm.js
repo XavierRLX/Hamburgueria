@@ -1,8 +1,8 @@
-async function carregaProdutos() {
-    const buscaNome = document.getElementById('buscaNome').value.toLowerCase(); // Obtém o valor do campo de busca e converte para minúsculo
 
-    // Busca todos os produtos
-    const url = `${supabaseUrl}/rest/v1/produtos?select=*`;
+async function carregaProdutos() {
+    const buscaNome = document.getElementById('buscaNome').value.toLowerCase();
+
+    const url = `${supabaseUrl}/rest/v1/produtos?select=*,fkCategoria(nome)`;
     const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -14,10 +14,9 @@ async function carregaProdutos() {
 
     if (response.ok) {
         const data = await response.json();
-        const produtoList = document.querySelector('.row'); // Seleciona a div com classe 'row'
-        produtoList.innerHTML = ''; // Limpa a lista de produtos
+        const produtoList = document.querySelector('.row');
+        produtoList.innerHTML = '';
 
-        // Filtra os produtos pelo nome
         const produtosFiltrados = data.filter(produto => 
             produto.nome.toLowerCase().includes(buscaNome)
         );
@@ -32,9 +31,9 @@ async function carregaProdutos() {
                         <div class="p-2">
                           <p class="card-text">${produto.descricao}</p>
                           <p class="card-text"><strong>Preço:</strong> R$ ${produto.preco.toFixed(2)}</p>
-                          <p class="card-text"><strong>Categoria:</strong> ${produto.categoria}</p>
-                          <button class="btn btn-danger me-2" onclick="excluirProduto('${produto.id}')">Excluir</button>
-                          <button class="btn ${produto.ativo ? 'btn-warning' : 'btn-success'}" onclick="toggleAtivo('${produto.id}', ${produto.ativo})">
+                          <p class="card-text"><strong>Categoria:</strong> ${produto.fkCategoria.nome}</p>
+                          <button class="btn btn-danger me-2" onclick="excluirProduto('${produto.pkProduto}')">Excluir</button>
+                          <button class="btn ${produto.ativo ? 'btn-warning' : 'btn-success'}" onclick="toggleAtivo('${produto.pkProduto}', ${produto.ativo})">
                             ${produto.ativo ? 'Inativar' : 'Ativar'}
                           </button>
                         </div>
@@ -44,16 +43,19 @@ async function carregaProdutos() {
             produtoList.appendChild(produtoItem);
         });
     } else {
-        alert('Erro ao carregar a lista de produtos');
+        const errorData = await response.json();
+        console.error('Erro ao carregar a lista de produtos:', response.status, errorData);
+        alert(`Erro ao carregar a lista de produtos: ${response.status} - ${errorData.message}`);
     }
 }
 
 document.getElementById('buscaNome').addEventListener('input', carregaProdutos);
 
 
+
 //apagar produto
-async function excluirProduto(id) {
-    const url = `${supabaseUrl}/rest/v1/produtos?id=eq.${id}`;
+async function excluirProduto(pkProduto) {
+    const url = `${supabaseUrl}/rest/v1/produtos?pkProduto=eq.${pkProduto}`;
     const response = await fetch(url, {
         method: 'DELETE',
         headers: {
@@ -72,8 +74,8 @@ async function excluirProduto(id) {
 }
 
 //ativar e inativar produto
-async function toggleAtivo(id, ativo) {
-    const url = `${supabaseUrl}/rest/v1/produtos?id=eq.${id}`;
+async function toggleAtivo(pkProduto, ativo) {
+    const url = `${supabaseUrl}/rest/v1/produtos?pkProduto=eq.${pkProduto}`;
     const response = await fetch(url, {
         method: 'PATCH',
         headers: {
