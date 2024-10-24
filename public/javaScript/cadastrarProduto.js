@@ -1,4 +1,3 @@
-
 async function listCategoria() {
     const url = `${supabaseUrl}/rest/v1/categoria?select=pkCategoria,nome`;
     try {
@@ -21,12 +20,10 @@ async function listCategoria() {
         // Limpa as opções anteriores (se houver)
         listaCategoria.innerHTML = '<option selected>Escolha uma categoria</option>';
 
-        carregaCategoria();
-
         // Adiciona as novas opções
         categorias.forEach(categoria => {
             const option = document.createElement('option');
-            option.value = categoria.nome;
+            option.value = categoria.pkCategoria; // Agora armazenando o ID da categoria
             option.textContent = categoria.nome;
             listaCategoria.appendChild(option);
         });
@@ -39,6 +36,7 @@ async function listCategoria() {
 document.addEventListener('DOMContentLoaded', listCategoria);
 
 
+
 document.getElementById('cadastrarProduto').addEventListener('click', async (event) => {
     event.preventDefault();
 
@@ -49,12 +47,12 @@ document.getElementById('cadastrarProduto').addEventListener('click', async (eve
     const nome = document.getElementById('nome').value;
     const descricao = document.getElementById('descricao').value;
     const preco = parseFloat(document.getElementById('preco').value);
-    const fkCategoria = document.getElementById('categoria').value;
+    const fkCategoria = document.getElementById('categoria').value; // Agora captura o pkCategoria
 
     // Verifica se o código está correto
-    if (senhaCadastro !== '2000') {  // Comparação de string, senhaCadastro precisa ser igual a "2020"
+    if (senhaCadastro !== '2000') {
         alert('Código incorreto. Tente novamente.');
-        return;  // Se o código estiver errado, a função para por aqui
+        return;
     }
 
     // Verifica se todos os campos foram preenchidos corretamente
@@ -72,7 +70,7 @@ document.getElementById('cadastrarProduto').addEventListener('click', async (eve
             'apikey': apiKey,
             'Authorization': `Bearer ${apiKey}`
         },
-        body: JSON.stringify({ nome, descricao, preco, fkCategoria }),
+        body: JSON.stringify({ nome, descricao, preco, fkCategoria }), // Agora fkCategoria é o ID da categoria
     });
 
     if (response.ok) {
@@ -84,6 +82,7 @@ document.getElementById('cadastrarProduto').addEventListener('click', async (eve
         alert('Erro: ' + data.error);
     }
 });
+
 
 // Função para limpar o formulário
 
