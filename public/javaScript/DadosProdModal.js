@@ -34,11 +34,14 @@ btnMenos.addEventListener('click', function () {
   const checkboxEntrega = document.querySelector('#entrega');
   const campoEndereco = document.querySelector('#endereco');
   const CampoMesa = document.querySelector("#Nmesa");
+  const CampoMesaText = document.querySelector("mesa");
 
   checkboxEntrega.addEventListener('change', function () {
     if (this.checked) {
       campoEndereco.style.display = 'block';
-      CampoMesa.style.display = 'none'
+      CampoMesa.style.display = 'none' ;
+      CampoMesaText.value = '' ;
+      
     } else {
       campoEndereco.style.display = 'none';
       CampoMesa.style.display = 'inline';
@@ -248,25 +251,42 @@ document.getElementById("finalizar").addEventListener("click", function() {
   var totalCarrinho = document.getElementById("total-carrinho").value;
   var taxasCarrinho = document.getElementById("taxas-carrinho").value;
   var totalPedido = document.getElementById("total-pedido").value;
+  var detalhes = document.getElementById("detalhes").value;
+  var mesa = document.getElementById("mesa").value;
 
-  // Cria o relatório com as informações coletadas
-  var relatorio = "Pedido:\n\n";
-  relatorio += "Produtos:\n";
+ // Cria o relatório com as informações coletadas
+var relatorio = "Pedido:\n\n";
+relatorio += "Produtos:\n";
 produtosCarrinho.forEach((produto) => {
-  relatorio += "- " + produto.nome + " x " + produto.quantidade + " = R$ " + produto.preco + "\n\n";
+    relatorio += produto.nome + " (x " + produto.quantidade + ")" + " = R$ " + produto.preco + ".\n\n";
 });
-  relatorio += "Nome: " + nome + "\n\n";
-  if (entrega) {
-    relatorio += "Endereço: " + enderecoRua + " - " + referencia + "\n\n";
-  }
-  relatorio += "Forma de Pagamento: " + pagamento + "\n\n";
-  if (pagamento == "dinheiro") {
-    relatorio += "Valor a Pagar: " + pagarDinheiro + "\n\n";
-  }
-  relatorio += "Pedido: R$ " + totalCarrinho + "\n\n";
-  relatorio += "Taxa: R$ " + taxasCarrinho + "\n\n";
-  relatorio += "Total: R$ " + totalPedido + "\n\n";
 
+relatorio += ". Observação: " + detalhes + "\n\n";
+relatorio += ". Nome: " + nome + "\n\n";
+
+// Adiciona mesa se preenchida
+if (mesa) {
+    relatorio += ". Mesa: " + mesa + "\n\n";
+}
+
+// Adiciona endereço se entrega estiver selecionada e endereço preenchido
+if (entrega && (enderecoRua || referencia)) {
+    relatorio += ". Endereço: " + enderecoRua;
+    if (referencia) {
+        relatorio += " - " + referencia;
+    }
+    relatorio += "\n\n";
+}
+
+relatorio += ". Forma de Pagamento: " + pagamento + "\n\n";
+
+relatorio += "Pedido: R$ " + totalCarrinho + "\n\n";
+relatorio += "Taxa: R$ " + taxasCarrinho + "\n\n";
+relatorio += "Total: R$ " + totalPedido + "\n\n";
+
+if (pagamento == "dinheiro") {
+  relatorio += "Valor a Pagar: " + pagarDinheiro + "\n\n";
+}
 
     const numero = "+5521964734161";
 

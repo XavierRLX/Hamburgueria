@@ -238,12 +238,16 @@
           <div id="dados-usuario">
             <form id="formulario-usuario">
               <div class="mb-3">
+                <label for="detalhes" class="form-label">Observação:</label>
+                <input type="text" class="form-control" id="detalhes" name="detalhes" placeholder="Ex: 01 Xtudo sem tomate. 01 Xtudo sem ovo." required>
+              </div>
+              <div class="mb-3">
                 <label for="nome" class="form-label">Nome:</label>
                 <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome e Sobrenome" required>
               </div>
               <div id="Nmesa" class="mb-3">
                 <label for="mesa" class="form-label">Mesa:</label>
-                <input type="text" class="form-control mb-3" name="mesa" placeholder="Nº da Mesa">
+                <input type="text" class="form-control mb-3" id="mesa" name="mesa" placeholder="Nº da Mesa">
               </div>
               <div class="mb-3">
                 <div class="form-check">
@@ -264,10 +268,10 @@
                 <label for="pagamento" class="form-label">Forma de Pagamento:</label>
                 <select class="form-select" id="pagamento" name="pagamento" required>
                   <option value="" selected>Selecione</option>
-                  <option value="pix">PIX</option>
-                  <option value="dinheiro">Dinheiro</option>
-                  <option value="cartao_credito">Cartão de Crédito (+ R$2)</option>
-                  <option value="cartao_debito">Cartão de Débito</option>
+                  <option value="Pix">PIX</option>
+                  <option value="Dinheiro">Dinheiro</option>
+                  <option value="CartaoCredito">Cartão de Crédito (+ R$2)</option>
+                  <option value="CartaoDebito" >Cartão de Débito</option>
                 </select>
                 <div id="PagamentoDinheiro" style="display: none;" class="mb-3">
                   <label for="endereco" class="form-label">Valor a pagar: (Nos ajudar no troco, se possível) </label>
