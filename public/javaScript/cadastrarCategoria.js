@@ -1,9 +1,7 @@
-
 const supabaseUrl = 'https://uweicybzciidmyumejzm.supabase.co';
 const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3ZWljeWJ6Y2lpZG15dW1lanptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk3MjYzOTgsImV4cCI6MjA0NTMwMjM5OH0.xxcr3nzb0_bHISQvlBwiV0kDSNOieQa6eem7hbLc8Zk';
 
-//Carrega a lista de categorias da pagina Adm
-
+// Carrega a lista de categorias da página Adm
 document.getElementById('cadastrarCat').addEventListener('click', async (event) => {
     event.preventDefault();
 
@@ -11,16 +9,16 @@ document.getElementById('cadastrarCat').addEventListener('click', async (event) 
     const senhaCadastro = document.getElementById('senhaCadastroCat').value;
 
     // Captura os dados do formulário
-    const pkCategoria = document.getElementById('descricaoCat').value;
+    const nomeCategoria = document.getElementById('descricaoCat').value; // Alterado para capturar o nome da categoria
 
     // Verifica se o código está correto
-    if (senhaCadastro !== '2000') {  // Comparação de string, senhaCadastro precisa ser igual a "2020"
+    if (senhaCadastro !== '2000') {
         alert('Código incorreto. Tente novamente.');
         return;  // Se o código estiver errado, a função para por aqui
     }
 
     // Verifica se todos os campos foram preenchidos corretamente
-    if (!pkCategoria) {
+    if (!nomeCategoria) {
         alert('Por favor, preencha todos os campos corretamente.');
         return;
     }
@@ -34,23 +32,20 @@ document.getElementById('cadastrarCat').addEventListener('click', async (event) 
             'apikey': apiKey,
             'Authorization': `Bearer ${apiKey}`
         },
-        body: JSON.stringify({ pkCategoria }),
+        body: JSON.stringify({ nome: nomeCategoria, ativo: true }), // Inclui o nome e um campo ativo
     });
 
     if (response.ok) {
-        alert('Produto cadastrado com sucesso!');
-        carregaProdutos();
-        carregaCategoria();  // Recarrega a lista de produtos
+        alert('Categoria cadastrada com sucesso!'); // Mensagem de sucesso
+        carregaCategoria();  // Recarrega a lista de categorias
         limparFormulario(); // Limpa o formulário
     } else {
         const data = await response.json();
-        alert('Erro: ' + data.error);
+        alert('Erro: ' + data.error); // Mensagem de erro
     }
 });
 
 // Função para limpar o formulário
-
 function limparFormulario() {
     document.getElementById("categoriaForm").reset();
-  }
-  
+}
