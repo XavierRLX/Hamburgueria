@@ -12,7 +12,7 @@ async function carregaPedidosPorStatus(status, containerId, loadingId, filterDat
         },
     });
 
-    loadingIndicator.style.display = 'none'; // Hide loading
+    loadingIndicator.style.display = 'none'; 
 
     function formatarData(dataString) {
         const data = new Date(dataString);
@@ -34,37 +34,37 @@ async function carregaPedidosPorStatus(status, containerId, loadingId, filterDat
             const pedidoItem = document.createElement('div');
             pedidoItem.className = 'col-12 col-md-6 col-lg-4 mb-3';
             pedidoItem.innerHTML = `
-                <div class="card">
-                    <div class="card-header bg-${status === 'aberto' ? 'warning' : status === 'atendimento' ? 'info' : 'success'} text-white">
-                        <h5 class="card-title">Pedido #${pedido.pkPedido}</h5>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group">
-                            <li class="list-group-item"><strong>Itens:</strong> ${pedido.itensPedido}</li>
-                            <li class="list-group-item"><strong>Detalhes:</strong> ${pedido.detalhes}</li>
-                            <li class="list-group-item"><strong>Cliente:</strong> ${pedido.nome}</li>
-                            <li class="list-group-item"><strong>Endereço:</strong> ${pedido.endereco || 'No local'}</li>
-                            <li class="list-group-item"><strong>Mesa:</strong> ${pedido.mesa || 'Entrega'}</li>
-                            <li class="list-group-item"><strong>Data:</strong> ${formatarData(pedido.data)}</li>
-                            <li class="list-group-item"><strong>Forma de Pagamento:</strong> ${pedido.formaPagamento}</li>
-                            <li class="list-group-item">
-                                <strong>Taxas:</strong> <span class="badge bg-warning text-dark">R$ ${pedido.taxas.toFixed(2)}</span>
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Total:</strong> <span class="badge bg-success">R$ ${pedido.totalPedido.toFixed(2)}</span>
-                            </li>
-                        </ul>
-                        <div class="d-flex justify-content-between mt-3">
-                            ${status === 'aberto' ? `
-                                <button class="btn btn-danger" onclick="confirmarAtualizacao('${pedido.pkPedido}', 'cancelado')">Cancelar</button>
-                                <button class="btn btn-success" onclick="confirmarAtualizacao('${pedido.pkPedido}', 'atendimento')">Atender</button>
-                            ` : status === 'atendimento' ? `
-                                <button class="btn btn-danger" onclick="confirmarAtualizacao('${pedido.pkPedido}', 'cancelado')">Cancelar</button>
-                                <button class="btn btn-success" onclick="confirmarAtualizacao('${pedido.pkPedido}', 'finalizado')">Finalizar</button>
-                            ` : ''}
-                        </div>
-                    </div>
+            <div class="card">
+            <div class="card-header bg-${status === 'aberto' ? 'primary' : status === 'atendimento' ? 'warning' : 'success'} text-white">
+                <h5 class="card-title">Pedido #${pedido.pkPedido}</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Itens:</strong> ${pedido.itensPedido}</li>
+                    <li class="list-group-item"><strong>Detalhes:</strong> ${pedido.detalhes}</li>
+                    <li class="list-group-item"><strong>Cliente:</strong> ${pedido.nome}</li>
+                    <li class="list-group-item"><strong>Endereço:</strong> ${pedido.endereco || 'No local'}</li>
+                    <li class="list-group-item"><strong>Mesa:</strong> ${pedido.mesa || 'Entrega'}</li>
+                    <li class="list-group-item"><strong>Data:</strong> ${formatarData(pedido.data)}</li>
+                    <li class="list-group-item"><strong>Forma de Pagamento:</strong> ${pedido.formaPagamento}</li>
+                    <li class="list-group-item">
+                        <strong>Taxas:</strong> <span class="badge bg-warning text-dark">R$ ${pedido.taxas.toFixed(2)}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Total:</strong> <span class="badge bg-success">R$ ${pedido.totalPedido.toFixed(2)}</span>
+                    </li>
+                </ul>
+                <div class="d-flex justify-content-between mt-3">
+                    ${status === 'aberto' ? `
+                        <button class="btn btn-danger" onclick="confirmarAtualizacao('${pedido.pkPedido}', 'cancelado')">Cancelar</button>
+                        <button class="btn btn-success" onclick="confirmarAtualizacao('${pedido.pkPedido}', 'atendimento')">Atender</button>
+                    ` : status === 'atendimento' ? `
+                        <button class="btn btn-danger" onclick="confirmarAtualizacao('${pedido.pkPedido}', 'cancelado')">Cancelar</button>
+                        <button class="btn btn-success" onclick="confirmarAtualizacao('${pedido.pkPedido}', 'finalizado')">Finalizar</button>
+                    ` : ''}
                 </div>
+            </div>
+        </div>
             `;
             pedidoList.appendChild(pedidoItem);
         });
@@ -72,6 +72,55 @@ async function carregaPedidosPorStatus(status, containerId, loadingId, filterDat
         alert('Erro ao carregar a lista de pedidos. Tente novamente mais tarde.');
     }
 }
+
+async function carregaPedidosContagem() {
+    const url = `${supabaseUrl}/rest/v1/pedidos?select=status`;
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'apikey': apiKey,
+            'Authorization': `Bearer ${apiKey}`
+        },
+    });
+    
+    if (response.ok) {
+        const data = await response.json();
+        
+        // Inicializa as contagens
+        let totalAbertos = 0;
+        let totalAtendimento = 0;
+        let totalFinalizado = 0;
+
+        // Conta os pedidos por status
+        data.forEach(pedido => {
+            if (pedido.status === 'aberto') totalAbertos++;
+            if (pedido.status === 'atendimento') totalAtendimento++;
+            if (pedido.status === 'finalizado') totalFinalizado++;
+        });
+
+        const totalContainer = document.getElementById('contagemPedido');
+        totalContainer.className = 'mb-3';
+        totalContainer.innerHTML = `
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div class="badge bg-primary">Abertos: ${totalAbertos}</div>
+                        <div class="badge bg-warning">Em Atendimento: ${totalAtendimento}</div>
+                        <div class="badge bg-success">Finalizados: ${totalFinalizado}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+
+        
+    } else {
+        alert('Erro ao carregar a lista de pedidos. Tente novamente mais tarde.');
+    }
+}
+
+
 
 function confirmarAtualizacao(pkPedido, novoStatus) {
     if (confirm(`Tem certeza que deseja atualizar o pedido #${pkPedido} para "${novoStatus}"?`)) {
@@ -107,9 +156,13 @@ document.addEventListener('DOMContentLoaded', () => {
     carregaPedidosPorStatus('atendimento', 'rowPedAt', 'loadingPedAt');
     carregaPedidosPorStatus('finalizado', 'rowPedFd', 'loadingPedFd');
 
+    // Chamar a função para contagem
+    carregaPedidosContagem();
+
     document.getElementById('filterButton').addEventListener('click', () => {
         const filterDate = document.getElementById('filterDate').value;
         carregaPedidosPorStatus('finalizado', 'rowPedFd', 'loadingPedFd', filterDate);
+        carregaPedidosContagem(); // Atualiza a contagem após o filtro
     });
 
     let loadingMore = false; // To prevent multiple triggers
@@ -127,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function carregaMaisPedidos(status, offset) {
-    const url = `${supabaseUrl}/rest/v1/pedidos?select=*&order=data.asc&status=eq.${status}&offset=${offset}&limit=10`;
+    const url = `${supabaseUrl}/rest/v1/pedidos?select=*&order=data.asc&status=eq.${status}&offset=${offset}&limit=20`;
     
     const response = await fetch(url, {
         method: 'GET',
