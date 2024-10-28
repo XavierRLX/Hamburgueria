@@ -14,7 +14,7 @@ async function carregaPedido() {
     function formatarData(dataString) {
         const data = new Date(dataString);
         const dia = String(data.getDate()).padStart(2, '0');
-        const mes = String(data.getMonth() + 1).padStart(2, '0'); // Meses começam em 0
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
         const ano = data.getFullYear();
         const horas = String(data.getHours()).padStart(2, '0');
         const minutos = String(data.getMinutes()).padStart(2, '0');
@@ -40,11 +40,13 @@ async function carregaPedido() {
                 <div class="card-body">
                     <div class="pedido-info">
                         <div class="info-item"><strong>Itens:</strong> ${pedido.itensPedido}</div>
+                        <div class="info-item"><strong>Detalhes:</strong> ${pedido.detalhes}</div>
                         <div class="info-item"><strong>Cliente:</strong> ${pedido.nome}</div>
                         <div class="info-item"><strong>Endereço:</strong> ${pedido.endereco}</div>
                         <div class="info-item"><strong>Mesa:</strong> ${pedido.mesa}</div>
                         <div class"info-item"><strong>Data:</strong> ${formatarData(pedido.data)}</div>
                         <div class="info-item"><strong>Forma de Pagamento:</strong> ${pedido.formaPagamento}</div>
+                        <div class="info-item"><strong>Taxas:</strong> R$ ${pedido.taxas.toFixed(2)}</div>
                         <div class="info-item"><strong>Total:</strong> R$ ${pedido.totalPedido.toFixed(2)}</div>
                     </div>
                 </div>
