@@ -1,5 +1,4 @@
 
-
 // Pega o valor do produto e faz multiplicação.
 
 const btnMais = document.querySelector('.mais');
@@ -298,17 +297,14 @@ document.getElementById("finalizar").addEventListener("click", function() {
 
 // Função para criar um novo pedido no Supabase
 async function criarPedido(nome, produtosCarrinho, enderecoRua, referencia, entrega, mesa, pagamento, taxasCarrinho, totalPedido, detalhes, pagarDinheiro) {
+  // Coleta os dados do pedido
   const pedidoData = {
-      itensPedido: JSON.stringify(produtosCarrinho.map(produto => ({
-          nome: produto.nome,
-          quantidade: produto.quantidade,
-          preco: produto.preco
-      }))),
-      detalhes: detalhes,
-      nome: nome,
+      itensPedido: produtosCarrinho.map(produto => `${produto.nome}, ${produto.quantidade}, R$ ${produto.preco}`).join('; '), // Formatação como texto
+      detalhes: detalhes || null,  // Se detalhes não for obrigatório
+      nome: nome || null,          // Adicione um valor padrão se necessário
       endereco: (entrega && (enderecoRua || referencia)) ? `${enderecoRua} - ${referencia}` : null,
       mesa: mesa || null,
-      formaPagamento: pagamento,
+      formaPagamento: pagamento || null, // Adicione um valor padrão se necessário
       taxa: parseFloat(taxasCarrinho) || 0,
       totalPedido: parseFloat(totalPedido),
   };
