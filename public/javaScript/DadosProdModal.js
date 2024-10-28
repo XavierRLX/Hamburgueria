@@ -228,10 +228,12 @@ function atualizarTotalGeral() {
 }
 
 
+// Mova a definição de produtosCarrinho para um escopo mais amplo
+let produtosCarrinho = [];
+
 // Adiciona um evento de clique ao botão "Finalizar"
 document.getElementById("finalizar").addEventListener("click", function() {
-
-  const produtosCarrinho = [];
+  produtosCarrinho = []; // Limpa o array antes de adicionar novos produtos
   const produtos = document.querySelectorAll('.produtos');
   produtos.forEach((produto) => {
     const nomeProduto = produto.querySelector('#nomeProdutoCarrinho').value;
@@ -240,62 +242,94 @@ document.getElementById("finalizar").addEventListener("click", function() {
     produtosCarrinho.push({ nome: nomeProduto, quantidade: quantidadeProduto, preco: precoProduto });
   });
 
-
   // Coleta as informações do formulário
-  var nome = document.getElementById("nome").value;
-  var entrega = document.getElementById("entrega").checked;
-  var enderecoRua = document.getElementById("enderecoRua").value;
-  var referencia = document.getElementsByName("referencia")[0].value;
-  var pagamento = document.getElementById("pagamento").value;
-  var pagarDinheiro = document.getElementsByName("pagarDinheiro")[0].value;
-  var totalCarrinho = document.getElementById("total-carrinho").value;
-  var taxasCarrinho = document.getElementById("taxas-carrinho").value;
-  var totalPedido = document.getElementById("total-pedido").value;
-  var detalhes = document.getElementById("detalhes").value;
-  var mesa = document.getElementById("mesa").value;
+  const nome = document.getElementById("nome").value;
+  const entrega = document.getElementById("entrega").checked;
+  const enderecoRua = document.getElementById("enderecoRua").value;
+  const referencia = document.getElementsByName("referencia")[0].value;
+  const pagamento = document.getElementById("pagamento").value;
+  const pagarDinheiro = document.getElementsByName("pagarDinheiro")[0].value;
+  const totalCarrinho = document.getElementById("total-carrinho").value;
+  const taxasCarrinho = document.getElementById("taxas-carrinho").value;
+  const totalPedido = document.getElementById("total-pedido").value;
+  const detalhes = document.getElementById("detalhes").value;
+  const mesa = document.getElementById("mesa").value;
 
- // Cria o relatório com as informações coletadas
-var relatorio = "Pedido:\n\n";
-relatorio += "Produtos:\n";
-produtosCarrinho.forEach((produto) => {
+  // Cria o relatório com as informações coletadas
+  let relatorio = "Pedido:\n\n";
+  relatorio += "Produtos:\n";
+  produtosCarrinho.forEach((produto) => {
     relatorio += produto.nome + " (x " + produto.quantidade + ")" + " = R$ " + produto.preco + ".\n\n";
-});
+  });
 
-relatorio += ". Observação: " + detalhes + "\n\n";
-relatorio += ". Nome: " + nome + "\n\n";
+  relatorio += ". Observação: " + detalhes + "\n\n";
+  relatorio += ". Nome: " + nome + "\n\n";
 
-// Adiciona mesa se preenchida
-if (mesa) {
+  // Adiciona mesa se preenchida
+  if (mesa) {
     relatorio += ". Mesa: " + mesa + "\n\n";
-}
+  }
 
-// Adiciona endereço se entrega estiver selecionada e endereço preenchido
-if (entrega && (enderecoRua || referencia)) {
+  // Adiciona endereço se entrega estiver selecionada e endereço preenchido
+  if (entrega && (enderecoRua || referencia)) {
     relatorio += ". Endereço: " + enderecoRua;
     if (referencia) {
-        relatorio += " - " + referencia;
+      relatorio += " - " + referencia;
     }
     relatorio += "\n\n";
-}
+  }
 
-relatorio += ". Forma de Pagamento: " + pagamento + "\n\n";
+  relatorio += ". Forma de Pagamento: " + pagamento + "\n\n";
+  relatorio += "Pedido: R$ " + totalCarrinho + "\n\n";
+  relatorio += "Taxa: R$ " + taxasCarrinho + "\n\n";
+  relatorio += "Total: R$ " + totalPedido + "\n\n";
 
-relatorio += "Pedido: R$ " + totalCarrinho + "\n\n";
-relatorio += "Taxa: R$ " + taxasCarrinho + "\n\n";
-relatorio += "Total: R$ " + totalPedido + "\n\n";
+  if (pagamento === "dinheiro") {
+    relatorio += "Valor a Pagar: " + pagarDinheiro + "\n\n";
+  }
 
-if (pagamento == "dinheiro") {
-  relatorio += "Valor a Pagar: " + pagarDinheiro + "\n\n";
-}
+  const numero = "+5521964734161";
+  const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(relatorio)}`;
+  window.open(url, "_blank");
 
-    const numero = "+5521964734161";
-
-    // Substitua a mensagem abaixo pela mensagem que você deseja enviar para o WhatsApp
-    const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(relatorio)}`;
-  
-    // Abre a URL do WhatsApp em uma nova aba
-    window.open(url, "_blank");
-
-  // Exibe o relatório em um alert
- // alert(relatorio);
+  // Chama a função para criar o pedido no Supabase
+  criarPedido(nome, produtosCarrinho, enderecoRua, referencia, entrega, mesa, pagamento, taxasCarrinho, totalPedido, detalhes, pagarDinheiro);
 });
+
+// Função para criar um novo pedido no Supabase
+async function criarPedido(nome, produtosCarrinho, enderecoRua, referencia, entrega, mesa, pagamento, taxasCarrinho, totalPedido, detalhes, pagarDinheiro) {
+  const pedidoData = {
+      itensPedido: JSON.stringify(produtosCarrinho.map(produto => ({
+          nome: produto.nome,
+          quantidade: produto.quantidade,
+          preco: produto.preco
+      }))),
+      detalhes: detalhes,
+      nome: nome,
+      endereco: (entrega && (enderecoRua || referencia)) ? `${enderecoRua} - ${referencia}` : null,
+      mesa: mesa || null,
+      formaPagamento: pagamento,
+      taxa: parseFloat(taxasCarrinho) || 0,
+      totalPedido: parseFloat(totalPedido),
+  };
+
+  console.log("Dados do pedido a serem enviados:", JSON.stringify(pedidoData)); // Log para depuração
+
+  const url = `${supabaseUrl}/rest/v1/pedidos`;
+  const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'apikey': apiKey,
+          'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify(pedidoData),
+  });
+
+  if (response.ok) {
+      alert('Pedido cadastrado com sucesso!');
+  } else {
+      const data = await response.json();
+      alert('Erro ao cadastrar o pedido: ' + data.error);
+  }
+}
