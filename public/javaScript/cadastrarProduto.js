@@ -47,7 +47,8 @@ document.getElementById('cadastrarProduto').addEventListener('click', async (eve
     const nome = document.getElementById('nome').value;
     const descricao = document.getElementById('descricao').value;
     const preco = parseFloat(document.getElementById('preco').value);
-    const fkCategoria = document.getElementById('categoria').value; // Agora captura o pkCategoria
+    const fkCategoria = document.getElementById('categoria').value;
+    const fotoUrl = document.getElementById('fotoUrl').value ; // Agora captura o pkCategoria
 
     // Verifica se o código está correto
     if (senhaCadastro !== '2000') {
@@ -70,7 +71,7 @@ document.getElementById('cadastrarProduto').addEventListener('click', async (eve
             'apikey': apiKey,
             'Authorization': `Bearer ${apiKey}`
         },
-        body: JSON.stringify({ nome, descricao, preco, fkCategoria }), // Agora fkCategoria é o ID da categoria
+        body: JSON.stringify({ nome, descricao, preco, fotoUrl, fkCategoria }), // Agora fkCategoria é o ID da categoria
     });
 
     if (response.ok) {

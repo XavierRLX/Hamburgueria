@@ -27,7 +27,7 @@ async function carregaProdutosCardapio(categoria = '') {
           produtoItem.innerHTML = `
           <article class="container card p-0 w-75">
               <img
-                src="https://static-images.ifood.com.br/image/upload/t_medium/pratos/93b7ffd6-fdaf-4c18-8d9e-7b06e12178cd/202103010403_jbFL_.jpeg"
+                src="${produto.fotoUrl}"
                 class="card-img-top img-card" alt="...">
               <div class="card-body">
                   <h5 class="nomeProduto card-title">${produto.nome}</h5>

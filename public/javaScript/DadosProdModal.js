@@ -134,7 +134,7 @@ btnAdicionar.addEventListener('click', function() {
   inputTotal.id = 'precoTotalQuantidade';
 
   const imgLixeira = document.createElement('img');
-  imgLixeira.src = 'projeto-base/src/img/lixeira.png';
+  imgLixeira.src = 'https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/lixeira.png';
   imgLixeira.alt = '';
   imgLixeira.id = 'imgLix';
 
