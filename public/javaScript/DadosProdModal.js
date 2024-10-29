@@ -202,7 +202,7 @@ checkbox.addEventListener("change", function() {
 let taxa2 = 0;
 pagamentoSelect.addEventListener("change", function() {
   // Verifique se a opção "cartao_credito" está selecionada
-  if (pagamentoSelect.value === "cartao_credito") {
+  if (pagamentoSelect.value === "CartaoCredito") {
     // Se estiver selecionada, adicione a taxa de R$2 ao total da compra
     taxa2 = 2;
   } else {
@@ -227,15 +227,43 @@ function atualizarTotalGeral() {
 }
 
 
-// Adiciona um evento de clique ao botão "Finalizar"
-document.getElementById("finalizar").addEventListener("click", async function() {
+document.getElementById("finalizar").addEventListener("click", function() {
+  // Verificações antes de prosseguir
+  if (!verificaCampos()) {
+      alert("Por favor, preencha todos os campos obrigatórios e adicione itens ao pedido.");
+      return;
+  }
+
+  // Confirmação do usuário
+  const confirmacao = confirm("Você tem certeza que deseja finalizar o pedido?");
+  if (confirmacao) {
+      finalizarPedido();
+  }
+});
+
+// Função para verificar campos obrigatórios
+function verificaCampos() {
+  const produtos = document.querySelectorAll('.produtos');
+  if (produtos.length === 0) return false; // Verifica se há produtos
+
+  const nome = document.getElementById("nome").value.trim();
+  const mesa = document.getElementById("mesa").value.trim();
+  const enderecoRua = document.getElementById("enderecoRua").value.trim();
+  const pagamento = document.getElementById("pagamento").value.trim();
+
+  // Verifica se os campos obrigatórios estão preenchidos
+  return nome && (mesa || enderecoRua) && pagamento;
+}
+
+// Função para finalizar o pedido
+async function finalizarPedido() {
   produtosCarrinho = []; // Limpa o array antes de adicionar novos produtos
   const produtos = document.querySelectorAll('.produtos');
   produtos.forEach((produto) => {
       const nomeProduto = produto.querySelector('#nomeProdutoCarrinho').value;
       const quantidadeProduto = produto.querySelector('#quantidadeCarrinho').value;
       const precoProduto = produto.querySelector('#precoTotalQuantidade').value;
-      produtosCarrinho.push({ nome: nomeProduto, quantidade: quantidadeProduto, preco: parseFloat(precoProduto) }); // Certifique-se de que o preço é um número
+      produtosCarrinho.push({ nome: nomeProduto, quantidade: quantidadeProduto, preco: parseFloat(precoProduto) });
   });
 
   // Coleta as informações do formulário
@@ -245,15 +273,16 @@ document.getElementById("finalizar").addEventListener("click", async function() 
   const referencia = document.getElementsByName("referencia")[0].value;
   const pagamento = document.getElementById("pagamento").value;
   const pagarDinheiro = document.getElementsByName("pagarDinheiro")[0].value;
-  const totalCarrinho = parseFloat(document.getElementById("total-carrinho").value); // Garantindo que seja um número
-  const taxasCarrinho = parseFloat(document.getElementById("taxas-carrinho").value); // Garantindo que seja um número
-  const totalPedido = parseFloat(document.getElementById("total-pedido").value); // Garantindo que seja um número
+  const totalCarrinho = parseFloat(document.getElementById("total-carrinho").value);
+  const taxasCarrinho = parseFloat(document.getElementById("taxas-carrinho").value);
+  const totalPedido = parseFloat(document.getElementById("total-pedido").value);
   const detalhes = document.getElementById("detalhes").value;
   const mesa = document.getElementById("mesa").value;
+  const numeroCelular = document.getElementById("numeroCelular").value ;
 
-  // Cria o relatório com as informações coletadas
+  // Criação do relatório e envio para WhatsApp
   let relatorio = "Pedido:\n\n";
-  let itensPedido = ''; // Inicializa a string para itens do pedido
+  let itensPedido = '';
   produtosCarrinho.forEach((produto) => {
       itensPedido += ` ${produto.nome} (x ${produto.quantidade}) = R$ ${produto.preco}.\n\n`;
   });
@@ -262,12 +291,10 @@ document.getElementById("finalizar").addEventListener("click", async function() 
   relatorio += ". Observação: " + detalhes + "\n\n";
   relatorio += ". Nome: " + nome + "\n\n";
 
-  // Adiciona mesa se preenchida
   if (mesa) {
       relatorio += ". Mesa: " + mesa + "\n\n";
   }
 
-  // Adiciona endereço se entrega estiver selecionada e endereço preenchido
   const endereco = `${enderecoRua} - ${referencia ? referencia : ''}`;
   if (entrega && (enderecoRua || referencia)) {
       relatorio += ". Endereço: " + endereco + "\n\n";
@@ -286,7 +313,7 @@ document.getElementById("finalizar").addEventListener("click", async function() 
   const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(relatorio)}`;
   window.open(url, "_blank");
 
-  // Envia os dados ao Supabase
+  // Envio dos dados ao Supabase
   const urlPedido = `${supabaseUrl}/rest/v1/pedidos`;
   const response = await fetch(urlPedido, {
       method: 'POST',
@@ -301,13 +328,13 @@ document.getElementById("finalizar").addEventListener("click", async function() 
           nome,
           endereco,
           mesa,
-          formaPagamento: pagamento, // pagamento deve ser string
-          taxas: taxasCarrinho, // taxa deve ser number
+          numeroCelular,
+          formaPagamento: pagamento,
+          taxas: taxasCarrinho,
           totalPedido,
       }),
   });
 
-  // Para depuração, imprime os dados que estão sendo enviados
   console.log({
       itensPedido,
       detalhes,
@@ -321,9 +348,8 @@ document.getElementById("finalizar").addEventListener("click", async function() 
 
   if (response.ok) {
       alert('Pedido cadastrado com sucesso!');
-      // Aqui você pode adicionar lógica para limpar o carrinho ou redirecionar
   } else {
       const data = await response.json();
       alert('Erro ao cadastrar pedido: ' + data.message || data.error);
   }
-});
+}

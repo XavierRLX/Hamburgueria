@@ -43,6 +43,7 @@ async function carregaPedidosPorStatus(status, containerId, loadingId, filterDat
                     <li class="list-group-item"><strong>Itens:</strong> ${pedido.itensPedido}</li>
                     <li class="list-group-item"><strong>Detalhes:</strong> ${pedido.detalhes}</li>
                     <li class="list-group-item"><strong>Cliente:</strong> ${pedido.nome}</li>
+                    <li class="list-group-item"><strong>Número:</strong> ${pedido.numeroCelular || '0'}</li>
                     <li class="list-group-item"><strong>Endereço:</strong> ${pedido.endereco || 'No local'}</li>
                     <li class="list-group-item"><strong>Mesa:</strong> ${pedido.mesa || 'Entrega'}</li>
                     <li class="list-group-item"><strong>Data:</strong> ${formatarData(pedido.data)}</li>

@@ -305,6 +305,41 @@ margin-left: 5px;
 .modal-final > p{
     margin-top: 12px;
 }
+
+.produto-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.produto-nome {
+  flex: 1;
+  border: none;
+  background: transparent;
+}
+
+.produto-quantidade,
+.produto-total {
+  display: flex;
+  align-items: center;
+}
+
+.quantidade-input,
+.total-input {
+  width: 50px;
+  text-align: center;
+}
+
+.remover-item {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
   
 @media (max-width: 1500px) {
     .texto-foto{

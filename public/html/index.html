@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,13 +54,15 @@
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/959025.jpg" class="d-block w-100 imagem-carrosel" alt="...">
+          <img src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/959025.jpg"
+            class="d-block w-100 imagem-carrosel" alt="...">
           <div class="carousel-caption d-md-block h-50">
             <h2 class="texto-foto">Aproveite os melhores alimentos!</h2>
           </div>
         </div>
         <div id="imagem-carrosel-2" class="carousel-item">
-          <img src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/ftham-fundo.jpg" class="d-block w-100 imagem-carrosel" alt="...">
+          <img src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/ftham-fundo.jpg"
+            class="d-block w-100 imagem-carrosel" alt="...">
           <div class="carousel-caption d-md-block h-50">
             <h2 class="texto-foto">Economize e ganhe em sabor</h2>
           </div>
@@ -85,21 +88,21 @@
 
       <div class="container-fluid">
         <div class="row justify-content-center m-w-3 shadow-lg p-3 mb-5 bg-body rounded">
-            <h2 class="text-center m-3">Cardápio</h2>
-            <div class=" catItensCard opc-card-scroll mb-4">
-              <p>Carregando...</p> 
-              <!-- <p class="opc-item ">Hambúrguer </p>
+          <h2 class="text-center m-3">Cardápio</h2>
+          <div class=" catItensCard opc-card-scroll mb-4">
+            <p>Carregando...</p>
+            <!-- <p class="opc-item ">Hambúrguer </p>
                 <p class="opc-item ">Batata</p>
                 <p class="opc-item ">Açaí</p>
                 <p class="opc-item ">Combos</p>
                 <p class="opc-item ">Salgados</p>
                 <p class="opc-item ">Sorvete</p> -->
+          </div>
+          <div class="container">
+            <div class="row produtosCaradapio">
+              <!-- Os cards serão inseridos aqui dinamicamente -->
+              <p>Carregando...</p>
             </div>
-            <div class="container">
-              <div class="row produtosCaradapio">
-                  <!-- Os cards serão inseridos aqui dinamicamente -->
-                  <p>Carregando...</p>
-              </div>
           </div>
         </div>
       </div>
@@ -176,33 +179,34 @@
           <h5 class="modal-title nomeProdutoModal" id="exampleModalToggleLabel">Carregando...</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="container">
-          <div>
+        <div class="modal-body">
+          <div class="mb-3">
             <p class="fs-5 fw-bolder">Descrição:</p>
-            <p class="descProdutoModal fs-5"></p>
+            <p class="descProdutoModal fs-6"></p>
           </div>
-          <div class="flex">
-            <p class="fs-5 fw-bolder">Preço: </p>
-            <input value="00.00" class="precoProdutoModal fs-5" readonly></p>
+          <div class="mb-3">
+            <p class="fs-5 fw-bolder">Preço:</p>
+            <input value="00.00" class="precoProdutoModal fs-5 form-control" readonly>
           </div>
-          <div class="d-flex justify-content-between">
-            <div class="d-flex">
-              <div class="flex">
-                <button class="menos buttonQuant"> - </button>
-                <input value="1" class="quantidade" readonly></p>
-                <button class="mais buttonQuant"> + </button>
-              </div>
-              <p class="fs-5 fw-bolder">Total:
-                <input value="00.00" class="totalProdutoModal fs-5" readonly>
-              </p>
+          <div class="mb-3 d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+              <button class="menos buttonQuant btn btn-outline-secondary me-2"> - </button>
+              <input value="1" class="quantidade form-control text-center" style="width: 60px;" readonly>
+              <button class="mais buttonQuant btn btn-outline-secondary ms-2"> + </button>
             </div>
-            <div><button class="btn-adc-carrinho btn cor-fundo-btn" data-bs-target="#exampleModalToggle2"
-                data-bs-toggle="modal">Adicionar ao carrinho</button></div>
+            <div class="fs-5 fw-bolder">Total:
+              <input value="00.00" class="totalProdutoModal fs-5 form-control" style="width: 100px;" readonly>
+            </div>
           </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-adc-carrinho btn cor-fundo-btn" data-bs-target="#exampleModalToggle2"
+            data-bs-toggle="modal">Adicionar ao carrinho</button>
         </div>
       </div>
     </div>
   </div>
+
   <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
     tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -211,88 +215,95 @@
           <h5 class="modal-title" id="exampleModalToggleLabel2">Arrasou na escolha!</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          Adicionado ao carrinho.
+        <div class="modal-body text-center">
+          <p class="fs-5">Adicionado ao carrinho.</p>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn cor-fundo-btn" data-bs-dismiss="modal">Confirmar</button>
         </div>
       </div>
     </div>
   </div>
+
 
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-fullscreen">
-    <div class="modal-content">
-      <div class="modal-header cor-fundo-btn">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">
-          <h2 id="tituloCarrinho">Meu carrinho</h2>
-        </h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <h3 id="tituloCarrinhoVazio">Vazio...</h3>
-        <div>
-          <div class="meu-carrinho">
-            <!-- card adc pelo js -->
-          </div>
-          <div id="dados-usuario">
-            <form id="formulario-usuario">
-              <div class="mb-3">
-                <label for="detalhes" class="form-label">Observação:</label>
-                <input type="text" class="form-control" id="detalhes" name="detalhes" placeholder="Ex: 01 Xtudo sem tomate. 01 Xtudo sem ovo." required>
-              </div>
-              <div class="mb-3">
-                <label for="nome" class="form-label">Nome:</label>
-                <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome e Sobrenome" required>
-              </div>
-              <div id="Nmesa" class="mb-3">
-                <label for="mesa" class="form-label">Mesa:</label>
-                <input type="text" class="form-control mb-3" id="mesa" name="mesa" placeholder="Nº da Mesa">
-              </div>
-              <div class="mb-3">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="entrega" name="entrega" value="true">
-                  <label class="form-check-label" for="entrega">
-                    Quero receber em casa (+ R$5)
-                  </label>
-                </div>
-              </div>
-              <div id="endereco" class="mb-3">
-                <label for="endereco" class="form-label">Endereço:</label>
-                <input id="enderecoRua" type="text" class="form-control mb-3" name="endereco"
-                  placeholder="Rua, Número, Bairro.">
-                <input type="text" class="form-control" name="referencia" placeholder="Ponto de Referência.">
-              </div>
-
-              <div class="mb-3">
-                <label for="pagamento" class="form-label">Forma de Pagamento:</label>
-                <select class="form-select" id="pagamento" name="pagamento" required>
-                  <option value="" selected>Selecione</option>
-                  <option value="Pix">PIX</option>
-                  <option value="Dinheiro">Dinheiro</option>
-                  <option value="CartaoCredito">Cartão de Crédito (+ R$2)</option>
-                  <option value="CartaoDebito" >Cartão de Débito</option>
-                </select>
-                <div id="PagamentoDinheiro" style="display: none;" class="mb-3">
-                  <label for="endereco" class="form-label">Valor a pagar: (Nos ajudar no troco, se possível) </label>
-                  <input type="text" class="form-control mb-3" name="pagarDinheiro" placeholder="R$ 00.00">
-                </div>
-              </div>
-              <div class="totais">
-                <p class="fs-5">Pedido: R$ <input value="0.00" id="total-carrinho"></input></p>
-                <p class="fs-5">Taxa: R$ <input type="number" value="0.00" id="taxas-carrinho"></input></p>
-
-              </div>
-          </div>
-          <div class="modal-final">
-            <p class="fs-5">Total: R$ <input type="" value="0.00" id="total-pedido"></input></p>
-            <button type="button" id="finalizar" class="btn cor-fundo-btn"> Finalizar </button>
-          </div>
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header cor-fundo-btn">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            <h2 id="tituloCarrinho">Meu carrinho</h2>
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        </form>
+        <div class="modal-body">
+          <h3 id="tituloCarrinhoVazio">Vazio...</h3>
+          <div>
+            <div class="meu-carrinho">
+              <!-- card adc pelo js -->
+            </div>
+            <div id="dados-usuario">
+              <form id="formulario-usuario">
+                <div class="mb-3">
+                  <label for="detalhes" class="form-label">Observação:</label>
+                  <input type="text" class="form-control" id="detalhes" name="detalhes"
+                    placeholder="Ex: 01 Xtudo sem tomate. 01 Xtudo sem ovo." required>
+                </div>
+                <div class="mb-3">
+                  <label for="nome" class="form-label">Nome:</label>
+                  <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome e Sobrenome" required>
+                </div>
+                <div class="mb-3">
+                  <label for="numeroCelular" class="form-label">Número de celular:</label>
+                  <input type="text" class="form-control" id="numeroCelular" name="numeroCelular" placeholder="219999-9999" required>
+                </div>
+                <div id="Nmesa" class="mb-3">
+                  <label for="mesa" class="form-label">Mesa:</label>
+                  <input type="text" class="form-control mb-3" id="mesa" name="mesa" placeholder="Nº da Mesa">
+                </div>
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="entrega" name="entrega" value="true">
+                    <label class="form-check-label" for="entrega">
+                      Quero receber em casa (+ R$5)
+                    </label>
+                  </div>
+                </div>
+                <div id="endereco" class="mb-3">
+                  <label for="endereco" class="form-label">Endereço:</label>
+                  <input id="enderecoRua" type="text" class="form-control mb-3" name="endereco"
+                    placeholder="Rua, Número, Bairro.">
+                  <input type="text" class="form-control" name="referencia" placeholder="Ponto de Referência.">
+                </div>
+
+                <div class="mb-3">
+                  <label for="pagamento" class="form-label">Forma de Pagamento:</label>
+                  <select class="form-select" id="pagamento" name="pagamento" required>
+                    <option value="" selected>Selecione</option>
+                    <option value="Pix">PIX</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                    <option value="CartaoCredito">Cartão de Crédito (+ R$2)</option>
+                    <option value="CartaoDebito">Cartão de Débito</option>
+                  </select>
+                  <div id="PagamentoDinheiro" style="display: none;" class="mb-3">
+                    <label for="endereco" class="form-label">Valor a pagar: (Nos ajudar no troco, se possível) </label>
+                    <input type="text" class="form-control mb-3" name="pagarDinheiro" placeholder="R$ 00.00">
+                  </div>
+                </div>
+                <div class="totais">
+                  <p class="fs-5">Pedido: R$ <input value="0.00" id="total-carrinho"></input></p>
+                  <p class="fs-5">Taxa: R$ <input type="number" value="0.00" id="taxas-carrinho"></input></p>
+
+                </div>
+            </div>
+            <div class="modal-final">
+              <p class="fs-5">Total: R$ <input type="" value="0.00" id="total-pedido"></input></p>
+              <button type="button" id="finalizar" class="btn cor-fundo-btn"> Finalizar </button>
+            </div>
+          </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
   </div>
   </div>
   </div>
@@ -303,12 +314,11 @@
 
 </body>
 
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?bnaeauszgluontqb&callback=initMap">
-    </script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?bnaeauszgluontqb&callback=initMap">
+</script>
 
 <script src="/javaScript/DadosProdModal.js"></script>
-<script src="/javaScript/carregaCategoriaCardapio.js" ></script>
+<script src="/javaScript/carregaCategoriaCardapio.js"></script>
 <script src="/javaScript/carregaProdutosCardapio.js"></script>
 <script src="/javaScript/apiGoogle.js"></script>
 <script src="/javaScript/env.js"></script>
