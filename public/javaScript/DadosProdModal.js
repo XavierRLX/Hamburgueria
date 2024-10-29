@@ -227,18 +227,15 @@ function atualizarTotalGeral() {
 }
 
 
-// Mova a definição de produtosCarrinho para um escopo mais amplo
-let produtosCarrinho = [];
-
 // Adiciona um evento de clique ao botão "Finalizar"
-document.getElementById("finalizar").addEventListener("click", function() {
+document.getElementById("finalizar").addEventListener("click", async function() {
   produtosCarrinho = []; // Limpa o array antes de adicionar novos produtos
   const produtos = document.querySelectorAll('.produtos');
   produtos.forEach((produto) => {
-    const nomeProduto = produto.querySelector('#nomeProdutoCarrinho').value;
-    const quantidadeProduto = produto.querySelector('#quantidadeCarrinho').value;
-    const precoProduto = produto.querySelector('#precoTotalQuantidade').value;
-    produtosCarrinho.push({ nome: nomeProduto, quantidade: quantidadeProduto, preco: precoProduto });
+      const nomeProduto = produto.querySelector('#nomeProdutoCarrinho').value;
+      const quantidadeProduto = produto.querySelector('#quantidadeCarrinho').value;
+      const precoProduto = produto.querySelector('#precoTotalQuantidade').value;
+      produtosCarrinho.push({ nome: nomeProduto, quantidade: quantidadeProduto, preco: parseFloat(precoProduto) }); // Certifique-se de que o preço é um número
   });
 
   // Coleta as informações do formulário
@@ -248,34 +245,32 @@ document.getElementById("finalizar").addEventListener("click", function() {
   const referencia = document.getElementsByName("referencia")[0].value;
   const pagamento = document.getElementById("pagamento").value;
   const pagarDinheiro = document.getElementsByName("pagarDinheiro")[0].value;
-  const totalCarrinho = document.getElementById("total-carrinho").value;
-  const taxasCarrinho = document.getElementById("taxas-carrinho").value;
-  const totalPedido = document.getElementById("total-pedido").value;
+  const totalCarrinho = parseFloat(document.getElementById("total-carrinho").value); // Garantindo que seja um número
+  const taxasCarrinho = parseFloat(document.getElementById("taxas-carrinho").value); // Garantindo que seja um número
+  const totalPedido = parseFloat(document.getElementById("total-pedido").value); // Garantindo que seja um número
   const detalhes = document.getElementById("detalhes").value;
   const mesa = document.getElementById("mesa").value;
 
   // Cria o relatório com as informações coletadas
   let relatorio = "Pedido:\n\n";
-  relatorio += "Produtos:\n";
+  let itensPedido = ''; // Inicializa a string para itens do pedido
   produtosCarrinho.forEach((produto) => {
-    relatorio += produto.nome + " (x " + produto.quantidade + ")" + " = R$ " + produto.preco + ".\n\n";
+      itensPedido += ` ${produto.nome} (x ${produto.quantidade}) = R$ ${produto.preco}.\n\n`;
   });
 
+  relatorio += itensPedido;
   relatorio += ". Observação: " + detalhes + "\n\n";
   relatorio += ". Nome: " + nome + "\n\n";
 
   // Adiciona mesa se preenchida
   if (mesa) {
-    relatorio += ". Mesa: " + mesa + "\n\n";
+      relatorio += ". Mesa: " + mesa + "\n\n";
   }
 
   // Adiciona endereço se entrega estiver selecionada e endereço preenchido
+  const endereco = `${enderecoRua} - ${referencia ? referencia : ''}`;
   if (entrega && (enderecoRua || referencia)) {
-    relatorio += ". Endereço: " + enderecoRua;
-    if (referencia) {
-      relatorio += " - " + referencia;
-    }
-    relatorio += "\n\n";
+      relatorio += ". Endereço: " + endereco + "\n\n";
   }
 
   relatorio += ". Forma de Pagamento: " + pagamento + "\n\n";
@@ -284,48 +279,51 @@ document.getElementById("finalizar").addEventListener("click", function() {
   relatorio += "Total: R$ " + totalPedido + "\n\n";
 
   if (pagamento === "dinheiro") {
-    relatorio += "Valor a Pagar: " + pagarDinheiro + "\n\n";
+      relatorio += "Valor a Pagar: " + pagarDinheiro + "\n\n";
   }
 
   const numero = "+5521964734161";
   const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(relatorio)}`;
   window.open(url, "_blank");
 
-  // Chama a função para criar o pedido no Supabase
-  criarPedido(nome, produtosCarrinho, enderecoRua, referencia, entrega, mesa, pagamento, taxasCarrinho, totalPedido, detalhes, pagarDinheiro);
-});
-
-// Função para criar um novo pedido no Supabase
-async function criarPedido(nome, produtosCarrinho, enderecoRua, referencia, entrega, mesa, pagamento, taxasCarrinho, totalPedido, detalhes, pagarDinheiro) {
-  // Coleta os dados do pedido
-  const pedidoData = {
-      itensPedido: produtosCarrinho.map(produto => `${produto.nome}, ${produto.quantidade}, R$ ${produto.preco}`).join('; '), // Formatação como texto
-      detalhes: detalhes || null,  // Se detalhes não for obrigatório
-      nome: nome || null,          // Adicione um valor padrão se necessário
-      endereco: (entrega && (enderecoRua || referencia)) ? `${enderecoRua} - ${referencia}` : null,
-      mesa: mesa || null,
-      formaPagamento: pagamento || null, // Adicione um valor padrão se necessário
-      taxa: parseFloat(taxasCarrinho) || 0,
-      totalPedido: parseFloat(totalPedido),
-  };
-
-  console.log("Dados do pedido a serem enviados:", JSON.stringify(pedidoData)); // Log para depuração
-
-  const url = `${supabaseUrl}/rest/v1/pedidos`;
-  const response = await fetch(url, {
+  // Envia os dados ao Supabase
+  const urlPedido = `${supabaseUrl}/rest/v1/pedidos`;
+  const response = await fetch(urlPedido, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
           'apikey': apiKey,
           'Authorization': `Bearer ${apiKey}`
       },
-      body: JSON.stringify(pedidoData),
+      body: JSON.stringify({
+          itensPedido,
+          detalhes,
+          nome,
+          endereco,
+          mesa,
+          formaPagamento: pagamento, // pagamento deve ser string
+          taxas: taxasCarrinho, // taxa deve ser number
+          totalPedido,
+      }),
+  });
+
+  // Para depuração, imprime os dados que estão sendo enviados
+  console.log({
+      itensPedido,
+      detalhes,
+      nome,
+      endereco,
+      mesa,
+      formaPagamento: pagamento,
+      taxas: taxasCarrinho,
+      totalPedido,
   });
 
   if (response.ok) {
       alert('Pedido cadastrado com sucesso!');
+      // Aqui você pode adicionar lógica para limpar o carrinho ou redirecionar
   } else {
       const data = await response.json();
-      alert('Erro ao cadastrar o pedido: ' + data.error);
+      alert('Erro ao cadastrar pedido: ' + data.message || data.error);
   }
-}
+});
