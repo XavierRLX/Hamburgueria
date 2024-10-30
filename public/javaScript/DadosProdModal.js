@@ -294,7 +294,7 @@ async function finalizarPedido() {
   let relatorio = `Pedido #${novoPkPedido}:\n\n`;
   let itensPedido = '';
   produtosCarrinho.forEach((produto) => {
-      itensPedido += ` ${produto.nome} (x ${produto.quantidade}) = R$ ${produto.preco}.\n\n`;
+      itensPedido += ` #${produto.nome} (x ${produto.quantidade}) = R$ ${produto.preco}.\n\n`;
   });
 
   relatorio += itensPedido;

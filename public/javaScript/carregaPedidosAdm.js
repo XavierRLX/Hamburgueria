@@ -40,7 +40,13 @@ async function carregaPedidosPorStatus(status, containerId, loadingId, filterDat
             </div>
             <div class="card-body">
                 <ul class="list-group">
-                    <li class="list-group-item"><strong>Itens:</strong> ${pedido.itensPedido}</li>
+                    <li class="list-group-item"><strong>Itens:</strong> 
+    ${pedido.itensPedido.split('#').filter(item => item.trim() !== '').map(item => {
+        // Remover espaços e adicionar um ponto final, se necessário
+        item = item.trim();
+        return '> ' + (item.endsWith('.') ? item : item + '.');
+    }).join('<br>')}
+</li>
                     <li class="list-group-item"><strong>Detalhes:</strong> ${pedido.detalhes}</li>
                     <li class="list-group-item"><strong>Cliente:</strong> ${pedido.nome}</li>
                     <li class="list-group-item"><strong>Número:</strong> ${pedido.numeroCelular || '0'}</li>
@@ -105,7 +111,7 @@ async function carregaPedidosContagem() {
         totalContainer.innerHTML = `
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-around">
                         <div class="badge bg-primary">Abertos: ${totalAbertos}</div>
                         <div class="badge bg-warning">Em Atendimento: ${totalAtendimento}</div>
                         <div class="badge bg-success">Finalizados: ${totalFinalizado}</div>
