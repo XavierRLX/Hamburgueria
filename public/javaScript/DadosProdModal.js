@@ -255,9 +255,8 @@ function verificaCampos() {
   return nome && (mesa || enderecoRua) && pagamento;
 }
 
-// Função para finalizar o pedido
 async function finalizarPedido() {
-  produtosCarrinho = []; // Limpa o array antes de adicionar novos produtos
+  produtosCarrinho = [];
   const produtos = document.querySelectorAll('.produtos');
   produtos.forEach((produto) => {
       const nomeProduto = produto.querySelector('#nomeProdutoCarrinho').value;
@@ -278,10 +277,21 @@ async function finalizarPedido() {
   const totalPedido = parseFloat(document.getElementById("total-pedido").value);
   const detalhes = document.getElementById("detalhes").value;
   const mesa = document.getElementById("mesa").value;
-  const numeroCelular = document.getElementById("numeroCelular").value ;
+  const numeroCelular = document.getElementById("numeroCelular").value;
+
+  // Consulta o último pkPedido
+  const urlUltimoPedido = `${supabaseUrl}/rest/v1/pedidos?select=pkPedido&order=pkPedido.desc&limit=1`;
+  const responseUltimoPedido = await fetch(urlUltimoPedido, {
+      headers: {
+          'apikey': apiKey,
+          'Authorization': `Bearer ${apiKey}`
+      }
+  });
+  const ultimoPedidoData = await responseUltimoPedido.json();
+  const novoPkPedido = ultimoPedidoData.length ? ultimoPedidoData[0].pkPedido + 1 : 1;
 
   // Criação do relatório e envio para WhatsApp
-  let relatorio = "Pedido:\n\n";
+  let relatorio = `Pedido #${novoPkPedido}:\n\n`;
   let itensPedido = '';
   produtosCarrinho.forEach((produto) => {
       itensPedido += ` ${produto.nome} (x ${produto.quantidade}) = R$ ${produto.preco}.\n\n`;
@@ -311,8 +321,7 @@ async function finalizarPedido() {
 
   const numero = "+5521964734161";
   const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(relatorio)}`;
-  window.open(url, "_blank");
-
+  
   // Envio dos dados ao Supabase
   const urlPedido = `${supabaseUrl}/rest/v1/pedidos`;
   const response = await fetch(urlPedido, {
@@ -323,6 +332,7 @@ async function finalizarPedido() {
           'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
+          pkPedido: novoPkPedido,
           itensPedido,
           detalhes,
           nome,
@@ -335,19 +345,9 @@ async function finalizarPedido() {
       }),
   });
 
-  console.log({
-      itensPedido,
-      detalhes,
-      nome,
-      endereco,
-      mesa,
-      formaPagamento: pagamento,
-      taxas: taxasCarrinho,
-      totalPedido,
-  });
-
   if (response.ok) {
-      alert('Pedido cadastrado com sucesso!');
+      alert(`Pedido cadastrado com sucesso! Seu número de pedido é #${novoPkPedido}.`);
+      window.open(url, "_blank");
   } else {
       const data = await response.json();
       alert('Erro ao cadastrar pedido: ' + data.message || data.error);
