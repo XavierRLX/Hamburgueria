@@ -234,3 +234,41 @@ async function carregaMaisPedidos(status, offset) {
         alert('Erro ao carregar mais pedidos. Tente novamente mais tarde.');
     }
 }
+
+
+let lastCount = 0; // Variável para armazenar o número anterior de pedidos
+
+async function verificaNovosPedidos() {
+    const url = `${supabaseUrl}/rest/v1/pedidos?select=status`;
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'apikey': apiKey,
+            'Authorization': `Bearer ${apiKey}`
+        },
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        let novoCount = data.length; // Contagem atual de pedidos
+
+        if (novoCount > lastCount) {
+            // Se novos pedidos foram adicionados
+            document.getElementById('notificationIcon').style.display = 'block';
+        }
+
+        lastCount = novoCount; // Atualiza a contagem anterior
+    } else {
+        console.error('Erro ao verificar novos pedidos');
+    }
+}
+
+// Chama a função a cada 5 segundos
+setInterval(verificaNovosPedidos, 5000);
+
+// Ao clicar no ícone de notificação, carrega os pedidos
+document.getElementById('notificationIcon').addEventListener('click', () => {
+    carregaPedidosPorStatus('aberto', 'rowPed', 'loadingPed'); // Carrega pedidos abertos
+    document.getElementById('notificationIcon').style.display = 'none'; // Esconde o ícone
+});
