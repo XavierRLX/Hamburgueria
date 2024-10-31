@@ -271,4 +271,5 @@ setInterval(verificaNovosPedidos, 5000);
 document.getElementById('notificationIcon').addEventListener('click', () => {
     carregaPedidosPorStatus('aberto', 'rowPed', 'loadingPed'); // Carrega pedidos abertos
     document.getElementById('notificationIcon').style.display = 'none'; // Esconde o ícone
+    carregaPedidosContagem();
 });
