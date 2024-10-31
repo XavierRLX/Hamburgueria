@@ -237,7 +237,7 @@ document.getElementById("finalizar").addEventListener("click", function() {
   // Confirmação do usuário
   const confirmacao = confirm("Você tem certeza que deseja finalizar o pedido?");
   if (confirmacao) {
-      finalizarPedido();
+    criarPedido();
   }
 });
 
