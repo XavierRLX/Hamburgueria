@@ -90,6 +90,9 @@ async function criarPedido() {
   
     if (response.ok) {
         alert(`Pedido cadastrado com sucesso! Seu número de pedido é #${novoPkPedido}.`);
+        localStorage.removeItem('carrinho'); // Limpa o carrinho
+        // Recarregar a página atual
+        location.reload();
         window.open(url, "_blank");
     } else {
         const data = await response.json();
