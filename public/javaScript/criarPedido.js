@@ -90,7 +90,8 @@ async function criarPedido() {
   
     if (response.ok) {
         alert(`Pedido cadastrado com sucesso! Seu número de pedido é #${novoPkPedido}.`);
-        localStorage.removeItem('carrinho'); // Limpa o carrinho
+        localStorage.removeItem('carrinho'); 
+        localStorage.setItem('pkPedido', novoPkPedido); 
         // Recarregar a página atual
         location.reload();
         window.open(url, "_blank");
@@ -99,3 +100,55 @@ async function criarPedido() {
         alert('Erro ao cadastrar pedido: ' + data.message || data.error);
     }
   }
+
+//   window.onload = async function () {
+//     const pkPedido = localStorage.getItem('pkPedido');
+
+//     if (pkPedido) {
+//         const urlPedido = `${supabaseUrl}/rest/v1/pedidos?pkPedido=eq.${pkPedido}`;
+
+//         const response = await fetch(urlPedido, {
+//             headers: {
+//                 'apikey': apiKey,
+//                 'Authorization': `Bearer ${apiKey}`
+//             }
+//         });
+
+//         if (response.ok) {
+//             const data = await response.json();
+//             if (data.length > 0) {
+//                 const pedido = data[0];
+//                 const detalhesPedido = `
+//                     <div class="card-header bg-${pedido.status === 'aberto' ? 'primary' : pedido.status === 'atendimento' ? 'warning' : 'success'} text-white">
+//                         Pedido #${pedido.pkPedido}
+//                     </div>
+//                     <div class="card-body">
+//                         <ul class="list-group">
+//                             <li class="list-group-item">
+//                                 <strong>Itens:</strong>
+//                                 ${pedido.itensPedido.split('#').filter(item => item.trim() !== '').map(item => {
+//                                     item = item.trim();
+//                                     return '> ' + (item.endsWith('.') ? item : item + '.');
+//                                 }).join('<br>')}
+//                             </li>
+//                             <li class="list-group-item">
+//                                 <strong>Total:</strong> <span class="badge bg-success">R$ ${pedido.totalPedido.toFixed(2)}</span>
+//                             </li>
+//                             <li class="list-group-item">
+//                                 <strong>Status:</strong> ${pedido.status}
+//                             </li>
+//                         </ul>
+//                     </div>
+//                 `;
+//                 document.getElementById('detalhesPedido').innerHTML = detalhesPedido;
+//                 document.getElementById('resultadoPedido').style.display = 'block';
+//             } else {
+//                 document.getElementById('detalhesPedido').textContent = 'Pedido não encontrado.';
+//                 document.getElementById('resultadoPedido').style.display = 'block';
+//             }
+//         } else {
+//             document.getElementById('detalhesPedido').textContent = 'Erro ao buscar o pedido.';
+//             document.getElementById('resultadoPedido').style.display = 'block';
+//         }
+//     }
+// };
