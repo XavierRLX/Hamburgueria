@@ -117,7 +117,7 @@ function carregarCarrinho() {
                 <div>
                     <input type="text" value="R$:" readOnly>
                     <input type="number" value="${produto.precoTotal}" readOnly id="precoTotalQuantidade">
-                    <img src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/lixeira.png" alt="" id="imgLix">
+                    <img class="imgLixeira" src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/lixeira.png" alt="" id="imgLix">
                 </div>
             `;
 

@@ -133,6 +133,12 @@ input:focus {
 .quantidade{
     width: 25px;
 }
+
+.imgLixeira{
+    margin-left: -20px;
+    margin-top: -5px;
+}
+
 .botao-excluir {
 background-image: url('projeto-base/src/img/lixeira.png') ;
 background-position: center;
@@ -290,7 +296,6 @@ margin-left: 5px;
   #imgLix{
     height: 20px;
     width: 20px;
-    margin-top: 5px;
   }
   .totais{
     margin-top: 20px;
