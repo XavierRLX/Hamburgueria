@@ -72,7 +72,7 @@
 
 .catItensCard {
     display: flex;
-    justify-content: center; /* Distribui igualmente os itens com espaço entre eles */
+  justify-content: flex-start;
     align-items: center;
 }
 

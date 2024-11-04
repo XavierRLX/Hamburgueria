@@ -17,7 +17,7 @@ async function carregaCategoriaCardapio() {
 
         data.forEach(categoria => {
             const categoriaItem = document.createElement('div');
-            categoriaItem.innerHTML = `<p class="opc-item">${categoria.nome}</p>`;
+            categoriaItem.innerHTML = `<p id="listaItensCat" class="opc-item">${categoria.nome}</p>`;
             categoriaItem.addEventListener('click', () => {
                 carregaProdutosCardapio(categoria.pkCategoria); // Ajustado para usar pkCategoria
             });
