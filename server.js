@@ -16,8 +16,7 @@ app.use('/projeto-base', express.static(path.join(__dirname, 'projeto-base/src')
 // Definindo rotas dinamicamente
 const routes = [
   { path: '/', file: 'index.html' },
-  {path: '/principal', file: 'index.html'},
-  { path: '/pedido', file: 'pedido.html'},
+  {path: '/cardapio', file: 'index.html'},
   { path: '/admPedidos', file: 'admPedidos.html'},
   { path: '/admProdutos', file: 'admProdutos.html'}
 ];
