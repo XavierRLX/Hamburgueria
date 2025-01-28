@@ -156,6 +156,7 @@ async function atualizarStatus(pkPedido, novoStatus) {
     } else {
         alert('Erro ao atualizar o status do pedido. Tente novamente mais tarde.');
     }
+    carregaPedidosContagem();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
