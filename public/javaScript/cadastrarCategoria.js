@@ -39,6 +39,7 @@ document.getElementById('cadastrarCat').addEventListener('click', async (event) 
         alert('Categoria cadastrada com sucesso!'); // Mensagem de sucesso
         carregaCategoria();  // Recarrega a lista de categorias
         limparFormulario(); // Limpa o formulário
+        listCategoria();
     } else {
         const data = await response.json();
         alert('Erro: ' + data.error); // Mensagem de erro
