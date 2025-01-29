@@ -12,7 +12,7 @@ async function carregaPedidosPorStatus(status, containerId, loadingId, filterDat
         },
     });
 
-    loadingIndicator.style.display = 'none'; 
+    loadingIndicator.style.display = 'none';
 
     function formatarData(dataString) {
         const data = new Date(dataString);
@@ -24,7 +24,7 @@ async function carregaPedidosPorStatus(status, containerId, loadingId, filterDat
         const pedidoList = document.getElementById(containerId);
         pedidoList.innerHTML = ""; // Clear existing orders
 
-        let pedidosFiltrados = data.filter(pedido => pedido.status === status);
+        let pedidosFiltrados = data.filter(pedido => pedido.status === status || (status === 'finalizado' && pedido.status === 'cancelado'));
         if (filterDate) {
             const selectedDate = new Date(filterDate).toISOString().split('T')[0]; // YYYY-MM-DD format
             pedidosFiltrados = pedidosFiltrados.filter(pedido => new Date(pedido.data).toISOString().split('T')[0] === selectedDate);
@@ -35,18 +35,12 @@ async function carregaPedidosPorStatus(status, containerId, loadingId, filterDat
             pedidoItem.className = 'col-12 col-md-6 col-lg-4 mb-3';
             pedidoItem.innerHTML = `
             <div class="card">
-            <div class="card-header bg-${status === 'aberto' ? 'primary' : status === 'atendimento' ? 'warning' : 'success'} text-white">
-                <h5 class="card-title">Pedido #${pedido.pkPedido} - ${status}</h5>
+            <div class="card-header bg-${pedido.status === 'aberto' ? 'primary' : pedido.status === 'atendimento' ? 'warning' : pedido.status === 'cancelado' ? 'danger' : 'success'} text-white">
+                <h5 class="card-title">Pedido #${pedido.pkPedido}</h5>
             </div>
             <div class="card-body">
                 <ul class="list-group">
-                    <li class="list-group-item"><strong>Itens:</strong> 
-    ${pedido.itensPedido.split('#').filter(item => item.trim() !== '').map(item => {
-        // Remover espaços e adicionar um ponto final, se necessário
-        item = item.trim();
-        return '> ' + (item.endsWith('.') ? item : item + '.');
-    }).join('<br>')}
-</li>
+                    <li class="list-group-item"><strong>Itens:</strong> ${pedido.itensPedido.replace(/#/g, '<br>')}</li>
                     <li class="list-group-item"><strong>Detalhes:</strong> ${pedido.detalhes}</li>
                     <li class="list-group-item"><strong>Cliente:</strong> ${pedido.nome}</li>
                     <li class="list-group-item"><strong>Número:</strong> ${pedido.numeroCelular || '0'}</li>
@@ -61,15 +55,6 @@ async function carregaPedidosPorStatus(status, containerId, loadingId, filterDat
                         <strong>Total:</strong> <span class="badge bg-success">R$ ${pedido.totalPedido.toFixed(2)}</span>
                     </li>
                 </ul>
-                <div class="d-flex justify-content-between mt-3">
-                    ${status === 'aberto' ? `
-                        <button class="btn btn-danger" onclick="confirmarAtualizacao('${pedido.pkPedido}', 'cancelado')">Cancelar</button>
-                        <button class="btn btn-success" onclick="confirmarAtualizacao('${pedido.pkPedido}', 'atendimento')">Atender</button>
-                    ` : status === 'atendimento' ? `
-                        <button class="btn btn-danger" onclick="confirmarAtualizacao('${pedido.pkPedido}', 'cancelado')">Cancelar</button>
-                        <button class="btn btn-success" onclick="confirmarAtualizacao('${pedido.pkPedido}', 'finalizado')">Finalizar</button>
-                    ` : ''}
-                </div>
             </div>
         </div>
             `;
