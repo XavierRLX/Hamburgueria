@@ -1,18 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  
-</body>
-</html>
 
 <head>
   <meta charset="UTF-8">
@@ -20,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/style/style.css">
   <link rel="stylesheet" href="/style/admProdutos.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -53,53 +39,69 @@
   <main>
     <section id="mainAdmProdutos" class="container mb-5">
 
-      <div class="d-flex">
-        <h2>Lista de Pedidos</h2>
-
-      <div class="m-1" id="notificationIcon" style="display:none; cursor:pointer;">
-        <img src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/notificacao.png"
-          alt="Notificação" title="Novos Pedidos" width="20px" height="20px" />
+      <!-- Cabeçalho -->
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center gap-2">
+          <!-- Título com notificação ao lado -->
+          <h2 class="mb-0">Lista de Pedidos</h2>
+          <div id="notificationIcon" style="display: none; cursor: pointer;">
+            <img src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/notificacao.png"
+              alt="Notificação" title="Novos Pedidos" width="20px" height="20px" />
+          </div>
+        </div>
+        <!-- Botão de Download no final -->
+        <button id="btnDownload" class="btn btn-success btn-sm" onclick="baixarPedidos()">
+          <i class="bi bi-download"></i> Baixar
+        </button>
       </div>
-
-      </div>
-      
-      <div id="contagemPedido"></div>
-
+    
+      <!-- Contagem de Pedidos -->
+      <div id="contagemPedido" class="mb-3"></div>
+    
+      <!-- Pedidos - Aberto -->
       <div class="card mb-4">
         <div class="card-header">
-          <h4>Pedidos - Aberto</h4>
+          <h4 class="mb-0">Pedidos - Aberto</h4>
         </div>
         <div class="card-body">
           <div id="rowPed" class="row"></div>
-          <div id="loadingPed" class="text-center" style="display: none;">Carregando...</div>
+          <div id="loadingPed" class="text-center d-none">Carregando...</div>
         </div>
       </div>
-
+    
+      <!-- Pedidos - Atendimento -->
       <div class="card mb-4">
         <div class="card-header">
-          <h4>Pedidos - Atendimento</h4>
+          <h4 class="mb-0">Pedidos - Atendimento</h4>
         </div>
         <div class="card-body">
           <div id="rowPedAt" class="row"></div>
-          <div id="loadingPedAt" class="text-center" style="display: none;">Carregando...</div>
+          <div id="loadingPedAt" class="text-center d-none">Carregando...</div>
         </div>
       </div>
-
+    
+      <!-- Pedidos - Finalizados -->
       <div class="card mb-4">
-        <div class="card-header">
-          <h4>Pedidos - Finalizados</h4>
-          <input type="date" id="filterDate" class="form-control" placeholder="Filtrar por data">
-          <button id="filterButton" class="btn btn-primary mt-2">Filtrar</button>
+        <div class="card-header d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+          <h4 class="mb-2 mb-md-0">Pedidos - Finalizados</h4>
+          <div class="d-flex gap-2">
+            <input type="date" id="filterDate" class="form-control form-control-sm">
+            <button id="filterButton" class="btn btn-primary btn-sm">Filtrar</button>
+          </div>
         </div>
         <div class="card-body">
           <div id="rowPedFd" class="row"></div>
-          <div id="loadingPedFd" class="text-center" style="display: none;">Carregando...</div>
+          <div id="loadingPedFd" class="text-center d-none">Carregando...</div>
         </div>
       </div>
+    
     </section>
+    
+    
   </main>
 
   <script src="/javaScript/env.js"></script>
   <script src="/javaScript/carregaPedidosAdm.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-</html>
+  </html>
