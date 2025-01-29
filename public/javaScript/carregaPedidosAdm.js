@@ -36,7 +36,7 @@ async function carregaPedidosPorStatus(status, containerId, loadingId, filterDat
             pedidoItem.innerHTML = `
             <div class="card">
             <div class="card-header bg-${status === 'aberto' ? 'primary' : status === 'atendimento' ? 'warning' : 'success'} text-white">
-                <h5 class="card-title">Pedido #${pedido.pkPedido}</h5>
+                <h5 class="card-title">Pedido #${pedido.pkPedido} - ${status}</h5>
             </div>
             <div class="card-body">
                 <ul class="list-group">
