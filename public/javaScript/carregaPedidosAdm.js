@@ -65,36 +65,6 @@ async function carregaPedidosPorStatus(status, containerId, loadingId, filterDat
     }
 }
 
-async function baixarPedidos() {
-    const url = `${supabaseUrl}/rest/v1/pedidos?select=*`;
-    try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'apikey': apiKey,
-                'Authorization': `Bearer ${apiKey}`
-            }
-        });
-
-        if (!response.ok) throw new Error("Erro ao obter dados do Supabase");
-
-        const data = await response.json();
-
-        // Criar a planilha com SheetJS
-        const ws = XLSX.utils.json_to_sheet(data);
-
-        // Criar o arquivo Excel
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Pedidos");
-
-        // Baixar o arquivo
-        XLSX.writeFile(wb, "pedidos.xlsx");
-    } catch (error) {
-        alert('Erro ao baixar os pedidos.');
-        console.error(error);
-    }
-}
 
 async function carregaPedidosContagem() {
     const url = `${supabaseUrl}/rest/v1/pedidos?select=status`;
@@ -142,7 +112,6 @@ async function carregaPedidosContagem() {
         alert('Erro ao carregar a lista de pedidos. Tente novamente mais tarde.');
     }
 }
-
 
 
 function confirmarAtualizacao(pkPedido, novoStatus) {
@@ -271,8 +240,8 @@ async function verificaNovosPedidos() {
         let novoCount = data.length; // Contagem atual de pedidos
 
         if (novoCount > lastCount) {
-            // Se novos pedidos foram adicionados
-            document.getElementById('notificationIcon').style.display = 'block';
+          // Se novos pedidos foram adicionados
+          document.getElementById("notificationIcon").style.display = "block";
         }
 
         lastCount = novoCount; // Atualiza a contagem anterior
