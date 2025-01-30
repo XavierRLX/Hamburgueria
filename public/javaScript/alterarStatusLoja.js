@@ -41,7 +41,7 @@ async function alterarStatusLoja() {
 
 // Função para pegar o status atual da loja
 async function obterStatusLoja() {
-    const url = `${supabaseUrl}/rest/v1/statusLoja?select=online&limit=1`;  // Selecionando o campo online e limitando para 1
+    const url = `${supabaseUrl}/rest/v1/statusLoja?select=online&limit=1`; 
     const response = await fetch(url, {
         method: "GET",
         headers: {
