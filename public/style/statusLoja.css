@@ -7,3 +7,16 @@
 .blink {
     animation: blink 2s infinite;
 }
+
+
+#toggleStatusBtn {
+    transition: background-color 0.3s, transform 0.3s ease;
+}
+
+#toggleStatusBtn:checked {
+    background-color: #28a745; /* Cor verde para "Online" */
+}
+
+#toggleStatusBtn:not(:checked) {
+    background-color: #dc3545; /* Cor vermelha para "Offline" */
+}
