@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/style/style.css">
   <link rel="shortcut icon" href="/projeto-base/src/img/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/style/statusLoja.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -88,6 +89,12 @@
 
       <div class="container-fluid">
         <div class="row justify-content-center m-w-3 shadow-lg p-3 mb-5 bg-body rounded">
+          <div class="d-flex mt-3">
+            <span id="statusLoja" class="badge fs-6 fs-6 px-3 py-2 text-secondary">
+              <span id="statusIcon" class="blink">🔄</span> 
+              <span id="statusText">Verificando...</span>
+          </span>
+        </div>
           <h2 class="text-center m-3">Cardápio</h2>
           <div class=" catItensCard opc-card-scroll mb-4">
             <p>Carregando...</p>
@@ -171,7 +178,6 @@
           <p>Guadalupe, Rio de Janeiro</p>
         </div>
         <!-- <div id="map"></div> -->
-
         <div class="map-container">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d229.81382239083763!2d-43.36629038321668!3d-22.838706697094754!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x99634396dfccd5%3A0x7b78ff33984ade53!2sDream%20Lanches%20%26%20sobremesa!5e0!3m2!1spt-BR!2sbr!4v1738070676780!5m2!1spt-BR!2sbr"
@@ -180,8 +186,6 @@
       </div>
     </div>
   </div>
-
-
 
   <footer class="bg-secondary p-3 text-center ">
     <p class="text-light m-0">Contato: <a class="text-light href=" contato@rlxbuguer.com.br>contato@rlxbuguer.com.br</a>
@@ -358,7 +362,5 @@
 <script src="/javaScript/apiGoogle.js"></script>
 <script src="/javaScript/env.js"></script>
 <script src="/javaScript/criarPedido.js"></script>
-
-
-
+<script src="/javaScript/statusLoja.js"></script>
 </html>
