@@ -33,4 +33,5 @@ async function verificarStatusLoja() {
 document.addEventListener("DOMContentLoaded", verificarStatusLoja);
 
 // Atualizar o status da loja a cada 5 minutos (300.000ms)
-setInterval(verificarStatusLoja, 300000);
+setInterval(verificarStatusLoja, 10000);
+
