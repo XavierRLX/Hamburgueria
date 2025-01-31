@@ -101,6 +101,54 @@ app.post('/login', async (req, res) => {
   res.json({ message: "Login bem-sucedido", redirect: "/" });
 });
 
+app.get('/api/categorias', async (req, res) => {
+  const { data, error } = await supabase
+      .from('categoria')
+      .select('*');
+
+  if (error) {
+      return res.status(500).json({ error: 'Erro ao carregar categorias' });
+  }
+
+  res.json(data);
+});
+
+app.get('/api/produtos', async (req, res) => {
+  const { categoria } = req.query; // Obtém a categoria da query string
+
+  let query = supabase
+      .from('produtos')
+      .select('*')
+      .eq('ativo', true); // Filtra apenas produtos ativos
+
+  if (categoria) {
+      query = query.eq('fkCategoria', categoria);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+      return res.status(500).json({ error: 'Erro ao carregar produtos' });
+  }
+
+  res.json(data);
+});
+
+app.get('/api/statusLoja', async (req, res) => {
+  const { data, error } = await supabase
+      .from('statusLoja')
+      .select('online')
+      .limit(1)
+      .single();
+
+  if (error) {
+      return res.status(500).json({ error: 'Erro ao buscar status da loja' });
+  }
+
+  res.json({ online: data.online });
+});
+
+
 
 // Rota para logout
 app.get('/logout', (req, res) => {
