@@ -16,8 +16,10 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Configuração do Supabase
-const supabaseUrl = 'https://uweicybzciidmyumejzm.supabase.co';
-const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3ZWljeWJ6Y2lpZG15dW1lanptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk3MjYzOTgsImV4cCI6MjA0NTMwMjM5OH0.xxcr3nzb0_bHISQvlBwiV0kDSNOieQa6eem7hbLc8Zk';
+const supabaseUrl = process.env.supabaseUrl;
+const apiKey = process.env.apiKey;
+const sessionSecret = process.env.SESSION_SECRET;
+
 const agent = new https.Agent({ rejectUnauthorized: false });
 const supabase = createClient(supabaseUrl, apiKey, { global: { fetch: (url, options) => fetch(url, { ...options, agent }) } });
 
