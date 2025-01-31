@@ -134,19 +134,18 @@ app.get('/api/produtos', async (req, res) => {
   res.json(data);
 });
 
-app.patch('/api/statusLoja', async (req, res) => {
-  const { online } = req.body;
-
-  const { error } = await supabase
+app.get('/api/statusLoja', async (req, res) => {
+  const { data, error } = await supabase
       .from('statusLoja')
-      .update({ online })
-      .eq('pkstatusloja', 1);
+      .select('online')
+      .eq('pkstatusloja', 1)
+      .single();
 
   if (error) {
-      return res.status(500).json({ error: 'Erro ao atualizar status da loja' });
+      return res.status(500).json({ error: 'Erro ao buscar status da loja' });
   }
 
-  res.json({ message: 'Status da loja atualizado com sucesso!' });
+  res.json({ online: data.online });
 });
 
 app.get('/api/pedidosCardapio', async (req, res) => {
