@@ -134,18 +134,137 @@ app.get('/api/produtos', async (req, res) => {
   res.json(data);
 });
 
-app.get('/api/statusLoja', async (req, res) => {
-  const { data, error } = await supabase
+app.patch('/api/statusLoja', async (req, res) => {
+  const { online } = req.body;
+
+  const { error } = await supabase
       .from('statusLoja')
-      .select('online')
-      .limit(1)
-      .single();
+      .update({ online })
+      .eq('pkstatusloja', 1);
 
   if (error) {
-      return res.status(500).json({ error: 'Erro ao buscar status da loja' });
+      return res.status(500).json({ error: 'Erro ao atualizar status da loja' });
   }
 
-  res.json({ online: data.online });
+  res.json({ message: 'Status da loja atualizado com sucesso!' });
+});
+
+app.get('/api/pedidosCardapio', async (req, res) => {
+  const { status, data } = req.query; // Obtém status e data da query string
+
+  let query = supabase
+      .from('pedidos')
+      .select('*')
+      .order('data', { ascending: true });
+
+  if (status) {
+      if (status === 'finalizado') {
+          query = query.in('status', ['finalizado', 'cancelado']);
+      } else {
+          query = query.eq('status', status);
+      }
+  }
+
+  if (data) {
+      const selectedDate = new Date(data).toISOString().split('T')[0]; // YYYY-MM-DD format
+      query = query.gte('data', `${selectedDate}T00:00:00.000Z`).lte('data', `${selectedDate}T23:59:59.999Z`);
+  }
+
+  const { data: pedidos, error } = await query;
+
+  if (error) {
+      return res.status(500).json({ error: "Erro ao carregar pedidos" });
+  }
+
+  res.json(pedidos);
+});
+app.get('/api/pedidos/contagem', async (req, res) => {
+  const { data: pedidos, error } = await supabase
+      .from('pedidos')
+      .select('status');
+
+  if (error) {
+      return res.status(500).json({ error: 'Erro ao obter contagem de pedidos.' });
+  }
+
+  const contagem = { abertos: 0, atendimento: 0, finalizados: 0 };
+  
+  pedidos.forEach(pedido => {
+      if (pedido.status === 'aberto') contagem.abertos++;
+      if (pedido.status === 'atendimento') contagem.atendimento++;
+      if (pedido.status === 'finalizado' || pedido.status === 'cancelado') contagem.finalizados++;
+  });
+
+  res.json(contagem);
+});
+
+app.patch('/api/pedidos/:id', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!['aberto', 'atendimento', 'finalizado', 'cancelado'].includes(status)) {
+      return res.status(400).json({ error: 'Status inválido.' });
+  }
+
+  const { error } = await supabase
+      .from('pedidos')
+      .update({ status })
+      .eq('pkPedido', id);
+
+  if (error) {
+      return res.status(500).json({ error: 'Erro ao atualizar pedido.' });
+  }
+
+  res.json({ success: true });
+});
+
+app.get('/api/pedidos', async (req, res) => {
+  const { status, offset = 0, limit = 20 } = req.query;
+
+  let query = supabase
+      .from('pedidos')
+      .select('*')
+      .order('data', { ascending: true });
+
+  if (status) {
+      query = query.eq('status', status);
+  }
+
+  const { data: pedidos, error } = await query.range(parseInt(offset), parseInt(offset) + parseInt(limit) - 1);
+
+  if (error) {
+      return res.status(500).json({ error: 'Erro ao buscar pedidos.' });
+  }
+
+  res.json(pedidos);
+});
+
+
+app.get('/api/pedidos/contagem', async (req, res) => {
+  const { count, error } = await supabase
+      .from('pedidos')
+      .select('*', { count: 'exact', head: true });
+
+  if (error) {
+      return res.status(500).json({ error: 'Erro ao contar pedidos.' });
+  }
+
+  res.json({ totalPedidos: count });
+});
+
+
+
+app.delete('/api/pedidos/todos', async (req, res) => {
+  const { error } = await supabase
+      .from('pedidos')
+      .delete()
+      .gt('pkPedido', 0); // Exclui todos os pedidos
+
+  if (error) {
+      return res.status(500).json({ error: 'Erro ao excluir todos os pedidos.' });
+  }
+
+  res.json({ success: true });
 });
 
 

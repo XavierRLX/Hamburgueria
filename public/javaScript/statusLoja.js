@@ -1,47 +1,64 @@
-let lojaOnline = false; // Variável para armazenar o status da loja
-
-async function verificarStatusLoja() {
+// Função para alterar o status da loja
+async function alterarStatusLoja() {
     try {
-        const response = await fetch('/api/statusLoja'); // Agora chama o backend
+        // Obtém o status atual da loja
+        const statusLoja = await obterStatusLoja();
+
+        // Inverte o status (se estava online, fica offline e vice-versa)
+        const novoStatus = !statusLoja;
+
+        // Faz a requisição para o backend atualizar o status no banco
+        const response = await fetch('/api/statusLoja', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ online: novoStatus })
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao alterar status da loja.');
+        }
+
+        console.log(`Status da loja alterado para: ${novoStatus ? "Online" : "Offline"}`);
+
+        // Atualiza o texto e o estado do toggle conforme o novo status
+        const statusLabel = document.getElementById('statusLabel');
+        const toggleButton = document.getElementById('toggleStatusBtn');
+
+        statusLabel.textContent = novoStatus ? "Loja Online" : "Loja Offline";
+        toggleButton.checked = novoStatus;
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+// Função para buscar o status atual da loja
+async function obterStatusLoja() {
+    try {
+        const response = await fetch('/api/statusLoja'); // Chama a API do backend
 
         if (!response.ok) {
             throw new Error('Erro ao buscar status da loja.');
         }
 
         const data = await response.json();
-        lojaOnline = data.online; // Atualiza a variável
-
-        const statusIcon = document.getElementById("statusIcon");
-        const statusText = document.getElementById("statusText");
-        const finalizarBtn = document.getElementById("finalizar");
-
-        if (lojaOnline) {
-            statusIcon.innerHTML = "🟢"; 
-            statusText.innerHTML = "Loja Online";
-            finalizarBtn.disabled = false;
-            finalizarBtn.title = "Clique para finalizar o pedido";
-        } else {
-            statusIcon.innerHTML = "🔴";
-            statusText.innerHTML = "Loja Offline";
-            finalizarBtn.disabled = true;
-            finalizarBtn.title = "A loja está offline. Não é possível finalizar o pedido.";
-        }
+        return data.online;
     } catch (error) {
-        console.error(error);
+        console.error(error.message);
+        return false; // Retorna offline por padrão em caso de erro
     }
 }
 
-// Chamar a função ao carregar a página
-document.addEventListener("DOMContentLoaded", verificarStatusLoja);
+// Evento de clique para alterar o status
+document.getElementById('toggleStatusBtn').addEventListener('change', alterarStatusLoja);
 
-// Atualizar o status da loja a cada 10 segundos
-setInterval(verificarStatusLoja, 10000);
+// Inicializa o estado do botão quando a página carrega
+(async () => {
+    const statusLoja = await obterStatusLoja();
+    const statusLabel = document.getElementById('statusLabel');
+    const toggleButton = document.getElementById('toggleStatusBtn');
 
-// Evento de clique para finalizar o pedido
-document.getElementById("finalizar").addEventListener("click", function() {
-    if (lojaOnline) {
-        console.log("Pedido finalizado.");
-    } else {
-        console.log("Não é possível finalizar o pedido, a loja está offline.");
-    }
-});
+    statusLabel.textContent = statusLoja ? "Loja Online" : "Loja Offline";
+    toggleButton.checked = statusLoja;
+})();
