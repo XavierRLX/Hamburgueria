@@ -10,7 +10,7 @@ document.querySelector('form').addEventListener('submit', async (event) => {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/login', {
+        const response = await fetch('https://pedidoonline.onrender.com/login', { // Alterado para URL do Render
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
