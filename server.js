@@ -84,6 +84,16 @@ routes.forEach(route => {
   }
 });
 
+// Rota para fornecer as variáveis do Supabase ao frontend
+app.get('/config.js', (req, res) => {
+  res.type('application/javascript');
+  res.send(`
+    const supabaseUrl = "${process.env.SUPABASE_URL}";
+    const apiKey = "${process.env.SUPABASE_KEY}";
+  `);
+});
+
+
 // Rota de login
 app.post('/login', async (req, res) => {
   console.log("Recebendo tentativa de login...");
