@@ -1,4 +1,0 @@
-const supabaseUrl = 'https://uweicybzciidmyumejzm.supabase.co';
-const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3ZWljeWJ6Y2lpZG15dW1lanptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk3MjYzOTgsImV4cCI6MjA0NTMwMjM5OH0.xxcr3nzb0_bHISQvlBwiV0kDSNOieQa6eem7hbLc8Zk';
-
-SESSION_SECRET='a3f9b4c7e1d2a5f8b6c4d9e7a3b2f1c4e6d5f9a8c7e3b2f4d5c6a9e8b7d1c3f2'

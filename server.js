@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Configuração do Supabase com variáveis de ambiente
 const supabaseUrl = process.env.SUPABASE_URL;
 const apiKey = process.env.SUPABASE_KEY;
+
 const supabase = createClient(supabaseUrl, apiKey);
 
 // Configuração da sessão
