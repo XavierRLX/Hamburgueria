@@ -90,10 +90,12 @@
       <div class="container-fluid">
         <div class="row justify-content-center m-w-3 shadow-lg p-3 mb-5 bg-body rounded">
           <div class="d-flex mt-3">
-            <span id="statusLoja" class="badge fs-6 fs-6 px-3 py-2 text-secondary">
-              <span id="statusIcon" class="blink">🔄</span> 
-              <span id="statusText">Verificando...</span>
-          </span>
+            <label class="switch">
+              <input type="checkbox" id="toggleStatusBtn">
+              <span class="slider round"></span>
+          </label>
+          <span id="statusLabel">Verificando...</span>
+          
         </div>
           <h2 class="text-center m-3">Cardápio</h2>
           <div class=" catItensCard opc-card-scroll mb-4">
@@ -360,7 +362,7 @@
 <script src="/javaScript/carregaCategoriaCardapio.js"></script>
 <script src="/javaScript/carregaProdutosCardapio.js"></script>
 <script src="/javaScript/apiGoogle.js"></script>
-<script src="/javaScript/env.js"></script>
+<!-- <script src="/javaScript/env.js"></script> -->
 <script src="/javaScript/criarPedido.js"></script>
 <script src="/javaScript/statusLoja.js"></script>
 </html>

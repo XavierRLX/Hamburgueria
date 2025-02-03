@@ -1,16 +1,11 @@
-
 async function carregaCategoriaCardapio() {
-    const url = `${supabaseUrl}/rest/v1/categoria?select=*`;
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'apikey': apiKey,
-            'Authorization': `Bearer ${apiKey}`
-        },
-    });
+    try {
+        const response = await fetch('/api/categorias'); // Agora chama o backend
 
-    if (response.ok) {
+        if (!response.ok) {
+            throw new Error('Erro ao carregar categorias.');
+        }
+
         const data = await response.json();
         const categoriaList = document.querySelector('.catItensCard');
         categoriaList.innerHTML = ''; // Limpa a lista de categorias
@@ -23,9 +18,9 @@ async function carregaCategoriaCardapio() {
             });
             categoriaList.appendChild(categoriaItem);
         });
-    } else {
-        const errorData = await response.json(); // Para exibir informações detalhadas do erro
-        alert('Erro ao carregar a lista de categorias: ' + errorData.message);
+    } catch (error) {
+        console.error(error);
+        alert('Erro ao carregar a lista de categorias.');
     }
 }
 

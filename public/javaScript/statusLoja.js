@@ -1,53 +1,58 @@
-let lojaOnline = false; // Variável para armazenar o status da loja
+document.addEventListener("DOMContentLoaded", async () => {
+    const toggleButton = document.getElementById('toggleStatusBtn');
+    const statusLabel = document.getElementById('statusLabel');
 
-async function verificarStatusLoja() {
-    const url = `${supabaseUrl}/rest/v1/statusLoja?select=online&limit=1`;
-    
-    const response = await fetch(url, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            apikey: apiKey,
-            Authorization: `Bearer ${apiKey}`
-        }
-    });
-
-    if (response.ok) {
-        const data = await response.json();
-        lojaOnline = data.length > 0 ? data[0].online : false;
-        
-        const statusIcon = document.getElementById("statusIcon");
-        const statusText = document.getElementById("statusText");
-        const finalizarBtn = document.getElementById("finalizar");
-
-        if (lojaOnline) {
-            statusIcon.innerHTML = "🟢"; // Ícone verde
-            statusText.innerHTML = "Loja Online"; // Texto fixo
-            finalizarBtn.disabled = false; // Habilitar botão se online
-            finalizarBtn.title = "Clique para finalizar o pedido"; // Mensagem de ajuda
-        } else {
-            statusIcon.innerHTML = "🔴"; // Ícone vermelho
-            statusText.innerHTML = "Loja Offline"; // Texto fixo
-            finalizarBtn.disabled = true; // Desabilitar botão se offline
-            finalizarBtn.title = "A loja está offline. Não é possível finalizar o pedido."; // Mensagem de ajuda
-        }
-    } else {
-        console.error("Erro ao buscar status da loja.");
+    if (!toggleButton || !statusLabel) {
+        console.error("Elementos não encontrados! Verifique se os IDs estão corretos no HTML.");
+        return;
     }
-}
 
-// Chamar a função ao carregar a página
-document.addEventListener("DOMContentLoaded", verificarStatusLoja);
+    // Função para buscar o status atual da loja
+    async function obterStatusLoja() {
+        try {
+            const response = await fetch('/api/statusLoja'); // Faz a requisição ao backend
 
-// Atualizar o status da loja a cada 10 segundos (10.000ms)
-setInterval(verificarStatusLoja, 10000);
+            if (!response.ok) {
+                throw new Error('Erro ao buscar status da loja.');
+            }
 
-// Adicionar evento de clique para finalizar o pedido, caso o botão esteja habilitado
-document.getElementById("finalizar").addEventListener("click", function() {
-    if (lojaOnline) {
-        // Lógica para finalizar o pedido
-        console.log("Pedido finalizado.");
-    } else {
-        console.log("Não é possível finalizar o pedido, a loja está offline.");
+            const data = await response.json();
+            return data.online; // Retorna true (online) ou false (offline)
+        } catch (error) {
+            console.error(error.message);
+            return false; // Retorna offline por padrão em caso de erro
+        }
     }
+
+    // Função para alterar o status da loja
+    async function alterarStatusLoja() {
+        try {
+            const novoStatus = toggleButton.checked; // Obtém o novo status
+
+            const response = await fetch('/api/statusLoja', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ online: novoStatus })
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao alterar status da loja.');
+            }
+
+            console.log(`Status da loja alterado para: ${novoStatus ? "Online" : "Offline"}`);
+            statusLabel.textContent = novoStatus ? "Loja Online" : "Loja Offline";
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    // Inicializa o estado do botão ao carregar a página
+    const statusLoja = await obterStatusLoja();
+    statusLabel.textContent = statusLoja ? "Loja Online" : "Loja Offline";
+    toggleButton.checked = statusLoja;
+
+    // Adiciona o evento de clique no botão de alternância
+    toggleButton.addEventListener('change', alterarStatusLoja);
 });

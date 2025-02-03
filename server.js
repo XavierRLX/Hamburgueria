@@ -14,11 +14,6 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Configuração do Supabase com variáveis de ambiente
-const supabaseUrl = process.env.SUPABASE_URL;
-const apiKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, apiKey);
-
 // Configuração da sessão
 app.use(session({
   secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
@@ -126,11 +121,6 @@ app.post('/login', async (req, res) => {
   res.json({ message: "Login bem-sucedido", redirect: "/" });
 });
 
-// Rota de logout
-app.get('/logout', async (req, res) => {
-  if (req.session.userId) {
-    await supabase.auth.signOut(); // Invalida o token no Supabase
-  }
 
   req.session.destroy(() => {
     res.redirect('/login');
