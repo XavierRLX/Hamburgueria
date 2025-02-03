@@ -1,20 +1,22 @@
 document.querySelector('form').addEventListener('submit', async (event) => {
-    event.preventDefault(); // Evita o recarregamento da página
+    event.preventDefault();
 
     const email = document.querySelector('input[name="email"]').value;
     const password = document.querySelector('input[name="password"]').value;
+    const button = document.querySelector('button[type="submit"]');
 
     if (!email || !password) {
         alert("Preencha todos os campos!");
         return;
     }
 
+    button.disabled = true;
+    button.innerText = "Entrando...";
+
     try {
-        const response = await fetch('http://localhost:3000/login', {
+        const response = await fetch('/login', {  // Melhor usar caminho relativo
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
         });
 
@@ -23,10 +25,12 @@ document.querySelector('form').addEventListener('submit', async (event) => {
         if (response.ok) {
             window.location.href = data.redirect;
         } else {
-            alert(data.message || "Erro ao fazer login");
+            alert(data.message);
         }
     } catch (error) {
-        console.error("Erro ao conectar com o servidor:", error);
         alert("Erro ao conectar com o servidor.");
+    } finally {
+        button.disabled = false;
+        button.innerText = "Entrar";
     }
 });
