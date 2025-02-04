@@ -1,89 +1,92 @@
 async function carregaPedidosPorStatus(status, containerId, loadingId, filterDate = null) {
-    const url = `${supabaseUrl}/rest/v1/pedidos?select=*&order=data.asc`;
+    const url = status 
+        ? `/api/pedidosAdm?status=${status}` 
+        : `/api/pedidosAdm`;  // 🔹 Busca pedidos por status
+
     const loadingIndicator = document.getElementById(loadingId);
-    loadingIndicator.style.display = 'block'; // Show loading
+    loadingIndicator.style.display = 'block'; // 🔹 Mostra indicador de carregamento
 
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: apiKey,
-        Authorization: `Bearer ${apiKey}`,
-      },
-    });
+    try {
+        const response = await fetch(url, { method: "GET" });
 
-    loadingIndicator.style.display = "none";
+        loadingIndicator.style.display = "none";
 
-    function formatarData(dataString) {
-      const data = new Date(dataString);
+        if (!response.ok) {
+            throw new Error('Erro ao carregar pedidos');
+        }
 
-      return data.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
-    }
-
-
-    if (response.ok) {
         const data = await response.json();
         const pedidoList = document.getElementById(containerId);
-        pedidoList.innerHTML = ""; // Clear existing orders
+        pedidoList.innerHTML = ""; // 🔹 Limpa pedidos antigos
 
-        let pedidosFiltrados = data.filter(pedido => pedido.status === status || (status === 'finalizado' && pedido.status === 'cancelado'));
+        function formatarData(dataString) {
+            const data = new Date(dataString);
+            return data.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+        }
+
+        let pedidosFiltrados = data;
+        
+        // 🔹 Filtro por data (caso necessário)
         if (filterDate) {
             const selectedDate = new Date(filterDate).toISOString().split('T')[0]; // YYYY-MM-DD format
-            pedidosFiltrados = pedidosFiltrados.filter(pedido => new Date(pedido.data).toISOString().split('T')[0] === selectedDate);
+            pedidosFiltrados = pedidosFiltrados.filter(pedido => 
+                new Date(pedido.data).toISOString().split('T')[0] === selectedDate
+            );
         }
 
         pedidosFiltrados.forEach(pedido => {
             const pedidoItem = document.createElement('div');
             pedidoItem.className = 'col-12 col-md-6 col-lg-4 mb-3';
             pedidoItem.innerHTML = `
-            <div class="card">
-            <div class="card-header bg-${pedido.status === 'aberto' ? 'primary' : pedido.status === 'atendimento' ? 'warning' : pedido.status === 'cancelado' ? 'danger' : 'success'} text-white">
-                <h5 class="card-title">Pedido #${pedido.pkPedido}</h5>
-            </div>
-            <div class="card-body">
-                <ul class="list-group">
-                    <li class="list-group-item"><strong>Itens:</strong> ${pedido.itensPedido.replace(/#/g, '<br>')}</li>
-                    <li class="list-group-item"><strong>Detalhes:</strong> ${pedido.detalhes}</li>
-                    <li class="list-group-item"><strong>Cliente:</strong> ${pedido.nome}</li>
-                    <li class="list-group-item"><strong>Número:</strong> ${pedido.numeroCelular || '0'}</li>
-                    <li class="list-group-item"><strong>Endereço:</strong> ${pedido.endereco || 'No local'}</li>
-                    <li class="list-group-item"><strong>Mesa:</strong> ${pedido.mesa || 'Entrega'}</li>
-                    <li class="list-group-item"><strong>Data:</strong> ${formatarData(pedido.data)}</li>
-                    <li class="list-group-item"><strong>Forma de Pagamento:</strong> ${pedido.formaPagamento}</li>
-                    <li class="list-group-item">
-                        <strong>Taxas:</strong> <span class="badge bg-warning text-dark">R$ ${pedido.taxas.toFixed(2)}</span>
-                    </li>
-                    <li class="list-group-item">
-                        <strong>Total:</strong> <span class="badge bg-success">R$ ${pedido.totalPedido.toFixed(2)}</span>
-                    </li>
-                </ul>
-                <div class="mt-3">
-                ${pedido.status === 'aberto' ? `
-                <button class="btn btn-warning" onclick="atualizarStatus(${pedido.pkPedido}, 'atendimento')">Atender</button>
-                <button class="btn btn-danger" onclick="atualizarStatus(${pedido.pkPedido}, 'cancelado')">Cancelar</button>
-                ` : pedido.status === 'atendimento' ? `
-                <button class="btn btn-success" onclick="atualizarStatus(${pedido.pkPedido}, 'finalizado')">Finalizar</button>
-                <button class="btn btn-danger" onclick="atualizarStatus(${pedido.pkPedido}, 'cancelado')">Cancelar</button>
-                ` : ''}
-            </div>
-            </div>
-        </div>
+                <div class="card">
+                    <div class="card-header bg-${pedido.status === 'aberto' ? 'primary' : 
+                                                pedido.status === 'atendimento' ? 'warning' : 
+                                                pedido.status === 'cancelado' ? 'danger' : 'success'} text-white">
+                        <h5 class="card-title">Pedido #${pedido.pkPedido}</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item"><strong>Itens:</strong> ${pedido.itensPedido.replace(/#/g, '<br>')}</li>
+                            <li class="list-group-item"><strong>Detalhes:</strong> ${pedido.detalhes}</li>
+                            <li class="list-group-item"><strong>Cliente:</strong> ${pedido.nome}</li>
+                            <li class="list-group-item"><strong>Número:</strong> ${pedido.numeroCelular || '0'}</li>
+                            <li class="list-group-item"><strong>Endereço:</strong> ${pedido.endereco || 'No local'}</li>
+                            <li class="list-group-item"><strong>Mesa:</strong> ${pedido.mesa || 'Entrega'}</li>
+                            <li class="list-group-item"><strong>Data:</strong> ${formatarData(pedido.data)}</li>
+                            <li class="list-group-item"><strong>Forma de Pagamento:</strong> ${pedido.formaPagamento}</li>
+                            <li class="list-group-item">
+                                <strong>Taxas:</strong> <span class="badge bg-warning text-dark">R$ ${pedido.taxas.toFixed(2)}</span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Total:</strong> <span class="badge bg-success">R$ ${pedido.totalPedido.toFixed(2)}</span>
+                            </li>
+                        </ul>
+                        <div class="mt-3">
+                            ${pedido.status === 'aberto' ? `
+                            <button class="btn btn-warning" onclick="atualizarStatus(${pedido.pkPedido}, 'atendimento')">Atender</button>
+                            <button class="btn btn-danger" onclick="atualizarStatus(${pedido.pkPedido}, 'cancelado')">Cancelar</button>
+                            ` : pedido.status === 'atendimento' ? `
+                            <button class="btn btn-success" onclick="atualizarStatus(${pedido.pkPedido}, 'finalizado')">Finalizar</button>
+                            <button class="btn btn-danger" onclick="atualizarStatus(${pedido.pkPedido}, 'cancelado')">Cancelar</button>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
             `;
             pedidoList.appendChild(pedidoItem);
         });
-    } else {
+
+    } catch (error) {
         alert('Erro ao carregar a lista de pedidos. Tente novamente mais tarde.');
     }
 }
 
 async function carregaPedidosContagem() {
-    const url = `${supabaseUrl}/rest/v1/pedidos?select=status`;
+    const url = '/api/pedidosAdm/contagem';  // Rota que você criou no Express
     const response = await fetch(url, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': apiKey,
-            'Authorization': `Bearer ${apiKey}`
         },
     });
     

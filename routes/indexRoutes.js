@@ -10,7 +10,7 @@ router.get('/categorias', async (req, res) => {
 });
 
 // Buscar produtos com filtro opcional por categoria
-router.get('/produtos', async (req, res) => {
+router.get('/produtosCardapio', async (req, res) => {
     const { categoria } = req.query; // Pegando o ID da categoria da query string
 
     let query = supabase.from('produtos').select('*').eq('ativo', true);
@@ -38,7 +38,7 @@ router.get('/status-loja', async (req, res) => {
 });
 
 // Criar pedido
-router.post('/pedido', async (req, res) => {
+router.post('/Criarpedido', async (req, res) => {
     try {
         const {
             produtosCarrinho,

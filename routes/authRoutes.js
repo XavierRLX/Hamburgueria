@@ -1,8 +1,14 @@
 const express = require('express');
-const router = express.Router();
-const { supabase } = require('../supabaseClient');
+const router = express.Router();  // 🔹 Correção: Definir a variável router
+const { createClient } = require('@supabase/supabase-js');
+require('dotenv').config();
 
-router.post('/loginAuth', async (req, res) => {  // Alterado para loginAuth
+// Configuração do Supabase
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+router.post('/loginAuth', async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -15,8 +21,10 @@ router.post('/loginAuth', async (req, res) => {  // Alterado para loginAuth
         return res.status(400).json({ message: "Usuário ou senha incorretos." });
     }
 
+    // Salvar ID do usuário na sessão
     req.session.userId = data.user.id;
 
+    // Buscar o papel do usuário (se é admin ou comum)
     const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('role')
@@ -27,16 +35,18 @@ router.post('/loginAuth', async (req, res) => {  // Alterado para loginAuth
         req.session.role = profile.role;
     }
 
+    // Salvar a sessão corretamente
     req.session.save(err => {
         if (err) {
             console.error("Erro ao salvar sessão:", err);
             return res.status(500).json({ message: "Erro interno ao salvar sessão." });
         }
-        res.json({ message: "Login bem-sucedido", redirect: "/" });
+        res.json({ message: "Login bem-sucedido", redirect: "/admPedidos" });
     });
 });
 
-// Rota de logout corrigida
+
+// Rota de logout
 router.get('/logout', async (req, res) => {
     req.session.destroy(err => {
         if (err) {
@@ -46,4 +56,4 @@ router.get('/logout', async (req, res) => {
     });
 });
 
-module.exports = router;
+module.exports = router;  // 🔹 Exportando corretamente o router

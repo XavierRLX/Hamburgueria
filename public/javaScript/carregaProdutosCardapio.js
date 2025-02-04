@@ -1,7 +1,7 @@
 
 
 async function carregaProdutosCardapio(categoria = '') {
-    let url = '/api/produtos';
+    let url = '/api/produtosCardapio';
 
     if (categoria) {
         url += `?categoria=${encodeURIComponent(categoria)}`;

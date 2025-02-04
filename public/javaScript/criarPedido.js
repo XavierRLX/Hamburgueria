@@ -26,7 +26,7 @@ async function criarPedido() {
     };
 
     try {
-        const response = await fetch('/api/pedido', {
+        const response = await fetch('/api/Criarpedido', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
