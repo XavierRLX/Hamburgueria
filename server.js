@@ -2,7 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
+const authRoutes = require('./routes/authRoutes');
 const { createClient } = require('@supabase/supabase-js');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
@@ -11,8 +13,12 @@ const port = process.env.PORT || 3000;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 // Middleware para parsing de JSON e formulários
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+const indexRoutes = require('./routes/indexRoutes');
+
 
 // Configuração do Supabase com variáveis de ambiente
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -21,6 +27,7 @@ const apiKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, apiKey);
 
 // Configuração da sessão
+// Configuração da sessão (DEVE VIR ANTES DAS ROTAS!)
 app.use(session({
   secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
   resave: false,
@@ -31,6 +38,10 @@ app.use(session({
   }
 }));
 
+app.use('/api', indexRoutes);
+app.use('/api/auth', authRoutes);
+
+
 // Servindo arquivos estáticos
 app.use('/style', express.static(path.join(__dirname, 'public/style')));
 app.use('/javaScript', express.static(path.join(__dirname, 'public/javaScript')));
@@ -39,7 +50,7 @@ app.use('/projeto-base', express.static(path.join(__dirname, 'projeto-base/src')
 // Middleware para verificar autenticação e papel de administrador
 async function isAuthenticated(req, res, next) {
   if (!req.session.userId) {
-    return res.redirect('/login');
+    return res.redirect('/loginAuth');
   }
 
   if (!req.session.role) {
@@ -84,69 +95,14 @@ routes.forEach(route => {
   }
 });
 
-// Rota para fornecer as variáveis do Supabase ao frontend
-app.get('/config.js', (req, res) => {
-  res.type('application/javascript');
-  res.send(`
-    const supabaseUrl = "${process.env.SUPABASE_URL}";
-    const apiKey = "${process.env.SUPABASE_KEY}";
-  `);
-});
-
-
-// Rota de login
-app.post('/login', async (req, res) => {
-  console.log("Recebendo tentativa de login...");
-
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ message: "Email e senha são obrigatórios." });
-  }
-
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-  if (error) {
-    console.log("Erro no login:", error.message);
-    let errorMessage = "Usuário ou senha incorretos.";
-
-    if (error.message.includes("Invalid login credentials")) {
-      errorMessage = "E-mail ou senha inválidos.";
-    } else if (error.message.includes("User not confirmed")) {
-      errorMessage = "Confirme seu e-mail antes de entrar.";
-    }
-
-    return res.status(400).json({ message: errorMessage });
-  }
-
-  console.log("Login bem-sucedido para:", data.user.email);
-  
-  req.session.userId = data.user.id;
-
-  // Busca e armazena o papel do usuário
-  const { data: profile, error: profileError } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', data.user.id)
-    .single();
-
-  if (!profileError && profile) {
-    req.session.role = profile.role;
-  }
-
-  res.json({ message: "Login bem-sucedido", redirect: "/" });
-});
-
-// Rota de logout
-app.get('/logout', async (req, res) => {
-  if (req.session.userId) {
-    await supabase.auth.signOut(); // Invalida o token no Supabase
-  }
-
-  req.session.destroy(() => {
-    res.redirect('/login');
+async function verificarLogin() {
+  const response = await fetch('/api/auth/loginAuth', {  // Agora está dentro de uma função async
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
   });
-});
+}
+
 
 // Inicializando o servidor
 app.listen(port, () => {

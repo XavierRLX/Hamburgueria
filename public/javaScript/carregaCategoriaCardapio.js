@@ -1,14 +1,7 @@
 
 async function carregaCategoriaCardapio() {
-    const url = `${supabaseUrl}/rest/v1/categoria?select=*`;
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'apikey': apiKey,
-            'Authorization': `Bearer ${apiKey}`
-        },
-    });
+    const url = '/api/categorias';
+    const response = await fetch(url, { method: 'GET' });
 
     if (response.ok) {
         const data = await response.json();

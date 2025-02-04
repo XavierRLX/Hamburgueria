@@ -14,7 +14,7 @@ document.querySelector('form').addEventListener('submit', async (event) => {
     button.innerText = "Entrando...";
 
     try {
-        const response = await fetch('/login', {  // Melhor usar caminho relativo
+        const response = await fetch('api/auth/loginAuth', {  // Melhor usar caminho relativo
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })

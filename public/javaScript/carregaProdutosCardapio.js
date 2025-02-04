@@ -1,20 +1,13 @@
 
 
 async function carregaProdutosCardapio(categoria = '') {
-  let url = `${supabaseUrl}/rest/v1/produtos?select=*&ativo=eq.true`;
-  
-  if (categoria) {
-      url += `&fkCategoria=eq.${encodeURIComponent(categoria)}`; // Corrigido para filtrar pela chave estrangeira
-  }
+    let url = '/api/produtos';
 
-  const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-          'Content-Type': 'application/json',
-          'apikey': apiKey,
-          'Authorization': `Bearer ${apiKey}`
-      },
-  });
+    if (categoria) {
+        url += `?categoria=${encodeURIComponent(categoria)}`;
+    }
+
+    const response = await fetch(url, { method: 'GET' });
 
   if (response.ok) {
       const data = await response.json();
