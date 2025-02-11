@@ -114,3 +114,54 @@ async function buscarContagem() {
         document.getElementById("contagemPedidos").innerHTML = "<p class='text-danger'>Erro ao carregar contagem.</p>";
     }
 }
+
+
+let ultimoTotalPedidosAbertos = null; // Armazena a última contagem válida
+
+// Função para verificar se há novos pedidos em aberto
+async function verificarNovosPedidos() {
+    try {
+        const response = await fetch('/api/pedidosAdm/contagem');
+        if (!response.ok) throw new Error("Erro ao buscar contagem!");
+
+        const contagem = await response.json();
+
+        // Se `ultimoTotalPedidosAbertos` for null (primeira execução), apenas armazena o valor e não exibe a notificação
+        if (ultimoTotalPedidosAbertos === null) {
+            ultimoTotalPedidosAbertos = contagem.aberto;
+            return; // Sai da função para evitar exibir notificação desnecessária
+        }
+
+        // Se a contagem de pedidos "aberto" aumentou, exibe a notificação
+        if (contagem.aberto > ultimoTotalPedidosAbertos) {
+            document.getElementById("notificationIcon").style.display = "block"; // Mostra a notificação
+        }
+
+        // Atualiza o total de pedidos abertos para comparação futura
+        ultimoTotalPedidosAbertos = contagem.aberto;
+
+    } catch (error) {
+        console.error("Erro ao verificar novos pedidos:", error);
+    }
+}
+
+// Função para atualizar pedidos e ocultar a notificação ao clicar nela
+document.getElementById("notificationIcon").addEventListener("click", () => {
+    buscarPedidos("aberto", "pedidosAberto");
+    buscarPedidos("atendimento", "pedidosAtendimento");
+    buscarPedidos("finalizado", "pedidosFinalizado");
+    buscarPedidos("cancelado", "pedidosCancelado");
+    buscarContagem();
+
+    document.getElementById("notificationIcon").style.display = "none"; // Esconde a notificação
+});
+
+// Executa imediatamente ao carregar a página para armazenar a contagem inicial
+document.addEventListener("DOMContentLoaded", async () => {
+    await buscarContagem(); // Obtém a contagem real ao carregar a página
+    await verificarNovosPedidos(); // Faz a primeira verificação
+
+    // A cada 10 segundos, verifica se há novos pedidos
+    setInterval(verificarNovosPedidos, 10000);
+});
+
