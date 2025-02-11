@@ -68,6 +68,28 @@ router.get('/pedidosAdm/contagem', async (req, res) => {
     res.json(contagem);
 });
 
+router.post("/pedidosAdm/atualizar", async (req, res) => {
+    const { pkPedido, novoStatus } = req.body;
+
+    if (!pkPedido || !novoStatus) {
+        return res.status(400).json({ erro: "Dados inválidos!" });
+    }
+
+    try {
+        // 🔹 Atualiza o status do pedido no Supabase
+        const { error } = await supabase
+            .from('pedidos')
+            .update({ status: novoStatus })
+            .eq('pkPedido', pkPedido);
+
+        if (error) throw error;
+
+        res.json({ sucesso: true, mensagem: "Status do pedido atualizado!" });
+    } catch (error) {
+        console.error("🔴 Erro ao atualizar pedido:", error);
+        res.status(500).json({ erro: "Erro ao atualizar pedido!" });
+    }
+});
 
 
 

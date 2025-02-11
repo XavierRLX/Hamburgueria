@@ -19,15 +19,15 @@ async function buscarPedidos(status, elementoID) {
         
         if (!elemento) return;
 
-        // Exibir pedidos em cards
         elemento.innerHTML = pedidos.length === 0 
             ? "<p class='text-muted text-center'>Nenhum pedido encontrado.</p>"
             : `<div class="row">
             ${pedidos.map(pedido => `
                 <div class="col-12 col-md-6">
                     <div class="card mb-3 shadow-sm">
-                        <div class="card-header bg-light fw-bold">
+                        <div class="card-header bg-light fw-bold d-flex justify-content-between align-items-center">
                             Pedido #${pedido.pkPedido}
+                            ${status === "aberto" || status === "atendimento" ? getBotaoStatus(pedido.pkPedido, status) : ""}
                         </div>
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
@@ -42,7 +42,7 @@ async function buscarPedidos(status, elementoID) {
                     </div>
                 </div>
             `).join("")}
-        </div>`
+        </div>`;
 
     } catch (error) {
         console.error("Erro ao buscar pedidos:", error);
@@ -50,6 +50,53 @@ async function buscarPedidos(status, elementoID) {
     }
 }
 
+// Função para gerar os botões com base no status do pedido
+function getBotaoStatus(pkPedido, status) {
+    if (status === "aberto") {
+        return `
+            <div>
+                <button class="btn btn-sm btn-success" onclick="atualizarStatusPedido(${pkPedido}, 'atendimento')">Aceitar</button>
+                <button class="btn btn-sm btn-danger" onclick="atualizarStatusPedido(${pkPedido}, 'cancelado')">Recusar</button>
+            </div>
+        `;
+    } else if (status === "atendimento") {
+        return `
+            <div>
+                <button class="btn btn-sm btn-primary" onclick="atualizarStatusPedido(${pkPedido}, 'finalizado')">Finalizar</button>
+                <button class="btn btn-sm btn-danger" onclick="atualizarStatusPedido(${pkPedido}, 'cancelado')">Cancelar</button>
+            </div>
+        `;
+    }
+    return "";
+}
+
+// Função para atualizar o status do pedido
+async function atualizarStatusPedido(pkPedido, novoStatus) {
+    try {
+        const response = await fetch(`/api/pedidosAdm/atualizar`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ pkPedido, novoStatus })
+        });
+
+        if (!response.ok) throw new Error("Erro ao atualizar pedido!");
+
+        alert("Pedido atualizado com sucesso!");
+        buscarContagem(); // Atualiza a contagem dos pedidos
+        buscarPedidos("aberto", "pedidosAberto");
+        buscarPedidos("atendimento", "pedidosAtendimento");
+        buscarPedidos("finalizado", "pedidosFinalizado");
+        buscarPedidos("cancelado", "pedidosCancelado");
+
+    } catch (error) {
+        console.error("Erro ao atualizar pedido:", error);
+        alert("Erro ao atualizar pedido. Tente novamente.");
+    }
+}
+
+// Função para buscar contagem de pedidos
 async function buscarContagem() {
     try {
         const response = await fetch('/api/pedidosAdm/contagem');
