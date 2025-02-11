@@ -91,6 +91,30 @@ router.post("/pedidosAdm/atualizar", async (req, res) => {
     }
 });
 
+// Rota para baixar os pedidos
+router.get('/pedidosAdm/baixarPedidos', async (req, res) => {
+    try {
+        console.log("🔹 Rota '/api/pedidosAdm/baixarPedidos' foi chamada!");
+
+        const { data, error } = await supabase.from('pedidos').select('*');
+
+        if (error) {
+            console.error("🔴 Erro ao buscar pedidos:", error);
+            return res.status(500).json({ error: "Erro ao buscar pedidos" });
+        }
+
+        if (!data || data.length === 0) {
+            return res.status(404).json({ error: "Nenhum pedido encontrado" });
+        }
+
+        res.json(data);
+    } catch (err) {
+        console.error("🔴 Erro interno no servidor:", err.message);
+        res.status(500).json({ error: "Erro interno no servidor" });
+    }
+});
+
+
 
 
 module.exports = router;
