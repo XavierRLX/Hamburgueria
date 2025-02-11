@@ -48,7 +48,9 @@
         <div class="form-check form-switch me-3">
           <input class="form-check-input" type="checkbox" id="toggleStatusBtn" role="switch">
         </div>
-        <img id="logoutBtn" class="ms-auto" src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs//logout.png" alt="logout" title="lougout" width="20px" height="20px">
+        <img id="logoutBtn" class="ms-auto"
+          src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs//logout.png" alt="logout"
+          title="lougout" width="20px" height="20px">
       </div>
       <!-- Cabeçalho -->
       <div class="d-flex align-items-center justify-content-between mb-3">
@@ -56,7 +58,8 @@
           <!-- Título com notificação ao lado -->
           <h2 class="mb-0">Lista de Pedidos</h2>
           <div id="notificationIcon" style="display: none; cursor: pointer;">
-            <img src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/notificacao.png"       alt="Notificação" title="Novos Pedidos" width="20px" height="20px" />
+            <img src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/notificacao.png"
+              alt="Notificação" title="Novos Pedidos" width="20px" height="20px" />
           </div>
         </div>
         <!-- Botão de Download no final -->
@@ -64,56 +67,53 @@
           <i class="bi bi-download"></i> Baixar
         </button>
       </div>
-    
-      <!-- Contagem de Pedidos -->
-      <div id="contagemPedido" class="mb-3"></div>
-    
-      <!-- Pedidos - Aberto -->
-      <div class="card mb-4">
-        <div class="card-header">
-          <h4 class="mb-0">Aberto</h4>
-        </div>
-        <div class="card-body">
-          <div id="rowPed" class="row"></div>
-          <div id="loadingPed" class="text-center d-none">Carregando...</div>
-        </div>
-      </div>
-    
-      <!-- Pedidos - Atendimento -->
-      <div class="card mb-4">
-        <div class="card-header">
-          <h4 class="mb-0">Atendimento</h4>
-        </div>
-        <div class="card-body">
-          <div id="rowPedAt" class="row"></div>
-          <div id="loadingPedAt" class="text-center d-none">Carregando...</div>
-        </div>
-      </div>
-    
-      <!-- Pedidos - Finalizados -->
-      <div class="card mb-4">
-        <div class="card-header d-flex flex-column flex-md-row align-items-md-center justify-content-between">
-          <h4 class="mb-2 mb-md-0">Finalizados</h4>
-          <div class="d-flex gap-2">
-            <input type="date" id="filterDate" class="form-control form-control-sm">
-            <button id="filterButton" class="btn btn-primary btn-sm">Filtrar</button>
+  
+      <!-- Contagem de pedidos -->
+      <div class="alert alert-primary text-center" id="contagemPedidos">Carregando...</div>
+  
+      <!-- Seção de Pedidos -->
+      <div id="pedidosContainer">
+        <div class="row">
+          <!-- Cards por Status -->
+          <div class="col-md-6">
+            <div class="card mb-4">
+              <div class="card-header bg-warning text-dark">Aberto</div>
+              <div class="card-body" id="pedidosAberto">Carregando...</div>
+            </div>
           </div>
-        </div>
-        <div class="card-body">
-          <div id="rowPedFd" class="row"></div>
-          <div id="loadingPedFd" class="text-center d-none">Carregando...</div>
-          <button id="deleteAllButton" class="btn btn-danger btn-sm mt-2">Excluir Todos</button>
+  
+          <div class="col-md-6">
+            <div class="card mb-4">
+              <div class="card-header bg-info text-white">Atendimento</div>
+              <div class="card-body" id="pedidosAtendimento">Carregando...</div>
+            </div>
+          </div>
+  
+          <div class="col-md-6">
+            <div class="card mb-4">
+              <div class="card-header bg-success text-white">Finalizado</div>
+              <div class="card-body" id="pedidosFinalizado">Carregando...</div>
+            </div>
+          </div>
+  
+          <div class="col-md-6">
+            <div class="card mb-4">
+              <div class="card-header bg-danger text-white">Cancelado</div>
+              <div class="card-body" id="pedidosCancelado">Carregando...</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
   <script src="/javaScript/carregaPedidosAdm.js"></script>
-  <script src="/javaScript/baixarPedidos.js"></script>
+  <!-- <script src="/javaScript/baixarPedidos.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="/javaScript/alterarStatusLoja.js"></script>
-  <script src="/javaScript/logout.js"></script>
-  <script src="/javaScript/verificaSessao.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+   <!-- <script src="/javaScript/alterarStatusLoja.js"></script> -->
+  <!-- <script src="/javaScript/logout.js"></script> -->
+  <!-- <script src="/javaScript/verificaSessao.js"></script>  -->
 
   
 
