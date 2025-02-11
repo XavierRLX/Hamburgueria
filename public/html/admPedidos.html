@@ -68,51 +68,80 @@
         </button>
       </div>
   
-      <!-- Contagem de pedidos -->
-      <div class="alert alert-primary text-center" id="contagemPedidos">Carregando...</div>
-  
-      <!-- Seção de Pedidos -->
-      <div id="pedidosContainer">
+      <div class="container mt-4">
+        <!-- Contagem de pedidos -->
         <div class="row">
-          <!-- Cards por Status -->
-          <div class="col-md-6">
-            <div class="card mb-4">
-              <div class="card-header bg-warning text-dark">Aberto</div>
-              <div class="card-body" id="pedidosAberto">Carregando...</div>
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><i class="fas fa-chart-pie"></i> Status dos Pedidos</h5>
+                        <p id="contagemPedidos" class="fs-5 text-muted">Carregando...</p>
+                    </div>
+                </div>
             </div>
-          </div>
-  
-          <div class="col-md-6">
-            <div class="card mb-4">
-              <div class="card-header bg-info text-white">Atendimento</div>
-              <div class="card-body" id="pedidosAtendimento">Carregando...</div>
-            </div>
-          </div>
-  
-          <div class="col-md-6">
-            <div class="card mb-4">
-              <div class="card-header bg-success text-white">Finalizado</div>
-              <div class="card-body" id="pedidosFinalizado">Carregando...</div>
-            </div>
-          </div>
-  
-          <div class="col-md-6">
-            <div class="card mb-4">
-              <div class="card-header bg-danger text-white">Cancelado</div>
-              <div class="card-body" id="pedidosCancelado">Carregando...</div>
-            </div>
-          </div>
         </div>
-      </div>
+
+        <!-- Seção de Pedidos -->
+        <div id="pedidosContainer" class="mt-4">
+            <!-- Aberto -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-warning shadow-sm">
+                        <div class="card-header bg-warning text-dark text-center fw-bold">
+                            <i class="fas fa-hourglass-half"></i> Aberto
+                        </div>
+                        <div class="card-body" id="pedidosAberto">Carregando...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Atendimento -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-info shadow-sm">
+                        <div class="card-header bg-info text-white text-center fw-bold">
+                            <i class="fas fa-user-cog"></i> Atendimento
+                        </div>
+                        <div class="card-body" id="pedidosAtendimento">Carregando...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Finalizado -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-success shadow-sm">
+                        <div class="card-header bg-success text-white text-center fw-bold">
+                            <i class="fas fa-check-circle"></i> Finalizado
+                        </div>
+                        <div class="card-body" id="pedidosFinalizado">Carregando...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cancelado -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-danger shadow-sm">
+                        <div class="card-header bg-danger text-white text-center fw-bold">
+                            <i class="fas fa-times-circle"></i> Cancelado
+                        </div>
+                        <div class="card-body" id="pedidosCancelado">Carregando...</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
     </section>
   </main>
 
   <script src="/javaScript/carregaPedidosAdm.js"></script>
-  <!-- <script src="/javaScript/baixarPedidos.js"></script> -->
+  <script src="/javaScript/baixarPedidos.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-   <!-- <script src="/javaScript/alterarStatusLoja.js"></script> -->
-  <!-- <script src="/javaScript/logout.js"></script> -->
+   <script src="/javaScript/alterarStatusLoja.js"></script>
+  <script src="/javaScript/logout.js"></script>
   <!-- <script src="/javaScript/verificaSessao.js"></script>  -->
 
   
