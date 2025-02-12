@@ -73,19 +73,20 @@ document.getElementById("cadastrarProduto").addEventListener("click", async (eve
     try {
         // Faz o upload da imagem e obtém a URL
         const fotoUrl = await uploadImagem(imagemFile);
-
+        console.log("URL da imagem:", fotoUrl); // Verifica se a URL está correta
+    
         // Envia os dados do produto para a API
         const response = await fetch("/api/produtoAdm/cadastrar", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ nome, descricao, preco, fkCategoria, fotoUrl, senhaCadastro }),
         });
-
+    
         if (response.ok) {
             alert("Produto cadastrado com sucesso!");
             listCategoria(); // Recarrega a lista de categorias
             limparFormulario(); // Limpa o formulário
-            carregaProdutos()
+            carregaProdutos();
         } else {
             const data = await response.json();
             alert("Erro: " + data.erro);
@@ -93,6 +94,7 @@ document.getElementById("cadastrarProduto").addEventListener("click", async (eve
     } catch (error) {
         alert("Erro ao cadastrar o produto: " + error.message);
     }
+    
 });
 
 // Função para limpar o formulário

@@ -110,29 +110,38 @@ router.post("/produtoAdm/upload/imagem", upload.single("file"), async (req, res)
             throw error;
         }
 
-        const { publicURL } = supabase.storage.from(bucketName).getPublicUrl(fileName);
-        res.json({ url: publicURL });
+        // 🔹 Obtendo a URL pública corretamente
+        const fotoUrl = `https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/${bucketName}/${fileName}`;
+
+        res.json({ url: fotoUrl });
     } catch (error) {
         console.error("Erro ao fazer upload da imagem:", error.message);
         res.status(500).json({ erro: "Erro ao fazer upload da imagem." });
     }
 });
 
-// 🔹 Rota para cadastrar um produto
+
 router.post("/produtoAdm/cadastrar", async (req, res) => {
     const { nome, descricao, preco, fkCategoria, fotoUrl, senhaCadastro } = req.body;
 
-    const { data, error } = await supabase
-        .from("produtos")
-        .insert([{ nome, descricao, preco, fotoUrl, fkCategoria }]);
-
-    if (error) {
-        console.error("Erro ao cadastrar produto:", error.message);
-        return res.status(500).json({ erro: "Erro ao cadastrar produto." });
+    if (!fotoUrl) {
+        return res.status(400).json({ erro: "URL da imagem não foi enviada." });
     }
 
-    res.status(201).json({ sucesso: true, mensagem: "Produto cadastrado com sucesso!" });
+    try {
+        const { data, error } = await supabase
+            .from("produtos")
+            .insert([{ nome, descricao, preco, fotoUrl, fkCategoria }]);
+
+        if (error) throw error;
+
+        res.status(201).json({ sucesso: true, mensagem: "Produto cadastrado com sucesso!" });
+    } catch (error) {
+        console.error("Erro ao cadastrar produto:", error.message);
+        res.status(500).json({ erro: "Erro ao cadastrar produto." });
+    }
 });
+
 
 
 module.exports = router;
