@@ -23,6 +23,7 @@ const authRoutes = require('./routes/authRoutes');
 const admPedidosRoutes = require('./routes/admPedidosRoutes');
 const alterarStatusLoja = require('./routes/alterarStatusRoutes')
 const admProdutoRoutes = require('./routes/admProdutoRoutes');
+const admCategoriaRoutes = require('./routes/admCategoriaRoutes');
 
 // 🔹 Configuração do Supabase com variáveis de ambiente
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -55,6 +56,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api', admPedidosRoutes);
 app.use('/api', alterarStatusLoja);
 app.use('/api', admProdutoRoutes);
+app.use('/api', admCategoriaRoutes);
 
 // 🔹 Servindo arquivos estáticos
 app.use('/style', express.static(path.join(__dirname, 'public/style')));

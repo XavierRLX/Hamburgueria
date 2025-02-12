@@ -32,5 +32,5 @@ async function createUser(email, password, name, role = 'user') {
   console.log(`Usuário ${email} criado com sucesso como ${role}!`);
 }
 
-// Criar um usuário admin para teste
-createUser('dreamslanchesrj@gmail.com', 'lanchoneteDL24@', 'Administrador', 'admin');
+// // Criar um usuário admin para teste
+// createUser('dreamslanchesrj@gmail.com', 'lanchoneteDL24@', 'Administrador', 'admin');
