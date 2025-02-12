@@ -180,19 +180,18 @@ async function verificarNovosPedidos() {
         if (!response.ok) throw new Error("Erro ao buscar contagem!");
 
         const contagem = await response.json();
+        const notificacao = document.getElementById("notificationIcon");
 
-        // Se `ultimoTotalPedidosAbertos` for null (primeira execução), apenas armazena o valor e não exibe a notificação
         if (ultimoTotalPedidosAbertos === null) {
             ultimoTotalPedidosAbertos = contagem.aberto;
-            return; // Sai da função para evitar exibir notificação desnecessária
+            return;
         }
 
-        // Se a contagem de pedidos "aberto" aumentou, exibe a notificação
         if (contagem.aberto > ultimoTotalPedidosAbertos) {
-            document.getElementById("notificationIcon").style.display = "block"; // Mostra a notificação
+            notificacao.style.display = "block"; // Mostra a notificação
+            notificacao.classList.add("sino-animado"); // Adiciona o efeito de balanço
         }
 
-        // Atualiza o total de pedidos abertos para comparação futura
         ultimoTotalPedidosAbertos = contagem.aberto;
 
     } catch (error) {
@@ -200,7 +199,7 @@ async function verificarNovosPedidos() {
     }
 }
 
-// Função para atualizar pedidos e ocultar a notificação ao clicar nela
+// Quando o usuário clicar na notificação, remover a animação
 document.getElementById("notificationIcon").addEventListener("click", () => {
     buscarPedidos("aberto", "pedidosAberto");
     buscarPedidos("atendimento", "pedidosAtendimento");
@@ -208,7 +207,9 @@ document.getElementById("notificationIcon").addEventListener("click", () => {
     buscarPedidos("cancelado", "pedidosCancelado");
     buscarContagem();
 
-    document.getElementById("notificationIcon").style.display = "none"; // Esconde a notificação
+    const notificacao = document.getElementById("notificationIcon");
+    notificacao.style.display = "none"; 
+    notificacao.classList.remove("sino-animado"); // Remove a animação após o clique
 });
 
 // Executa imediatamente ao carregar a página para armazenar a contagem inicial
