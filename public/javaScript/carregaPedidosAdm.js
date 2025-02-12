@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     buscarPedidos("cancelado", "pedidosCancelado");
 });
 
-// Função para buscar pedidos por status
 async function buscarPedidos(status, elementoID) {
     const url = `/api/pedidosAdm?status=${status}`;
 
@@ -21,35 +20,34 @@ async function buscarPedidos(status, elementoID) {
 
         elemento.innerHTML = pedidos.length === 0 
         ? "<p class='text-muted text-center'>Nenhum pedido encontrado.</p>"
-        : `<div class="row">
+        : `<div class="row g-3">
             ${pedidos.map(pedido => `
-                <div class="col-12 col-md-6">
-                    <div class="card mb-3 shadow-sm border-${getBorderColor(status)}">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card shadow-sm border-${getBorderColor(status)}">
                         <div class="card-header bg-${getHeaderColor(status)} text-white fw-bold d-flex justify-content-between align-items-center">
                             <span><i class="bi bi-basket-fill"></i> Pedido #${pedido.pkPedido}</span>
                         </div>
                         <div class="card-body">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                            <i class="bi bi-burger"></i> <strong>Itens:</strong>
-                            <ul class="mt-1 ps-3">
-                                ${pedido.itensPedido.split("#").filter(item => item.trim() !== "").map(item => `<li>${item.trim()}</li>`).join("")}
-                            </ul>
-                        </li>
-                        <li class="list-group-item"><i class="bi bi-clipboard"></i> <strong>Detalhes:</strong> ${pedido.detalhes}</li>
-                        <li class="list-group-item"><i class="bi bi-person"></i> <strong>Cliente:</strong> ${pedido.nome}</li>
-                        <li class="list-group-item"><i class="bi bi-geo-alt"></i> <strong>Entrega:</strong> ${pedido.endereco ? pedido.endereco : `<span class="badge bg-primary">Mesa ${pedido.mesa}</span>`}</li>
-                        <li class="list-group-item"><i class="bi bi-calendar-event"></i> <strong>Data:</strong> ${formatarData(pedido.data)}</li>
-                        <li class="list-group-item"><i class="bi bi-phone"></i> <strong>Telefone:</strong> ${formatarTelefone(pedido.numeroCelular)}</li>
-                        <li class="list-group-item"><i class="bi bi-credit-card"></i> <strong>Forma de Pagamento:</strong> ${pedido.formaPagamento}</li>
-                        <li class="list-group-item"><i class="bi bi-currency-dollar"></i> <strong>Taxas:</strong> <span class="badge bg-warning">R$ ${pedido.taxas.toFixed(2)}</span></li>
-                        <li class="list-group-item text-center">
-                            <strong>Total:</strong> 
-                            <span class="badge bg-success p-2 fs-5">R$ ${pedido.totalPedido.toFixed(2)}</span>
-                        </li>
-                    </ul>
+                            <li class="list-group-item"><strong>Itens:</strong>
+                                <ul class="mt-1 ps-3">
+                                    ${pedido.itensPedido.split("#").filter(item => item.trim() !== "").map(item => `<li>${item.trim()}</li>`).join("")}
+                                </ul>
+                            </li>
+                            <li class="list-group-item"><strong>Detalhes:</strong> ${pedido.detalhes}</li>
+                            <li class="list-group-item"><strong>Cliente:</strong> ${pedido.nome}</li>
+                            <li class="list-group-item"><strong>Entrega:</strong> ${pedido.endereco ? pedido.endereco : `<span class="badge bg-primary">Mesa ${pedido.mesa}</span>`}</li>
+                            <li class="list-group-item"><strong>Data:</strong> ${formatarData(pedido.data)}</li>
+                            <li class="list-group-item"><strong>Telefone:</strong> ${formatarTelefone(pedido.numeroCelular)}</li>
+                            <li class="list-group-item"><strong>Pagamento:</strong> ${pedido.formaPagamento}</li>
+                            <li class="list-group-item"><strong>Taxas:</strong> <span class="badge bg-warning">R$ ${pedido.taxas.toFixed(2)}</span></li>
+                            <li class="list-group-item text-center">
+                                <strong>Total:</strong> 
+                                <span class="badge bg-success p-2 fs-5">R$ ${pedido.totalPedido.toFixed(2)}</span>
+                            </li>
+                        </ul>
                         </div>
-                        <div class="card-footer text-center">
+                        <div class="card-footer d-flex justify-content-end">
                             ${status === "aberto" || status === "atendimento" ? getBotaoStatus(pedido.pkPedido, status) : ""}
                         </div>
                     </div>
@@ -62,6 +60,8 @@ async function buscarPedidos(status, elementoID) {
         document.getElementById(elementoID).innerHTML = "<p class='text-danger text-center'>Erro ao carregar pedidos.</p>";
     }
 }
+
+
 // Função para formatar a data do pedido
 function formatarData(dataString) {
     if (!dataString) return "Data não informada";
