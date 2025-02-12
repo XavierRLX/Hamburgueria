@@ -1,12 +1,22 @@
 async function criarPedido() {
     let produtosCarrinho = [];
+    let observacoes = [];
+
     document.querySelectorAll('.produtos').forEach((produto) => {
-        produtosCarrinho.push({
-            nome: produto.querySelector('#nomeProdutoCarrinho').value,
-            quantidade: produto.querySelector('#quantidadeCarrinho').value,
-            preco: parseFloat(produto.querySelector('#precoTotalQuantidade').value)
-        });
+        const nome = produto.querySelector('#nomeProdutoCarrinho').value;
+        const quantidade = produto.querySelector('#quantidadeCarrinho').value;
+        const preco = parseFloat(produto.querySelector('#precoTotalQuantidade').value);
+        const observacao = produto.querySelector('#observacaoProduto').value.trim(); // Captura observação
+
+        produtosCarrinho.push({ nome, quantidade, preco });
+
+        if (observacao) {
+            observacoes.push(`${nome}: ${observacao}`); // Nome do produto antes da observação
+        }
     });
+
+    // Junta todas as observações separadas por uma linha
+    const detalhesPedido = observacoes.length > 0 ? observacoes.join("\n") : "Nenhuma observação.";
 
     // Coleta as informações do formulário
     const pedidoData = {
@@ -20,7 +30,7 @@ async function criarPedido() {
         totalCarrinho: parseFloat(document.getElementById("total-carrinho").value),
         taxasCarrinho: parseFloat(document.getElementById("taxas-carrinho").value),
         totalPedido: parseFloat(document.getElementById("total-pedido").value),
-        detalhes: document.getElementById("detalhes").value,
+        detalhes: detalhesPedido, // Agora inclui o nome do produto antes da observação
         mesa: document.getElementById("mesa").value,
         numeroCelular: document.getElementById("numeroCelular").value
     };

@@ -66,17 +66,31 @@ btnAdicionar.addEventListener('click', function () {
     divProduto.classList.add('produtos');
 
     divProduto.innerHTML = `
-        <input type="text" value="${nomeProduto}" readOnly id="nomeProdutoCarrinho">
-        <div class="flex">
-            <input type="number" value="${quantidade}" readOnly id="quantidadeCarrinho">
-            <input type="text" value="X">
+    <div class="container border-bottom py-2">
+        <div class="row align-items-center">
+            <div class="col-5">
+                <input type="text" class="form-control-plaintext fw-bold" value="${nomeProduto}" readonly id="nomeProdutoCarrinho">
+            </div>
+            <div class="col-3 d-flex align-items-center">
+                <input type="number" class="form-control text-center me-2" value="${quantidade}" readonly id="quantidadeCarrinho">
+                <span class="fw-bold">X</span>
+            </div>
+            <div class="col-3 d-flex align-items-center">
+                <span class="fw-bold me-2">R$:</span>
+                <input type="number" class="form-control text-center" value="${total}" readonly id="precoTotalQuantidade">
+            </div>
+            <div class="col-1 text-end">
+                <img class="imgLixeira" src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/lixeira.png" alt="Remover" id="imgLix" style="cursor:pointer; width:24px;">
+            </div>
         </div>
-        <div>
-            <input type="text" value="R$:" readOnly>
-            <input type="number" value="${total}" readOnly id="precoTotalQuantidade">
-            <img src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/lixeira.png" alt="" id="imgLix">
+        <div class="row mt-2">
+            <div class="col">
+                <input type="text" class="form-control" placeholder="Observação (Ex: Sem cebola, mais molho...)" id="observacaoProduto">
+            </div>
         </div>
-    `;
+    </div>
+`;
+
     
     meuCarrinho.appendChild(divProduto);
 
@@ -109,17 +123,31 @@ function carregarCarrinho() {
             divProduto.classList.add('produtos');
 
             divProduto.innerHTML = `
-                <input type="text" value="${produto.nome}" readOnly id="nomeProdutoCarrinho">
-                <div class="flex">
-                    <input type="number" value="${produto.quantidade}" readOnly id="quantidadeCarrinho">
-                    <input type="text" value="X">
-                </div>
-                <div>
-                    <input type="text" value="R$:" readOnly>
-                    <input type="number" value="${produto.precoTotal}" readOnly id="precoTotalQuantidade">
-                    <img class="imgLixeira" src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/lixeira.png" alt="" id="imgLix">
-                </div>
-            `;
+    <div class="container border-bottom py-2">
+        <div class="row align-items-center">
+            <div class="col-5">
+                <input type="text" class="form-control-plaintext fw-bold" value="${produto.nome}" readonly id="nomeProdutoCarrinho">
+            </div>
+            <div class="col-3 d-flex align-items-center">
+                <input type="number" class="form-control text-center me-2" value="${produto.quantidade}" readonly id="quantidadeCarrinho">
+                <span class="fw-bold">X</span>
+            </div>
+            <div class="col-3 d-flex align-items-center">
+                <span class="fw-bold me-2">R$:</span>
+                <input type="number" class="form-control text-center" value="${produto.precoTotal}" readonly id="precoTotalQuantidade">
+            </div>
+            <div class="col-1 text-end">
+                <img class="imgLixeira" src="https://uweicybzciidmyumejzm.supabase.co/storage/v1/object/public/imgs/lixeira.png" alt="Remover" id="imgLix" style="cursor:pointer; width:24px;">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <input type="text" class="form-control" placeholder="Observação (Ex: Sem cebola, mais molho...)" id="observacaoProduto">
+            </div>
+        </div>
+    </div>
+`;
+
 
             meuCarrinho.appendChild(divProduto);
         });
