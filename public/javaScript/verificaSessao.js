@@ -4,6 +4,4 @@ async function verificarSessao() {
     
     
 }
-
-// Chama a função assim que a página carregar
 verificarSessao();
