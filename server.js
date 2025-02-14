@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session); // ✅ Certifique-se de importar aqui
 const { createClient } = require('@supabase/supabase-js');
 const cors = require('cors');
 require('dotenv').config();
@@ -39,7 +40,10 @@ const supabase = createClient(supabaseUrl, apiKey);
 // 🔹 Configuração da sessão
 app.use(session({
   store: new pgSession({
-    conString: process.env.SUPABASE_URL, // 🔹 Usa Supabase para armazenar sessão
+    conString: process.env.SUPABASE_DATABASE_URL, // 🔹 Certifique-se de definir essa variável no .env
+    ssl: {
+      rejectUnauthorized: false, // 🔹 Necessário para conexão com Supabase
+    }
   }),
   secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
   resave: false,
@@ -50,6 +54,7 @@ app.use(session({
     maxAge: 24 * 60 * 60 * 1000 // 24 horas
   }
 }));
+
 
 // 🔹 Middleware para tornar o usuário disponível globalmente
 app.use((req, res, next) => {
