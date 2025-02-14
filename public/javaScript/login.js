@@ -14,27 +14,27 @@ document.querySelector('form').addEventListener('submit', async (event) => {
     button.innerText = "Entrando...";
 
     try {
-        const response = await fetch('/api/auth/loginAuth', {  
+        const response = await fetch('/api/auth/loginAuth', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
         });
-
+    
         const data = await response.json();
-
+    
         if (response.ok) {
-            // ✅ Salvar os dados no LocalStorage
             localStorage.setItem('userId', data.userId);
             localStorage.setItem('role', data.role);
-
             window.location.href = data.redirect;
         } else {
-            alert(data.message);
+            alert(data.message || "Erro desconhecido");
         }
     } catch (error) {
+        console.error("Erro ao conectar com o servidor:", error);
         alert("Erro ao conectar com o servidor.");
     } finally {
         button.disabled = false;
         button.innerText = "Entrar";
     }
+    
 });

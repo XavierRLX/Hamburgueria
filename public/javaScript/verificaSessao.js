@@ -1,5 +1,4 @@
-const BACKEND_URL = "hamburgueria-production-d072.up.railway.app";  // 🔹 Substitua pelo seu domínio real
-
+const BACKEND_URL = "https://hamburgueria-production-d072.up.railway.app";  // Inclua o protocolo
 
 async function verificarSessao() {
     try {
@@ -18,6 +17,3 @@ async function verificarSessao() {
         window.location.href = '/login';
     }
 }
-
-// 🚀 Executa a verificação ao carregar a página
-verificarSessao();
