@@ -1,10 +1,9 @@
 
 async function verificarSessao() {
     try {
-        const response = await fetch(`$/api/auth/verificarSessao`, {
-            credentials: "include", // 🔹 Permite que cookies de sessão sejam enviados
+        const response = await fetch(`/api/auth/verificarSessao`, {
+            credentials: "include", 
         });
-
         const data = await response.json();
 
         if (!data.logado || !localStorage.getItem('userId') || localStorage.getItem('role') !== 'admin') {

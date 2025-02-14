@@ -13,11 +13,12 @@ const port = process.env.PORT || 3000;
 // ⚠️ Se precisar de SSL autoassinado, mantenha isso. Caso contrário, remova esta linha!
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-// const corsOptions = {
-//   origin: "hamburgueria-production-d072.up.railway.app", // 🔹 Substitua pelo seu domínio real
-//   credentials: true, // 🔹 Permite envio de cookies de sessão
-// };
-// app.use(cors(corsOptions));
+app.use(cors({
+  origin: '*',  // Permite qualquer origem
+  credentials: true,  // Permite o envio de cookies e credenciais
+}));
+
+
 
 // 🔹 Middleware para parsing de JSON e formulários
 app.use(cors());
@@ -39,22 +40,15 @@ const supabase = createClient(supabaseUrl, apiKey);
 
 // 🔹 Configuração da sessão
 app.use(session({
-  // store: new pgSession({
-  //   conString: process.env.SUPABASE_DATABASE_URL, // 🔹 Certifique-se de definir essa variável no .env
-  //   ssl: {
-  //     rejectUnauthorized: false, // 🔹 Necessário para conexão com Supabase
-  //   }
-  // }),
   secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production', // 🔒 Ativa HTTPS em produção
+    secure: process.env.NODE_ENV === 'production', // Apenas ativa em produção
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000 // 24 horas
+    maxAge: 24 * 60 * 60 * 1000, // 24 horas
   }
 }));
-
 
 // 🔹 Middleware para tornar o usuário disponível globalmente
 app.use((req, res, next) => {
