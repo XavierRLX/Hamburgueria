@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://meu-backend.railway.app";  // 🔹 Substitua pelo seu domínio real
+const BACKEND_URL = "hamburgueria-production-d072.up.railway.app";  // 🔹 Substitua pelo seu domínio real
 
 
 async function verificarSessao() {

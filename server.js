@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const corsOptions = {
-  origin: "https://meu-frontend.vercel.app",  // 🔹 Substitua pelo seu domínio real
+  origin: "hamburgueria-production-d072.up.railway.app",  // 🔹 Substitua pelo seu domínio real
   credentials: true, // 🔹 Permite envio de cookies de sessão
 };
 app.use(cors(corsOptions));
