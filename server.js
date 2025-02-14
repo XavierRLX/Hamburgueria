@@ -106,8 +106,8 @@ async function isAuthenticated(req, res, next) {
 const routes = [
   { path: '/', file: 'index.html' },
   { path: '/cardapio', file: 'index.html' },
-  { path: '/admPedidos', file: 'admPedidos.html', protected: true },
-  { path: '/admProdutos', file: 'admProdutos.html', protected: true },
+  { path: '/admPedidos', file: 'admPedidos.html', protected: false },
+  { path: '/admProdutos', file: 'admProdutos.html', protected: false },
   { path: '/login', file: 'login.html' }
 ];
 
