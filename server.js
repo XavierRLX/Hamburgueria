@@ -12,6 +12,12 @@ const port = process.env.PORT || 3000;
 // ⚠️ Se precisar de SSL autoassinado, mantenha isso. Caso contrário, remova esta linha!
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
+const corsOptions = {
+  origin: "https://meu-frontend.vercel.app",  // 🔹 Substitua pelo seu domínio real
+  credentials: true, // 🔹 Permite envio de cookies de sessão
+};
+app.use(cors(corsOptions));
+
 // 🔹 Middleware para parsing de JSON e formulários
 app.use(cors());
 app.use(express.json());
@@ -32,13 +38,16 @@ const supabase = createClient(supabaseUrl, apiKey);
 
 // 🔹 Configuração da sessão
 app.use(session({
+  store: new pgSession({
+    conString: process.env.SUPABASE_URL, // 🔹 Usa Supabase para armazenar sessão
+  }),
   secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
   resave: false,
-  saveUninitialized: false, // Não cria sessão até que o usuário faça login
+  saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production', // 🔒 Ativar HTTPS em produção
-    httpOnly: true, // 🔒 Protege contra ataques XSS
-    maxAge: 24 * 60 * 60 * 1000 // 🔹 Sessão válida por 24 horas
+    secure: process.env.NODE_ENV === 'production', // 🔒 Ativa HTTPS em produção
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24 horas
   }
 }));
 

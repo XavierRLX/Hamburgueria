@@ -1,12 +1,8 @@
 const express = require('express');
 const router = express.Router();  // 🔹 Correção: Definir a variável router
-const { createClient } = require('@supabase/supabase-js');
+const { supabase } = require('../supabaseClient');
 require('dotenv').config();
 
-// Configuração do Supabase
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 router.post('/loginAuth', async (req, res) => {
     const { email, password } = req.body;
@@ -52,8 +48,9 @@ router.get('/logout', async (req, res) => {
         if (err) {
             return res.status(500).json({ message: "Erro ao sair." });
         }
-        res.redirect('/login');
+        res.json({ message: "Logout realizado com sucesso" });
     });
 });
+
 
 module.exports = router;  // 🔹 Exportando corretamente o router

@@ -14,7 +14,7 @@ document.querySelector('form').addEventListener('submit', async (event) => {
     button.innerText = "Entrando...";
 
     try {
-        const response = await fetch('api/auth/loginAuth', {  // Melhor usar caminho relativo
+        const response = await fetch('/api/auth/loginAuth', {  
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -23,6 +23,10 @@ document.querySelector('form').addEventListener('submit', async (event) => {
         const data = await response.json();
 
         if (response.ok) {
+            // ✅ Salvar os dados no LocalStorage
+            localStorage.setItem('userId', data.userId);
+            localStorage.setItem('role', data.role);
+
             window.location.href = data.redirect;
         } else {
             alert(data.message);
