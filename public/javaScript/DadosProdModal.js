@@ -147,8 +147,6 @@ function carregarCarrinho() {
         </div>
     </div>
 `;
-
-
             meuCarrinho.appendChild(divProduto);
         });
     }

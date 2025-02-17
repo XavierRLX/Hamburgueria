@@ -1,3 +1,14 @@
+
+// Verificar se o usuário está autenticado
+document.addEventListener("DOMContentLoaded", () => {
+    const userId = localStorage.getItem("userId");
+
+    if (!userId) {
+        window.location.href = "/login"; // Redireciona se não estiver autenticado
+    }
+});
+
+
 document.querySelector('form').addEventListener('submit', async (event) => {
     event.preventDefault();
 

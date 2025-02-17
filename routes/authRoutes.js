@@ -17,21 +17,8 @@ router.post('/loginAuth', async (req, res) => {
         return res.status(400).json({ message: "Usuário ou senha incorretos." });
     }
 
-    // Salvar ID do usuário na sessão
-    req.session.userId = data.user.id;
+    req.session.userId = data.user.id; // Salva o ID do usuário na sessão
 
-    // Buscar o papel do usuário (se é admin ou comum)
-    const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', data.user.id)
-        .single();
-
-    if (!profileError && profile) {
-        req.session.role = profile.role;
-    }
-
-    // Salvar a sessão corretamente
     req.session.save(err => {
         if (err) {
             console.error("Erro ao salvar sessão:", err);
@@ -40,6 +27,7 @@ router.post('/loginAuth', async (req, res) => {
         res.json({ message: "Login bem-sucedido", redirect: "/admPedidos" });
     });
 });
+
 
 
 // Rota de logout
