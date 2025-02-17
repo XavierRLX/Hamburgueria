@@ -1,12 +1,20 @@
-
-// Verificar se o usuário está autenticado
 document.addEventListener("DOMContentLoaded", () => {
     const userId = localStorage.getItem("userId");
+    const sessionExpiration = localStorage.getItem("sessionExpiration");
 
-    if (!userId) {
-        window.location.href = "/login"; // Redireciona se não estiver autenticado
+    if (userId && sessionExpiration) {
+        const now = Date.now();
+        if (now < sessionExpiration) {
+            window.location.href = "/admPedidos"; // Redireciona automaticamente
+        } else {
+            // Se a sessão expirou, remove do localStorage
+            localStorage.removeItem("userId");
+            localStorage.removeItem("role");
+            localStorage.removeItem("sessionExpiration");
+        }
     }
 });
+
 
 
 document.querySelector('form').addEventListener('submit', async (event) => {
@@ -34,8 +42,12 @@ document.querySelector('form').addEventListener('submit', async (event) => {
         const data = await response.json();
     
         if (response.ok) {
+            // Salvar no LocalStorage com um tempo de expiração de 24 horas
+            const expirationTime = Date.now() + 24 * 60 * 60 * 1000; // 24h em milissegundos
             localStorage.setItem('userId', data.userId);
             localStorage.setItem('role', data.role);
+            localStorage.setItem('sessionExpiration', expirationTime);
+
             window.location.href = data.redirect;
         } else {
             alert(data.message || "Erro desconhecido");
@@ -47,5 +59,5 @@ document.querySelector('form').addEventListener('submit', async (event) => {
         button.disabled = false;
         button.innerText = "Entrar";
     }
-    
 });
+
