@@ -6,6 +6,8 @@ const { createClient } = require('@supabase/supabase-js');
 const cors = require('cors');
 require('dotenv').config();
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -13,9 +15,10 @@ const port = process.env.PORT || 3000;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 app.use(cors({
-  origin: '*',  // Permite qualquer origem
-  credentials: true,  // Permite o envio de cookies e credenciais
+  origin: isProduction ? 'https:/hamburgueria-production-445d.up.railway.app' : '*',
+  credentials: true
 }));
+
 
 // Middleware para parsing de JSON e formulários
 app.use(cors());
@@ -41,12 +44,13 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false,  
+    secure: isProduction, 
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: isProduction ? 'none' : 'lax', 
     maxAge: 24 * 60 * 60 * 1000,
   }
 }));
+
 
 
 // Adicionando as rotas

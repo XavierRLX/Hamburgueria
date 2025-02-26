@@ -4,8 +4,8 @@
   "description": "Site desenvolvido com framework bootstrap",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "dev": "cross-env NODE_ENV=development nodemon server.js",
+    "start": "cross-env NODE_ENV=production node server.js"
   },
   "keywords": [],
   "author": "",
@@ -21,5 +21,8 @@
     "express-session": "^1.18.1",
     "multer": "^1.4.5-lts.1",
     "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
