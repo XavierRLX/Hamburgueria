@@ -2,7 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
-const { createClient } = require('@supabase/supabase-js');
+const connectRedis = require('connect-redis'); // Importação do módulo inteiro
+const RedisStore = connectRedis.default; // Acesso ao default
+const { createClient: createSupabaseClient } = require('@supabase/supabase-js'); // Supabase
+const { createClient: createRedisClient } = require('redis'); // Redis
 const cors = require('cors');
 require('dotenv').config();
 
@@ -37,7 +40,7 @@ const admCategoriaRoutes = require('./routes/admCategoriaRoutes');
 // Configuração do Supabase com variáveis de ambiente
 const supabaseUrl = process.env.SUPABASE_URL;
 const apiKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, apiKey);
+const supabase = createSupabaseClient(supabaseUrl, apiKey);
 
 
 app.use((req, res, next) => {
@@ -53,21 +56,27 @@ app.use((req, res, next) => {
   next();
 });
 
+const redisClient = createRedisClient({
+    url: process.env.REDIS_URL, 
+    legacyMode: true
+});
 
-// Configuração da sessão
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: isProduction, 
-    httpOnly: true,
-    sameSite: 'none', 
-    maxAge: 24 * 60 * 60 * 1000,
-    domain: isProduction ? 'hamburgueria-production-445d.up.railway.app' : undefined
-  }
-}));
-
+redisClient.connect().then(() => {
+  console.log("Redis conectado com sucesso!");
+  app.use(session({
+    store: new RedisStore({ client: redisClient.v4 }),
+    secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: isProduction,
+      httpOnly: true,
+      sameSite: 'none',
+      maxAge: 24 * 60 * 60 * 1000,
+      domain: isProduction ? 'hamburgueria-production-445d.up.railway.app' : undefined
+    }
+  }));
+}).catch(console.error);
 
 // Adicionando as rotas
 app.use('/api', indexRoutes);
