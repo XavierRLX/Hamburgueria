@@ -1,20 +1,18 @@
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         const response = await fetch('/api/auth/session', { 
-            credentials: 'include'  // 🔥 Garante que o cookie de sessão seja enviado
+            credentials: 'include'  
         });
 
         const data = await response.json();
 
         if (data.authenticated) {
-            console.log("✅ Sessão ativa, carregando painel administrativo.");
-            return;  // Se autenticado, não faz nada
+            return;  
         }
 
-        console.log("🔴 Sessão expirada ou inexistente. Redirecionando...");
-        window.location.href = "/login"; // Se não autenticado, vai para login
+        window.location.href = "/login"; 
     } catch (error) {
         console.error("Erro ao verificar sessão:", error.message);
-        window.location.href = "/login"; // Evita travamento
+        window.location.href = "/login"; 
     }
 });

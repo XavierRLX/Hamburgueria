@@ -11,12 +11,12 @@ router.get('/categorias', async (req, res) => {
 
 // Buscar produtos com filtro opcional por categoria
 router.get('/produtosCardapio', async (req, res) => {
-    const { categoria } = req.query; // Pegando o ID da categoria da query string
+    const { categoria } = req.query; 
 
     let query = supabase.from('produtos').select('*').eq('ativo', true);
 
     if (categoria) {
-        query = query.eq('fkCategoria', categoria); // Filtra por categoria, se fornecida
+        query = query.eq('fkCategoria', categoria); 
     }
 
     const { data, error } = await query;

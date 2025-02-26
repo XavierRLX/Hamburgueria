@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { supabase } = require("../supabaseClient"); // Certifique-se de importar o Supabase corretamente
+const { supabase } = require("../supabaseClient"); 
 
 // 🔹 Rota para listar categorias
 router.get("/categoriaAdm/listar", async (req, res) => {

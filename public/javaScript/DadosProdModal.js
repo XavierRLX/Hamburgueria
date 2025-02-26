@@ -93,12 +93,11 @@ btnAdicionar.addEventListener('click', function () {
 
     
     meuCarrinho.appendChild(divProduto);
-
     // Salva no localStorage
     salvarCarrinho();
 
     atualizaPrecoTotalProdutos();
-    somaritens(); // Atualiza a contagem de itens
+    somaritens();
 });
 
 // Função para salvar carrinho no localStorage
@@ -163,7 +162,7 @@ meuCarrinho.addEventListener('click', function(event) {
         event.target.parentElement.parentElement.remove();
         salvarCarrinho();
         atualizaPrecoTotalProdutos();
-        somaritens(); // Atualiza a contagem de itens após a remoção
+        somaritens();
     }
 });
 

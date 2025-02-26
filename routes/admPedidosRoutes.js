@@ -18,8 +18,6 @@ router.get('/pedidosAdm', async (req, res) => {
         const { data, error } = await query;
         
         if (error) throw error;
-
-        console.log("✅ Pedidos retornados:", data);
         res.json(data);
     } catch (err) {
         console.error("🔴 Erro na requisição:", err.message);
@@ -30,8 +28,6 @@ router.get('/pedidosAdm', async (req, res) => {
 
 // 🔹 Contar pedidos por status
 router.get('/pedidosAdm/contagem', async (req, res) => {
-    console.log("🔹 Rota '/api/pedidosAdm/contagem' foi chamada!");
-
     // Consulta correta para contar pedidos por status
     const { data, error } = await supabase
         .from('pedidos')
@@ -45,8 +41,6 @@ router.get('/pedidosAdm/contagem', async (req, res) => {
     if (!data || data.length === 0) {
         console.warn("⚠️ Nenhum pedido encontrado!");
     }
-
-    console.log("✅ Status dos pedidos retornados:", data);
 
     // Inicializa os contadores para cada status
     const contagem = {
@@ -94,8 +88,6 @@ router.post("/pedidosAdm/atualizar", async (req, res) => {
 // Rota para baixar os pedidos
 router.get('/pedidosAdm/baixarPedidos', async (req, res) => {
     try {
-        console.log("🔹 Rota '/api/pedidosAdm/baixarPedidos' foi chamada!");
-
         const { data, error } = await supabase.from('pedidos').select('*');
 
         if (error) {
@@ -113,8 +105,5 @@ router.get('/pedidosAdm/baixarPedidos', async (req, res) => {
         res.status(500).json({ error: "Erro interno no servidor" });
     }
 });
-
-
-
 
 module.exports = router;

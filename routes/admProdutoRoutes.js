@@ -2,17 +2,16 @@ const express = require("express");
 const router = express.Router();
 const { supabase } = require("../supabaseClient");
 const multer = require("multer");
-const upload = multer({ storage: multer.memoryStorage() }); // Armazena o arquivo na memória
-
+const upload = multer({ storage: multer.memoryStorage() });
 
 // 🔹 Rota para buscar produtos com filtro por nome
 router.get("/produtoAdm/listar", async (req, res) => {
-    const buscaNome = req.query.nome || ""; // Pega o nome da query
+    const buscaNome = req.query.nome || ""; 
 
     const { data, error } = await supabase
         .from("produtos")
         .select("*, fkCategoria(nome)")
-        .ilike("nome", `%${buscaNome}%`); // Busca otimizada no banco
+        .ilike("nome", `%${buscaNome}%`);
 
     if (error) {
         console.error("Erro ao buscar produtos:", error.message);
@@ -40,7 +39,7 @@ router.delete("/produtoAdm/excluir/:pkProduto", async (req, res) => {
         return res.status(500).json({ erro: "Erro ao excluir produto." });
     }
 
-    res.status(204).send(); // Código correto para deletar sem resposta de conteúdo
+    res.status(204).send(); 
 });
 
 // 🔹 Rota para ativar/inativar um produto
@@ -141,7 +140,5 @@ router.post("/produtoAdm/cadastrar", async (req, res) => {
         res.status(500).json({ erro: "Erro ao cadastrar produto." });
     }
 });
-
-
 
 module.exports = router;

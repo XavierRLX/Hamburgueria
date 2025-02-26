@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();  // 🔹 Correção: Definir a variável router
+const router = express.Router();  
 const { supabase } = require('../supabaseClient');
 require('dotenv').config();
 
@@ -23,14 +23,14 @@ router.post('/loginAuth', async (req, res) => {
             console.error("Erro ao salvar sessão:", err);
             return res.status(500).json({ message: "Erro ao salvar sessão." });
         }
-        console.log("✅ Sessão salva com sucesso:", req.session);  // 🔥 Verifica se está salvando
+        console.log("✅ Sessão salva com sucesso:", req.session);  
 
         res.json({ message: "Login bem-sucedido", redirect: "/admPedidos" });
     });
 });
 
 router.get('/session', (req, res) => {
-    console.log("🔍 Verificando sessão:", req.session); // 🔥 Teste para ver se a sessão está ativa
+    console.log("🔍 Verificando sessão:", req.session); 
     if (req.session && req.session.userId) {
         return res.json({ authenticated: true, userId: req.session.userId });
     } 
@@ -43,12 +43,9 @@ router.get('/logout', async (req, res) => {
         if (err) {
             return res.status(500).json({ message: "Erro ao sair." });
         }
-        res.clearCookie('connect.sid'); // Remove cookie de sessão
+        res.clearCookie('connect.sid'); 
         res.json({ message: "Logout realizado com sucesso" });
     });
 });
 
-
-
-
-module.exports = router;  // 🔹 Exportando corretamente o router
+module.exports = router;  

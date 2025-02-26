@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         const response = await fetch('/api/auth/session', { 
-            credentials: 'include' // 🔥 Importante para enviar cookies de sessão 
+            credentials: 'include' 
         });
 
         if (!response.ok) {
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const data = await response.json();
 
         if (data.authenticated) {
-            window.location.href = "/admPedidos"; // ✅ Redireciona se autenticado
+            window.location.href = "/admPedidos";
         }
     } catch (error) {
         console.error("Erro ao verificar sessão:", error.message);
@@ -40,7 +40,7 @@ document.querySelector('form').addEventListener('submit', async (event) => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),
-            credentials: 'include'  // Permite cookies da sessão
+            credentials: 'include' 
         });
 
         const data = await response.json();

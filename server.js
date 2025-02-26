@@ -17,8 +17,6 @@ app.use(cors({
   credentials: true,  // Permite o envio de cookies e credenciais
 }));
 
-
-
 // Middleware para parsing de JSON e formulários
 app.use(cors());
 app.use(express.json());
@@ -77,9 +75,9 @@ const routes = [
 
 function isAuthenticated(req, res, next) {
   if (req.session && req.session.userId) {
-      return next(); // Se o usuário está autenticado, continua para a próxima função
+      return next(); 
   }
-  res.redirect('/login'); // Se não estiver autenticado, redireciona para login
+  res.redirect('/login'); 
 }
 
 app.get('/admPedidos', isAuthenticated, (req, res) => {
