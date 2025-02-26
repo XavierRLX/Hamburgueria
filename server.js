@@ -39,6 +39,21 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const apiKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, apiKey);
 
+
+app.use((req, res, next) => {
+  if (req.headers.cookie) {
+    const cookies = req.headers.cookie.split(';').map(c => c.trim());
+    const sidCookies = cookies.filter(c => c.startsWith('connect.sid='));
+
+    if (sidCookies.length > 1) {
+      console.warn("🔴 Detectados múltiplos cookies connect.sid. Removendo antigos.");
+      res.clearCookie('connect.sid'); // Remove o cookie antigo
+    }
+  }
+  next();
+});
+
+
 // Configuração da sessão
 app.use(session({
   secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
@@ -47,9 +62,9 @@ app.use(session({
   cookie: {
     secure: isProduction, 
     httpOnly: true,
-    sameSite: isProduction ? 'none' : 'lax',
+    sameSite: 'none', 
     maxAge: 24 * 60 * 60 * 1000,
-    domain: 'hamburgueria-production-445d.up.railway.app'  
+    domain: isProduction ? 'hamburgueria-production-445d.up.railway.app' : undefined
   }
 }));
 
