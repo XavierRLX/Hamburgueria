@@ -1,12 +1,20 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const userId = localStorage.getItem("userId");
-    const sessionExpiration = localStorage.getItem("sessionExpiration");
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const response = await fetch('/api/auth/session', { 
+            credentials: 'include'  // 🔥 Garante que o cookie de sessão seja enviado
+        });
 
-    if (!userId || !sessionExpiration || Date.now() > sessionExpiration) {
-        // Se não há usuário ou a sessão expirou, remove e redireciona
-        localStorage.removeItem("userId");
-        localStorage.removeItem("role");
-        localStorage.removeItem("sessionExpiration");
-        window.location.href = "/login";
+        const data = await response.json();
+
+        if (data.authenticated) {
+            console.log("✅ Sessão ativa, carregando painel administrativo.");
+            return;  // Se autenticado, não faz nada
+        }
+
+        console.log("🔴 Sessão expirada ou inexistente. Redirecionando...");
+        window.location.href = "/login"; // Se não autenticado, vai para login
+    } catch (error) {
+        console.error("Erro ao verificar sessão:", error.message);
+        window.location.href = "/login"; // Evita travamento
     }
 });

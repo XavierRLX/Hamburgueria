@@ -1,17 +1,20 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const userId = localStorage.getItem("userId");
-    const sessionExpiration = localStorage.getItem("sessionExpiration");
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const response = await fetch('/api/auth/session', { 
+            credentials: 'include' // 🔥 Importante para enviar cookies de sessão 
+        });
 
-    if (userId && sessionExpiration) {
-        const now = Date.now();
-        if (now < sessionExpiration) {
-            window.location.href = "/admPedidos"; // Redireciona automaticamente
-        } else {
-            // Se a sessão expirou, remove do localStorage
-            localStorage.removeItem("userId");
-            localStorage.removeItem("role");
-            localStorage.removeItem("sessionExpiration");
+        if (!response.ok) {
+            throw new Error(`Erro ${response.status}: ${response.statusText}`);
         }
+
+        const data = await response.json();
+
+        if (data.authenticated) {
+            window.location.href = "/admPedidos"; // ✅ Redireciona se autenticado
+        }
+    } catch (error) {
+        console.error("Erro ao verificar sessão:", error.message);
     }
 });
 
@@ -36,18 +39,13 @@ document.querySelector('form').addEventListener('submit', async (event) => {
         const response = await fetch('/api/auth/loginAuth', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ email, password }),
+            credentials: 'include'  // Permite cookies da sessão
         });
-    
-        const data = await response.json();
-    
-        if (response.ok) {
-            // Salvar no LocalStorage com um tempo de expiração de 24 horas
-            const expirationTime = Date.now() + 24 * 60 * 60 * 1000; // 24h em milissegundos
-            localStorage.setItem('userId', data.userId);
-            localStorage.setItem('role', data.role);
-            localStorage.setItem('sessionExpiration', expirationTime);
 
+        const data = await response.json();
+
+        if (response.ok) {
             window.location.href = data.redirect;
         } else {
             alert(data.message || "Erro desconhecido");
@@ -60,4 +58,3 @@ document.querySelector('form').addEventListener('submit', async (event) => {
         button.innerText = "Entrar";
     }
 });
-
