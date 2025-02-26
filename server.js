@@ -19,6 +19,7 @@ app.use(cors({
   credentials: true
 }));
 
+app.set('trust proxy', 1); // Confia nos proxies do Railway
 
 // Middleware para parsing de JSON e formulários
 app.use(cors());
@@ -46,11 +47,11 @@ app.use(session({
   cookie: {
     secure: isProduction, 
     httpOnly: true,
-    sameSite: isProduction ? 'none' : 'lax', 
+    sameSite: isProduction ? 'none' : 'lax',
     maxAge: 24 * 60 * 60 * 1000,
+    domain: 'hamburgueria-production-445d.up.railway.app'  
   }
 }));
-
 
 
 // Adicionando as rotas
