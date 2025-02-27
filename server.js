@@ -1,39 +1,42 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
-const session = require('express-session');
-const RedisStore = require('connect-redis'); // Não é mais um construtor, agora é uma função
-const { createClient: createRedisClient } = require('redis'); // Redis
-const { createClient: createSupabaseClient } = require('@supabase/supabase-js'); // Supabase
-const cors = require('cors');
-require('dotenv').config();
+const express = require('express'); // Importa o Express para criar o servidor web
+const bodyParser = require('body-parser'); // Middleware para parsing do corpo das requisições (para JSON e URL encoded)
+const path = require('path'); // Utilitário para lidar com caminhos de arquivos
+const session = require('express-session'); // Middleware para gerenciar sessões de usuários
+const RedisStore = require('connect-redis'); // Para armazenar sessões no Redis
+const { createClient: createRedisClient } = require('redis'); // Cliente Redis para conectar com o servidor Redis
+const { createClient: createSupabaseClient } = require('@supabase/supabase-js'); // Para se conectar ao Supabase
+const cors = require('cors'); // Middleware para habilitar CORS (Cross-Origin Resource Sharing)
+require('dotenv').config(); // Carrega variáveis de ambiente a partir do arquivo .env
 
+// Definindo se o ambiente de execução é de produção ou desenvolvimento
 const isProduction = process.env.NODE_ENV === 'production';
 
-// Verificando variáveis de ambiente obrigatórias
+// Verificando variáveis de ambiente obrigatórias para o funcionamento da aplicação
 const supabaseUrl = process.env.SUPABASE_URL;
 const apiKey = process.env.SUPABASE_KEY;
 const redisUrl = process.env.REDIS_URL;
 
-const app = express();
-const port = process.env.PORT || 3000;
+const app = express(); // Cria a instância do servidor Express
+const port = process.env.PORT || 3000; // Define a porta do servidor, podendo ser configurada via variáveis de ambiente
 
-// SSL autoassinado
+// Configuração de SSL autoassinado, usado para evitar erros em ambientes de desenvolvimento (não recomendado em produção)
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-// Configuração do CORS
+// Configuração do CORS para permitir requisições de origens específicas, especialmente útil para APIs
 app.use(cors({
-  origin: isProduction ? 'https://hamburgueria-production-445d.up.railway.app' : '*',
-  credentials: true
+  origin: isProduction ? 'https://hamburgueria-production-445d.up.railway.app' : '*', // Para produção, permite apenas a URL do Railway, e para desenvolvimento permite qualquer origem
+  credentials: true // Permite o envio de cookies (necessário para sessões)
 }));
 
-app.set('trust proxy', 1); // Confia nos proxies do Railway
+// Configuração para confiar em proxies (como o Railway) que gerenciam conexões HTTPS
+app.set('trust proxy', 1); // Quando a aplicação estiver atrás de um proxy (como no caso do Railway)
 
 // Middleware para parsing de JSON e formulários
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json()); // Para poder lidar com dados no formato JSON
+app.use(bodyParser.urlencoded({ extended: false })); // Para lidar com formulários enviados via URL-encoded (método POST)
 
-// Rotas
+
+// Importando rotas (aqui você provavelmente separa a lógica das rotas em arquivos diferentes)
 const indexRoutes = require('./routes/indexRoutes');
 const authRoutes = require('./routes/authRoutes');
 const admPedidosRoutes = require('./routes/admPedidosRoutes');
@@ -41,69 +44,72 @@ const alterarStatusLoja = require('./routes/alterarStatusRoutes');
 const admProdutoRoutes = require('./routes/admProdutoRoutes');
 const admCategoriaRoutes = require('./routes/admCategoriaRoutes');
 
-// Configuração do Supabase com variáveis de ambiente
+// Configuração do Supabase (um serviço de banco de dados e autenticação)
 const supabase = createSupabaseClient(supabaseUrl, apiKey);
 
-// Middleware para evitar múltiplos cookies connect.sid
+// Middleware para verificar se há múltiplos cookies `connect.sid` (usados para sessões). Se sim, remove os antigos.
 app.use((req, res, next) => {
   if (req.headers.cookie) {
-    const cookies = req.headers.cookie.split(';').map(c => c.trim());
-    const sidCookies = cookies.filter(c => c.startsWith('connect.sid='));
+    const cookies = req.headers.cookie.split(';').map(c => c.trim()); // Divide os cookies recebidos
+    const sidCookies = cookies.filter(c => c.startsWith('connect.sid=')); // Filtra cookies de sessão
 
+    // Se houver mais de um cookie `connect.sid`, remove o antigo para evitar conflitos
     if (sidCookies.length > 1) {
       console.warn("🔴 Detectados múltiplos cookies connect.sid. Removendo antigos.");
-      res.clearCookie('connect.sid'); // Remove o cookie antigo
+      res.clearCookie('connect.sid'); // Remove o cookie de sessão antigo
     }
   }
-  next();
+  next(); // Passa para o próximo middleware
 });
 
-// Configuração do Redis no ambiente de produção
+// Configuração do Redis no ambiente de produção (para armazenar as sessões)
 if (isProduction) {
+  // Conectando-se ao Redis usando a URL configurada nas variáveis de ambiente
   const redisClient = createRedisClient({
     url: redisUrl,
-    legacyMode: true
+    legacyMode: true // Habilita compatibilidade com versões mais antigas do Redis
   });
 
+  // Tentando conectar ao Redis
   redisClient.connect().then(() => {
     console.log("Redis conectado com sucesso!");
   }).catch(console.error);
 
-  // Usando o RedisStore corretamente
+  // Usando o RedisStore para armazenar as sessões no Redis
   app.use(session({
-    store: new RedisStore({ client: redisClient }), // Note que não é mais um construtor
-    secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
-    resave: false,
-    saveUninitialized: false,
+    store: new RedisStore({ client: redisClient }), // Define o Redis como a store de sessões
+    secret: process.env.SESSION_SECRET || 'chaveSuperSecreta', // Chave secreta para assinar a sessão
+    resave: false, // Não resave a sessão se não houver alterações
+    saveUninitialized: false, // Não salve a sessão se não houver dados modificados
     cookie: {
-      secure: true,
-      httpOnly: true,
-      sameSite: 'none',
-      maxAge: 24 * 60 * 60 * 1000,
-      domain: 'hamburgueria-production-445d.up.railway.app'
+      secure: true, // Força o uso de HTTPS
+      httpOnly: true, // Impede o acesso ao cookie via JavaScript no cliente
+      sameSite: 'none', // Permite o compartilhamento de cookies entre domínios
+      maxAge: 24 * 60 * 60 * 1000, // Define o tempo de vida do cookie (24 horas)
+      domain: 'hamburgueria-production-445d.up.railway.app' // Domínio onde o cookie é válido
     }
   }));
 } else {
-  // Configuração da sessão no ambiente de desenvolvimento
+  // Configuração de sessão no ambiente de desenvolvimento
   app.use(session({
-    secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
+    secret: process.env.SESSION_SECRET || 'chaveSuperSecreta', // Chave secreta
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: true, // Salva a sessão mesmo que não haja dados modificados
     cookie: {
-      secure: false,
-      httpOnly: true,
-      sameSite: 'lax'
+      secure: false, // Em desenvolvimento não precisa de HTTPS
+      httpOnly: true, // Impede o acesso ao cookie via JavaScript
+      sameSite: 'lax' // Permite cookies entre subdomínios
     }
   }));
 }
 
-// Verifica a sessão
+// Middleware para verificar se a sessão existe
 app.use((req, res, next) => {
-  console.log("🟢 Verificando sessão no middleware:", req.session);
-  next();
+  console.log("🟢 Verificando sessão no middleware:", req.session); // Log de depuração para verificar a sessão
+  next(); // Passa para o próximo middleware
 });
 
-// Adicionando as rotas
+// Adicionando as rotas à aplicação (chamando os arquivos de rotas já configurados)
 app.use('/api', indexRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api', admPedidosRoutes);
@@ -111,10 +117,10 @@ app.use('/api', alterarStatusLoja);
 app.use('/api', admProdutoRoutes);
 app.use('/api', admCategoriaRoutes);
 
-// Servindo arquivos estáticos de forma consolidada
+// Servindo arquivos estáticos (como imagens e arquivos JS/CSS) a partir da pasta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Roteamento das páginas HTML com proteção de rota
+// Definindo rotas para páginas HTML
 const routes = [
   { path: '/', file: 'index.html' },
   { path: '/cardapio', file: 'index.html' },
@@ -124,22 +130,22 @@ const routes = [
   { path: '/login', file: 'login.html' }
 ];
 
-// Função de autenticação
+// Função de autenticação para proteger rotas
 function isAuthenticated(req, res, next) {
-  if (req.session && req.session.userId) {
-    return next();
+  if (req.session && req.session.userId) { // Verifica se a sessão contém um ID de usuário
+    return next(); // Se estiver autenticado, permite o acesso
   }
-  res.redirect('/login');
+  res.redirect('/login'); // Se não autenticado, redireciona para a página de login
 }
 
 // Usando as rotas protegidas e não protegidas
 routes.forEach(route => {
   app.get(route.path, route.protected ? isAuthenticated : (req, res) => {
-    res.sendFile(path.join(__dirname, `public/html/${route.file}`));
+    res.sendFile(path.join(__dirname, `public/html/${route.file}`)); // Envia o arquivo HTML correspondente
   });
 });
 
-// 🔹 Inicializando o servidor
+// Inicializa o servidor Express
 app.listen(port, () => {
   console.log(`✅ Server is running on http://localhost:${port}`);
 });
