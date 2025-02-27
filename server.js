@@ -2,9 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
-const RedisStore = require('connect-redis');
-const { createClient: createSupabaseClient } = require('@supabase/supabase-js'); // Supabase
+const RedisStore = require('connect-redis'); // Não é mais um construtor, agora é uma função
 const { createClient: createRedisClient } = require('redis'); // Redis
+const { createClient: createSupabaseClient } = require('@supabase/supabase-js'); // Supabase
 const cors = require('cors');
 require('dotenv').config();
 
@@ -69,8 +69,9 @@ if (isProduction) {
     console.log("Redis conectado com sucesso!");
   }).catch(console.error);
 
+  // Usando o RedisStore corretamente
   app.use(session({
-    store: new RedisStore({ client: redisClient }),
+    store: new RedisStore({ client: redisClient }), // Note que não é mais um construtor
     secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
     resave: false,
     saveUninitialized: false,
