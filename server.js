@@ -55,11 +55,6 @@ app.use((req, res, next) => {
   next();
 });
 
-const redisClient = createRedisClient({
-    url: process.env.REDIS_URL, 
-    legacyMode: true
-});
-
 if (isProduction) {
   const redisClient = createRedisClient({
     url: process.env.REDIS_URL,
