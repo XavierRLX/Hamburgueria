@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
-const RedisStore = require('connect-redis').default;
+const RedisStore = require('connect-redis');
 const { createClient: createSupabaseClient } = require('@supabase/supabase-js'); // Supabase
 const { createClient: createRedisClient } = require('redis'); // Redis
 const cors = require('cors');
@@ -60,22 +60,43 @@ const redisClient = createRedisClient({
     legacyMode: true
 });
 
-redisClient.connect().then(() => {
-  console.log("Redis conectado com sucesso!");
+if (isProduction) {
+  const redisClient = createRedisClient({
+    url: process.env.REDIS_URL,
+    legacyMode: true
+  });
+
+  redisClient.connect().then(() => {
+    console.log("Redis conectado com sucesso!");
+    app.use(session({
+      store: new RedisStore({ client: redisClient }),
+      secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        secure: true,
+        httpOnly: true,
+        sameSite: 'none',
+        maxAge: 24 * 60 * 60 * 1000,
+        domain: 'hamburgueria-production-445d.up.railway.app'
+      }
+    }));
+  }).catch(console.error);
+} else {
   app.use(session({
-    store: new RedisStore({ client: redisClient.v4 }),
     secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
     resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: isProduction,
-      httpOnly: true,
-      sameSite: 'none',
-      maxAge: 24 * 60 * 60 * 1000,
-      domain: isProduction ? 'hamburgueria-production-445d.up.railway.app' : undefined
-    }
+    saveUninitialized: true,  // Para funcionar localmente sem Redis
+    cookie: { secure: false }
   }));
-}).catch(console.error);
+}
+
+
+// Verifica se a sessão está sendo configurada corretamente
+app.use((req, res, next) => {
+  console.log("🟢 Verificando sessão no middleware:", req.session);
+  next();
+});
 
 // Adicionando as rotas
 app.use('/api', indexRoutes);
