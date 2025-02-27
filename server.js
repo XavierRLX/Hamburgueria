@@ -2,9 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
-const RedisStore = require('connect-redis').default; // Pegando a versão correta
-const { createClient: createRedisClient } = require('redis'); // Redis
-const { createClient: createSupabaseClient } = require('@supabase/supabase-js'); // Supabase
+const RedisStore = require('connect-redis').default; // Correto para connect-redis 8.x
+const { createClient } = require('redis'); // Correto para redis 4.x
+const { createClient: createSupabaseClient } = require('@supabase/supabase-js');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -14,7 +14,6 @@ const isProduction = process.env.NODE_ENV === 'production';
 const supabaseUrl = process.env.SUPABASE_URL;
 const apiKey = process.env.SUPABASE_KEY;
 const redisUrl = process.env.REDIS_URL;
-
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -41,9 +40,6 @@ const alterarStatusLoja = require('./routes/alterarStatusRoutes');
 const admProdutoRoutes = require('./routes/admProdutoRoutes');
 const admCategoriaRoutes = require('./routes/admCategoriaRoutes');
 
-// // Configuração do Supabase com variáveis de ambiente
-// const supabase = createSupabaseClient(supabaseUrl, apiKey);
-
 // Middleware para evitar múltiplos cookies connect.sid
 app.use((req, res, next) => {
   if (req.headers.cookie) {
@@ -58,9 +54,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Configuração do Redis no ambiente de produção
+// 🔹 Configuração do Redis no ambiente de produção
 if (isProduction) {
-  const redisClient = createRedisClient({
+  const redisClient = createClient({
     url: redisUrl,
     legacyMode: true
   });
@@ -69,13 +65,11 @@ if (isProduction) {
     console.log("✅ Redis conectado com sucesso!");
   }).catch(console.error);
 
-  // Aqui usamos RedisStore como uma função, não com `new`
-  const redisStore = RedisStore({
-    client: redisClient
-  });
+  // 🔹 Criando o RedisStore corretamente (sem `new`)
+  const redisStore = new RedisStore({ client: redisClient });
 
   app.use(session({
-    store: redisStore,
+    store: redisStore, // Correto para connect-redis 8.x
     secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
     resave: false,
     saveUninitialized: false,
@@ -88,7 +82,7 @@ if (isProduction) {
     }
   }));
 } else {
-  // Configuração da sessão no ambiente de desenvolvimento
+  // 🔹 Configuração da sessão no ambiente de desenvolvimento
   app.use(session({
     secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
     resave: false,
@@ -101,14 +95,13 @@ if (isProduction) {
   }));
 }
 
-
-// Verifica a sessão
+// 🔹 Verifica a sessão
 app.use((req, res, next) => {
   console.log("🟢 Verificando sessão no middleware:", req.session);
   next();
 });
 
-// Adicionando as rotas
+// 🔹 Adicionando as rotas
 app.use('/api', indexRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api', admPedidosRoutes);
@@ -116,10 +109,10 @@ app.use('/api', alterarStatusLoja);
 app.use('/api', admProdutoRoutes);
 app.use('/api', admCategoriaRoutes);
 
-// Servindo arquivos estáticos de forma consolidada
+// 🔹 Servindo arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Roteamento das páginas HTML com proteção de rota
+// 🔹 Roteamento das páginas HTML
 const routes = [
   { path: '/', file: 'index.html' },
   { path: '/cardapio', file: 'index.html' },
@@ -129,7 +122,7 @@ const routes = [
   { path: '/login', file: 'login.html' }
 ];
 
-// Função de autenticação
+// 🔹 Função de autenticação
 function isAuthenticated(req, res, next) {
   if (req.session && req.session.userId) {
     return next();
@@ -137,7 +130,7 @@ function isAuthenticated(req, res, next) {
   res.redirect('/login');
 }
 
-// Usando as rotas protegidas e não protegidas
+// 🔹 Usando as rotas protegidas e não protegidas
 routes.forEach(route => {
   app.get(route.path, route.protected ? isAuthenticated : (req, res) => {
     res.sendFile(path.join(__dirname, `public/html/${route.file}`));
