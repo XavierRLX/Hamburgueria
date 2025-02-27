@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
-const { default: RedisStore } = require('connect-redis');
+const RedisStore = require('connect-redis');
 const { createClient: createSupabaseClient } = require('@supabase/supabase-js'); // Supabase
 const { createClient: createRedisClient } = require('redis'); // Redis
 const cors = require('cors');
@@ -57,27 +57,28 @@ app.use((req, res, next) => {
 
 if (isProduction) {
   const redisClient = createRedisClient({
-    url: process.env.REDIS_URL,
-    legacyMode: true
+      url: process.env.REDIS_URL,
+      legacyMode: true
   });
 
   redisClient.connect().then(() => {
-    console.log("Redis conectado com sucesso!");
+      console.log("Redis conectado com sucesso!");
   }).catch(console.error);
 
   app.use(session({
-    store: new RedisStore({ client: redisClient }),
-    secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: true,
-      httpOnly: true,
-      sameSite: 'none',
-      maxAge: 24 * 60 * 60 * 1000,
-      domain: 'hamburgueria-production-445d.up.railway.app'
-    }
+      store: new RedisStore({ client: redisClient }), 
+      secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+          secure: true,
+          httpOnly: true,
+          sameSite: 'none',
+          maxAge: 24 * 60 * 60 * 1000,
+          domain: 'hamburgueria-production-445d.up.railway.app'
+      }
   }));
+
 } else {
   app.use(session({
     secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
