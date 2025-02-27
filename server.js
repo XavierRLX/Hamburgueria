@@ -66,7 +66,7 @@ if (isProduction) {
   }).catch(console.error);
 
   // 🔹 Criando o RedisStore corretamente (sem `new`)
-  const redisStore = new RedisStore({ client: redisClient });
+  const redisStore = RedisStore({ client: redisClient });
 
   app.use(session({
     store: redisStore, // Correto para connect-redis 8.x
