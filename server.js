@@ -63,29 +63,29 @@ if (isProduction) {
 
   redisClient.connect().then(() => {
     console.log("Redis conectado com sucesso!");
-    app.use(session({
-      store: new RedisStore({ client: redisClient }),
-      secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        secure: true,
-        httpOnly: true,
-        sameSite: 'none',
-        maxAge: 24 * 60 * 60 * 1000,
-        domain: 'hamburgueria-production-445d.up.railway.app'
-      }
-    }));
   }).catch(console.error);
+
+  app.use(session({
+    store: new RedisStore({ client: redisClient }),
+    secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      sameSite: 'none',
+      maxAge: 24 * 60 * 60 * 1000,
+      domain: 'hamburgueria-production-445d.up.railway.app'
+    }
+  }));
 } else {
   app.use(session({
     secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
     resave: false,
-    saveUninitialized: true,  // Para funcionar localmente sem Redis
+    saveUninitialized: true,
     cookie: { secure: false }
   }));
 }
-
 
 // Verifica se a sessão está sendo configurada corretamente
 app.use((req, res, next) => {
