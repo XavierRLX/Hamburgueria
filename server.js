@@ -69,7 +69,8 @@ if (isProduction) {
     console.log("✅ Redis conectado com sucesso!");
   }).catch(console.error);
 
-  const redisStore = new RedisStore({
+  // Aqui usamos RedisStore como uma função, não com `new`
+  const redisStore = RedisStore({
     client: redisClient
   });
 
@@ -99,6 +100,7 @@ if (isProduction) {
     }
   }));
 }
+
 
 // Verifica a sessão
 app.use((req, res, next) => {
