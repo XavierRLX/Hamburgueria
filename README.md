@@ -1,6 +1,8 @@
 # Sistema de Pedidos - Dream Lanches
- Site desenvolvido com framework bootstrap
+
 Este é um sistema de pedidos online desenvolvido com Node.js (Express.js) e PostgreSQL (via Supabase), permitindo que clientes realizem pedidos e administradores gerenciem produtos e pedidos de forma eficiente. O sistema inclui autenticação segura, integração com WhatsApp para envio de pedidos e está hospedado na plataforma Railway.
+
+ Usei a base do projeto de bootstrap feito na alura. 
 
 🎯 Funcionalidades
 ✅ Criação de pedidos: Clientes podem selecionar produtos e realizar pedidos diretamente pelo site.
