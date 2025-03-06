@@ -1,10 +1,9 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
 const session = require('express-session');
-const pgSession = require('connect-pg-simple')(session); // Usando o connect-pg-simple
-const { Pool } = require('pg'); // Biblioteca para conexão com o PostgreSQL
+const pgSession = require('connect-pg-simple')(session);
+const { Pool } = require('pg');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 // Variáveis de ambiente
@@ -14,12 +13,12 @@ const SESSION_SECRET = process.env.SESSION_SECRET || 'chaveSuperSecreta';
 const app = express();
 const port = process.env.PORT || 3000;
 
-// SSL autoassinado
+// SSL autoassinado (apenas se necessário)
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 // Configuração do CORS
 app.use(cors({
-  origin: isProduction ? 'https://hamburgueria-production-445d.up.railway.app' : '*',
+  origin: isProduction ? 'dreamlanchesrj.up.railway.app' : '*',
   credentials: true
 }));
 
@@ -27,26 +26,36 @@ app.set('trust proxy', 1); // Confia nos proxies do Railway
 
 // Middleware para parsing de JSON e formulários
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 
-// Configuração do banco de dados (usando Supabase PostgreSQL)
+// Configuração do banco de dados (Supabase PostgreSQL)
 const pool = new Pool({
   connectionString: SUPABASE_DATABASE_URL,
-  ssl: isProduction ? { rejectUnauthorized: false } : false,
+  ssl: isProduction ? { rejectUnauthorized: false } : undefined, // Corrigido
 });
 
-// Usando o connect-pg-simple para armazenar sessões no banco de dados
+// Teste de conexão ao banco de dados
+(async () => {
+  try {
+    const client = await pool.connect();
+    console.log("✅ Conectado ao banco de dados PostgreSQL!");
+    client.release();
+  } catch (err) {
+    console.error("❌ Erro ao conectar ao banco de dados:", err.message);
+  }
+})();
+
+// Configuração do armazenamento de sessões no PostgreSQL
 const store = new pgSession({
-  pool: pool, // A conexão com o banco de dados do Supabase
-  tableName: 'sessions', // Nome da tabela que vai armazenar as sessões
+  pool: pool,
+  tableName: 'sessions',
 });
 
-// Configuração da sessão usando o PostgreSQL
 app.use(session({
   secret: SESSION_SECRET,
   resave: false,
-  saveUninitialized: true,
-  store: store, // Usando o armazenamento do PostgreSQL
+  saveUninitialized: false, // Apenas cria sessão quando necessário
+  store: store,
   cookie: {
     secure: isProduction,
     httpOnly: true,
@@ -54,13 +63,15 @@ app.use(session({
   }
 }));
 
-// Verifica a sessão
-app.use((req, res, next) => {
-  console.log("🟢 Verificando sessão no middleware:", req.session);
-  next();
-});
+// Verifica a sessão no middleware (apenas em dev)
+if (!isProduction) {
+  app.use((req, res, next) => {
+    console.log("🟢 Sessão ativa:", req.session);
+    next();
+  });
+}
 
-// Rotas
+// Importação de rotas
 const indexRoutes = require('./routes/indexRoutes');
 const authRoutes = require('./routes/authRoutes');
 const admPedidosRoutes = require('./routes/admPedidosRoutes');
@@ -68,7 +79,7 @@ const alterarStatusLoja = require('./routes/alterarStatusRoutes');
 const admProdutoRoutes = require('./routes/admProdutoRoutes');
 const admCategoriaRoutes = require('./routes/admCategoriaRoutes');
 
-// Adicionando as rotas
+// Definição das rotas
 app.use('/api', indexRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api', admPedidosRoutes);
@@ -79,17 +90,7 @@ app.use('/api', admCategoriaRoutes);
 // Servindo arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Roteamento das páginas HTML
-const routes = [
-  { path: '/', file: 'index.html' },
-  { path: '/cardapio', file: 'index.html' },
-  { path: '/admPedidos', file: 'admPedidos.html'},
-  { path: '/admProdutos', file: 'admProdutos.html'},
-  { path: '/statusPedido', file: 'statusPedidos.html' },
-  { path: '/login', file: 'login.html' }
-];
-
-// Função de autenticação
+// Função de autenticação para rotas protegidas
 function isAuthenticated(req, res, next) {
   if (req.session && req.session.userId) {
     return next();
@@ -97,14 +98,35 @@ function isAuthenticated(req, res, next) {
   res.redirect('/login');
 }
 
-// Usando as rotas protegidas e não protegidas
+// Roteamento de páginas HTML
+const routes = [
+  { path: '/', file: 'index.html' },
+  { path: '/cardapio', file: 'index.html' },
+  { path: '/admPedidos', file: 'admPedidos.html', protected: true },
+  { path: '/admProdutos', file: 'admProdutos.html', protected: true },
+  { path: '/statusPedido', file: 'statusPedidos.html' },
+  { path: '/login', file: 'login.html' }
+];
+
 routes.forEach(route => {
-  app.get(route.path, route.protected ? isAuthenticated : (req, res) => {
-    res.sendFile(path.join(__dirname, `public/html/${route.file}`));
-  });
+  if (route.protected) {
+    app.get(route.path, isAuthenticated, (req, res) => {
+      res.sendFile(path.join(__dirname, `public/html/${route.file}`));
+    });
+  } else {
+    app.get(route.path, (req, res) => {
+      res.sendFile(path.join(__dirname, `public/html/${route.file}`));
+    });
+  }
+});
+
+// Middleware global de erro
+app.use((err, req, res, next) => {
+  console.error("❌ Erro no servidor:", err.message);
+  res.status(500).json({ error: "Erro interno no servidor" });
 });
 
 // Inicializando o servidor
 app.listen(port, () => {
-  console.log(`✅ Server is running on http://localhost:${port}`);
+  console.log(`✅ Servidor rodando em: http://localhost:${port}`);
 });
