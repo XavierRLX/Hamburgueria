@@ -2,15 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
-const { createClient: createSupabaseClient } = require('@supabase/supabase-js');
+const pgSession = require('connect-pg-simple')(session); // Usando o connect-pg-simple
+const { Pool } = require('pg'); // Biblioteca para conexão com o PostgreSQL
 const cors = require('cors');
 require('dotenv').config();
 
+// Variáveis de ambiente
 const isProduction = process.env.NODE_ENV === 'production';
-
-// Verificando variáveis de ambiente obrigatórias
-const supabaseUrl = process.env.SUPABASE_URL;
-const apiKey = process.env.SUPABASE_KEY;
+const SUPABASE_DATABASE_URL = process.env.SUPABASE_DATABASE_URL;
+const SESSION_SECRET = process.env.SESSION_SECRET || 'chaveSuperSecreta';
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -29,19 +29,24 @@ app.set('trust proxy', 1); // Confia nos proxies do Railway
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Rotas
-const indexRoutes = require('./routes/indexRoutes');
-const authRoutes = require('./routes/authRoutes');
-const admPedidosRoutes = require('./routes/admPedidosRoutes');
-const alterarStatusLoja = require('./routes/alterarStatusRoutes');
-const admProdutoRoutes = require('./routes/admProdutoRoutes');
-const admCategoriaRoutes = require('./routes/admCategoriaRoutes');
+// Configuração do banco de dados (usando Supabase PostgreSQL)
+const pool = new Pool({
+  connectionString: SUPABASE_DATABASE_URL,
+  ssl: isProduction ? { rejectUnauthorized: false } : false,
+});
 
-// Configuração da sessão (sem Redis)
+// Usando o connect-pg-simple para armazenar sessões no banco de dados
+const store = new pgSession({
+  pool: pool, // A conexão com o banco de dados do Supabase
+  tableName: 'sessions', // Nome da tabela que vai armazenar as sessões
+});
+
+// Configuração da sessão usando o PostgreSQL
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'chaveSuperSecreta',
+  secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
+  store: store, // Usando o armazenamento do PostgreSQL
   cookie: {
     secure: isProduction,
     httpOnly: true,
@@ -54,6 +59,14 @@ app.use((req, res, next) => {
   console.log("🟢 Verificando sessão no middleware:", req.session);
   next();
 });
+
+// Rotas
+const indexRoutes = require('./routes/indexRoutes');
+const authRoutes = require('./routes/authRoutes');
+const admPedidosRoutes = require('./routes/admPedidosRoutes');
+const alterarStatusLoja = require('./routes/alterarStatusRoutes');
+const admProdutoRoutes = require('./routes/admProdutoRoutes');
+const admCategoriaRoutes = require('./routes/admCategoriaRoutes');
 
 // Adicionando as rotas
 app.use('/api', indexRoutes);
